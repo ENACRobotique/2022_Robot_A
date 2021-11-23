@@ -23,6 +23,11 @@ private:
     static int _pos_wheel1;
     static int _pos_wheel2;
 
+    static float _speed_motor1;
+    static float _speed_motor2;
+    static float _speed_wheel1;
+    static float _speed_wheel2;
+
     static void _update();
 
 public:
@@ -32,5 +37,10 @@ public:
     static int pos_motor2();
     static int pos_wheel1();
     static int pos_wheel2();
+
+    static float speed_motor1();
+    static float speed_motor2();
+    static float speed_wheel1();
+    static float speed_wheel2();
     
 };

@@ -16,6 +16,11 @@ int Odometry::_pos_motor2 = 0;
 int Odometry::_pos_wheel1 = 0;
 int Odometry::_pos_wheel2 = 0;
 
+float Odometry::_speed_motor1 = 0;
+float Odometry::_speed_motor2 = 0;
+float Odometry::_speed_wheel1 = 0;
+float Odometry::_speed_wheel2 = 0;
+
 IntervalTimer Odometry::_timer = IntervalTimer();
 
 void Odometry::init() {
@@ -23,7 +28,7 @@ void Odometry::init() {
 }
 
 void Odometry::_update() {
-    /*int current_pos_motor1 = _enc_motor1.read();
+    int current_pos_motor1 = _enc_motor1.read();
     int current_pos_motor2 = _enc_motor2.read();
     int current_pos_wheel1 = _enc_wheel1.read();
     int current_pos_wheel2 = _enc_wheel2.read();
@@ -33,16 +38,15 @@ void Odometry::_update() {
     _inc_wheel1 = current_pos_wheel1 - _pos_wheel1;
     _inc_wheel2 = current_pos_wheel2 - _pos_wheel2;
 
+    _speed_motor1 = _inc_motor1*10e6*INC_TO_MM_MOTOR/ENCODER_RATE;
+    _speed_motor2 = _inc_motor2*10e6*INC_TO_MM_MOTOR/ENCODER_RATE;
+    _speed_wheel1 = _inc_wheel1*10e6*INC_TO_MM_WHEEL/ENCODER_RATE;
+    _speed_wheel2 = _inc_wheel2*10e6*INC_TO_MM_WHEEL/ENCODER_RATE;
+
     _pos_motor1 = current_pos_motor1;
     _pos_motor2 = current_pos_motor2;
     _pos_wheel1 = current_pos_wheel1;
-    _pos_wheel2 = current_pos_wheel2;*/
-    _pos_motor1 = _enc_motor1.read();
-    _pos_motor2 = _enc_motor2.read();
-    _pos_wheel1 = _enc_wheel1.read();
-    _pos_wheel2 = _enc_wheel2.read();
-
-
+    _pos_wheel2 = current_pos_wheel2;
 }
 
 
@@ -60,4 +64,20 @@ int Odometry::pos_wheel1() {
 
 int Odometry::pos_wheel2() {
     return _pos_wheel2;
+}
+
+float Odometry::speed_motor1() {
+    return _speed_motor1;
+}
+
+float Odometry::speed_motor2() {
+    return _speed_motor2;
+}
+
+float Odometry::speed_wheel1() {
+    return _speed_wheel1;
+}
+
+float Odometry::speed_wheel2() {
+    return _speed_wheel2;
 }

@@ -17,10 +17,10 @@ void loop()
 {
   if(odometryCtrl.check())
   {
-    Serial.printf("motor1: %d\n", Odometry::pos_motor1());
-    Serial.printf("motor2: %d\n", Odometry::pos_motor2());
-    Serial.printf("wheel1: %d\n", Odometry::pos_wheel1());
-    Serial.printf("wheel2: %d\n", Odometry::pos_wheel2());
+    Serial.printf("motor1: %f\n", Odometry::speed_motor1());
+    Serial.printf("motor2: %f\n", Odometry::speed_motor2());
+    Serial.printf("wheel1: %f\n", Odometry::speed_wheel1());
+    Serial.printf("wheel2: %f\n", Odometry::speed_wheel2());
   }
 
 }
