@@ -23,6 +23,8 @@ private:
     static int _pos_wheel1;
     static int _pos_wheel2;
 
+    static void _update();
+
 public:
     static void init();
     
@@ -30,7 +32,5 @@ public:
     static int pos_motor2();
     static int pos_wheel1();
     static int pos_wheel2();
-
-private:
-    static void _update();
+    
 };

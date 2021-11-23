@@ -23,7 +23,7 @@ void Odometry::init() {
 }
 
 void Odometry::_update() {
-    int current_pos_motor1 = _enc_motor1.read();
+    /*int current_pos_motor1 = _enc_motor1.read();
     int current_pos_motor2 = _enc_motor2.read();
     int current_pos_wheel1 = _enc_wheel1.read();
     int current_pos_wheel2 = _enc_wheel2.read();
@@ -36,7 +36,13 @@ void Odometry::_update() {
     _pos_motor1 = current_pos_motor1;
     _pos_motor2 = current_pos_motor2;
     _pos_wheel1 = current_pos_wheel1;
-    _pos_wheel2 = current_pos_wheel2;
+    _pos_wheel2 = current_pos_wheel2;*/
+    _pos_motor1 = _enc_motor1.read();
+    _pos_motor2 = _enc_motor2.read();
+    _pos_wheel1 = _enc_wheel1.read();
+    _pos_wheel2 = _enc_wheel2.read();
+
+
 }
 
 

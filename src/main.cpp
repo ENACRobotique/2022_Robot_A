@@ -23,5 +23,4 @@ void loop()
     Serial.printf("wheel2: %d\n", Odometry::pos_wheel2());
   }
 
-
 }

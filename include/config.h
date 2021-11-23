@@ -9,4 +9,4 @@ const int ENCODER_WHEEL1_B = 17;
 const int ENCODER_WHEEL2_A = 29;
 const int ENCODER_WHEEL2_B = 30;
 
-const int ENCODER_RATE = 33333; // 30 Hz
+const int ENCODER_RATE = 300000; // 30 Hz
