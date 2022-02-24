@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <odom.h>
+#include <motor.h>
 
 namespace Comm {
 
@@ -30,7 +31,7 @@ namespace Comm {
                 switch (actuator)
                 {
                 case 'p': //Pompes
-                    ActuatorStorage::pompes[index].setState(isOn);
+                    //(desactivé pour le moment) ActuatorStorage::pompes[index].setState(isOn);
                     break;
                 
                 default:
