@@ -25,7 +25,7 @@ class Metro {
                 return true;
             }
             if ((now-previous_millis) >= interval_millis){
-                #ifdef NOCATCH-UP
+                #ifdef NOCATCHUP
                 previous_millis = now;
                 #else
                 previous_millis += interval_millis;
