@@ -11,6 +11,7 @@ Metro metro_comm = Metro(CONTROL_RATE);
 
 void setup() {
     odom.init();//initialisation odométrie
+    MotorControl::init();
 }
 
 void loop() {
