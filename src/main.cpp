@@ -15,6 +15,8 @@ Metro metro_motor = Metro(CONTROL_RATE);
 //d'après la doc, impacte beaucoup le CPU à fort baud rate
 
 void setup() {
+    Serial.begin(9600);
+    while(!Serial){}
     odom.init();//initialisation odométrie
     MotorControl::init();//initialisation du ctrl moteur
 }
