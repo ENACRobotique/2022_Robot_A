@@ -30,6 +30,7 @@ class Metro {
                 #else
                 previous_millis += interval_millis;
                 #endif
+                return true;
             }
             return false;
         }

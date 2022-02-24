@@ -23,15 +23,15 @@ namespace MotorControl {
 
 	float cons_speed=0;
 	float cons_omega=0;
+	
+	int timeTrapezoide = 0;
+	float vitesseTrapezoide = 0;
 
-	int timeTrap = 0;
-	float vitesseTrap = 0;
-
-	float Ki_speed = 0; //1
+	float Ki_speed = 1; //1
 	float Kp_speed = 0; //8
 	float Kd_speed = 0; //
 
-	float Ki_omega = 0;//0.8
+	float Ki_omega = 1;//0.8
 	float Kp_omega = 0;//2
 	float Kd_omega = 0;//
 
@@ -44,8 +44,8 @@ namespace MotorControl {
 	float prev_omega_error=0;
 
 	void set_cons(float speed, float omega) {
-		timeTrap = millis();
-		vitesseTrap = Odometry::get_speed_motor();
+		timeTrapezoide = millis();
+		vitesseTrapezoide = Odometry::get_speed_motor();
 		cons_speed = speed;
 		cons_omega = omega;
 	}
@@ -69,11 +69,11 @@ namespace MotorControl {
 	}
 
 	float trapeze(float cons){
-		if (abs(ACCEL_MAX*(millis()-timeTrap)*1e-3+vitesseTrap) > abs(cons)){
+		if (abs(ACCEL_MAX*(millis()-timeTrapezoide)*1e-3+vitesseTrapezoide) > abs(cons)){
 			return cons;
 		}
 		else{
-			return ((cons-vitesseTrap) > 0) ? 1 : (((cons-vitesseTrap) < 0) ? -1 : 0)*ACCEL_MAX*(millis()-timeTrap)*1e-3+vitesseTrap;
+			return ((cons-vitesseTrapezoide) > 0) ? 1 : (((cons-vitesseTrapezoide) < 0) ? -1 : 0)*ACCEL_MAX*(millis()-timeTrapezoide)*1e-3+vitesseTrapezoide;
 		}
 	}
 
