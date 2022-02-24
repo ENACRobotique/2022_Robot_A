@@ -11,6 +11,9 @@ Metro metro_odom = Metro(ENCODER_RATE_MILLIS);
 Metro metro_comm = Metro(COMM_RATE);
 Metro metro_motor = Metro(CONTROL_RATE);
 
+//attention si utilisation du software serial avec STM32DUINO
+//d'après la doc, impacte beaucoup le CPU à fort baud rate
+
 void setup() {
     odom.init();//initialisation odométrie
     MotorControl::init();//initialisation du ctrl moteur
