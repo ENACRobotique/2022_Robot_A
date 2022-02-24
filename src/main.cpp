@@ -4,6 +4,7 @@
 #include <config.h>
 #include <metro.h>
 #include <odom.h>
+#include <motor.h>
 
 Odometry odom = Odometry();
 Metro metro_odom = Metro(ENCODER_RATE_MILLIS);
