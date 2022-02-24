@@ -1,6 +1,7 @@
 #include <comm.h>
 
 #include <Arduino.h>
+#include <odom.h>
 
 namespace Comm {
 
