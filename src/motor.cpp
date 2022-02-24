@@ -1,7 +1,7 @@
 #include "odom.h"
 #include "Arduino.h"
 #include "motor.h"
-#include "metro.h"
+#include "../lib/metro.h"
 #include "config.h"
 
 int clamp(int inf, int sup, float x) {
