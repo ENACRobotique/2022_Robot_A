@@ -12,7 +12,7 @@ Metro metro_motor = Metro(CONTROL_RATE);
 
 void setup() {
     odom.init();//initialisation odométrie
-    MotorControl::init();
+    MotorControl::init();//initialisation du ctrl moteur
 }
 
 void loop() {
