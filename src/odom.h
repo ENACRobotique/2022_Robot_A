@@ -3,12 +3,14 @@
 
 #include <config.h>
 #include <REncoder.h>
+//#include <metro.h>
 
 class Odometry{
     private :
         static REncoder encoder;
         
-        static IntervalTimer _timer;
+        //static IntervalTimer _timer; //only works on teensy
+        //static Metro _timer;
 
         static int _inc_motor1;
         static int _inc_motor2;
@@ -25,7 +27,7 @@ class Odometry{
         static float _speed_wheel1;
         static float _speed_wheel2;
 
-        static void _update();
+        
 
     public :
         static void init();
@@ -37,6 +39,7 @@ class Odometry{
         static float get_speed_wheel();
         static float get_test1();
         static float get_test2();
+        static void _update(); //function was private, moved to public
 };
 
 #endif

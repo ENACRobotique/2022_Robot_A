@@ -17,11 +17,15 @@ float Odometry::_speed_motor2 = 0;
 float Odometry::_speed_wheel1 = 0;
 float Odometry::_speed_wheel2 = 0;
 
-IntervalTimer Odometry::_timer = IntervalTimer();
+//IntervalTimer Odometry::_timer = IntervalTimer();
+
+//Metro Odometry::_timer = Metro(ENCODER_RATE);
+
 
 void Odometry::init() {
     encoder.init();
-    _timer.begin(_update, ENCODER_RATE);
+    //_timer.begin(_update, ENCODER_RATE);
+    //_timer.reset();
 }
 
 void Odometry::_update() {

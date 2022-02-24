@@ -34,7 +34,7 @@ namespace Comm {
                     break;
                 
                 default:
-                    SerialCtrl.printf("Err: actionneur inconnu !");
+                    Serial.printf("Err: actionneur inconnu !");
                     break;
                 }
             }
