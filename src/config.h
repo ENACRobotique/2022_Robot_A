@@ -17,6 +17,7 @@ const float ACCEL_MAX = 20; //m/s²
 const float CONTROL_RATE = 25; //ms
 const float ENCODER_RATE = 20000.f;
 const float ENCODER_RATE_MILLIS = 20.f;
+const float COMM_RATE = 50.f;
 const int NB_INC_MOTOR = 3190;
 const int NB_INC_WHEEL = 2707;
 const float INC_TO_MM_MOTOR =0.001;
