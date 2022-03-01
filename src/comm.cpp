@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <odom.h>
 #include <motor.h>
+#include <poelon.h>
 
 namespace Comm {
 
@@ -13,20 +14,18 @@ namespace Comm {
     static void parse_data() {
         if(buffer[0] == 's') { //Stop
             MotorControl::set_cons(0,0);
-            Serial2.print("stopping robot");
+            Serial2.println("m Stopping robot.");
         }
         else if(buffer[0] == 'v') { //Vitesse
             int x,omega;
             int nb = sscanf(buffer, "v %d %d", &x, &omega);
             Serial2.print(nb);
             if(nb == 2) {
-                Serial2.print(x);
-                Serial2.print(" ");
-                Serial2.println(omega);
+                Serial2.printf("m (v %d %d)\n", x, omega);
                 MotorControl::set_cons((float)x,(float)omega);
             }
         }
-        else if(buffer[0] == 'a') //Actionneur (fonctionnement à deux états on/off seulement)
+        else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)
         {
             char actuator;
             int index, isOn;
@@ -40,11 +39,53 @@ namespace Comm {
                     break;
                 
                 default:
-                    Serial2.printf("Err: actionneur inconnu !");
+                    Serial2.printf("m Err: actionneur inconnu (%c) !\n", actuator);
                     break;
                 }
             }
         }
+        else if(buffer[0] == 's'){ //Poêlon (skillet en anglais)
+            int mesure;
+            int etat;
+            int coul;
+            int nb;
+            switch (buffer[2]){
+                case 'd': //deployer
+                    Poelon::changerEtat(true);
+                    break;
+                case 'r': //retracter
+                    Poelon::changerEtat(false);
+                    break;
+                case 'm': //mesurer
+                    mesure = Poelon::lireResistance();
+                    Serial2.printf("s m %d\n", mesure);
+                    break;
+                case 'e': //état du poelon (renvoie déployé ou rétracté par message)
+                    etat = Poelon::recupEtat();
+                    Serial2.printf("s e %d\n", etat);
+                    break;
+                case 'p': //pousser un carré
+                    Poelon::pousserCarre();
+                    Serial2.printf("s p\n"); //le carré a été poussé
+                    break;
+                case 'a': //autopousser un carré
+                    mesure = Poelon::autoPush();
+                    Serial2.printf("s a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
+                    break;
+                case 'c': //changer la couleur du mode auto
+                    nb = sscanf(buffer, "s c %d", &coul);
+                    if (nb) {
+                        Poelon::setCouleur(coul);
+                        Serial2.printf("s c %d\n", coul);
+                    } else {
+                        Serial2.printf("m Err: couleur du poelon non changée.\n");
+                    }
+                    break;
+                default:
+                    Serial2.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
+                    break;
+            }
+        } 
     }
 
     //Récupération des derniers messages sur le buffer Serial2 et traitement
