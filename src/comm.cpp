@@ -5,6 +5,27 @@
 #include <motor.h>
 #include <poelon.h>
 
+//recap des messages en entrée:
+//v <int> <int>: commande de vitesse <linéaire> <omega>
+//s : arrêt du robot
+//b <char> <int> <int>: commande d'actionneurs binaires <code type act> <numéro de l'act> <on/off/etat>
+//s d : déployer le pôelon
+//s r : rétracter le pôelon
+//s m : mesure une résistance
+//s e : retourne l'état du pôelon (en place pour mesurer ou pas)
+//s p : pousser un carré
+//s a : autopousser un carré (mesure et pousser si ok) (nécessite d'avoir fourni la couleur cible au pôelon avant)
+//s c <int> : paramétrer la couleur cible (0: vide, 1: ~470 Ohms (violet), 2: ~1,0 kOhm (jaune), 3: ~4,7 kOhms (rouge))
+
+//recap des messages en sortie:
+//m <string> : un message à display à l'utilisateur
+//o <int> <int> : odométrie moteur <v lin> <v omega>
+//s m <int> : résultat de mesure poelon
+//s e <int> : état du pôelon
+//s p : le carré a fini d'être poussé
+//s a <int> : opération d'autopush finie: si (<couleur> < 10): carré non poussé car de couleur <couleur>, sinon, carré poussé car de couleur <couleur - 10>.
+//s c <int> : confirmation de changement de couleur du mode auto-pôelon
+
 namespace Comm {
 
     char buffer[70];
@@ -108,7 +129,7 @@ namespace Comm {
         }
 
         #ifdef COMM_SPAM_ODOMETRY
-            Serial2.print("m "); //Odométrie moteur
+            Serial2.print("o "); //Odométrie moteur
             Serial2.print(Odometry::get_speed_motor());
             Serial2.print(" ");
             Serial2.println(Odometry::get_omega_motor());
