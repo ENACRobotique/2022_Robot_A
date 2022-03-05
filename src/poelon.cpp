@@ -38,6 +38,14 @@ int Poelon::lireResistance(){
     //3: ~4,7 kOhms (rouge)
     //0 | tout le reste: lecture a échoué (pas de contact par ex.)
     //TODO: ajouter le code de lecture de la résistance electrique
+    return value; //temporaire
+    if (POELON_READ_VIOLET_INF <= value && value < POELON_READ_VIOLET_SUP) {
+        return 1;
+    } else if (POELON_READ_JAUNE_INF <= value && value < POELON_READ_JAUNE_SUP) {
+        return 2;
+    } else if (POELON_READ_ROUGE_INF <= value && value < POELON_READ_ROUGE_SUP) {
+        return 3;
+    }
     return 0;
 }
 

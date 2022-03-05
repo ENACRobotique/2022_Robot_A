@@ -36,4 +36,13 @@ const int POELON_ANGLE_TOL_MINUS = 0; //TODO: mettre le bon angle
 const int POELON_ANGLE_TOL_PLUS = 0; //TODO: mettre le bon angle
 const int POELON_READ_PIN = PB1;
 
+//TODO: valeurs
+const int POELON_READ_VIOLET_INF = 0;
+const int POELON_READ_VIOLET_SUP = 0;
+const int POELON_READ_JAUNE_INF = 0;
+const int POELON_READ_JAUNE_SUP = 0;
+const int POELON_READ_ROUGE_INF = 0;
+const int POELON_READ_ROUGE_SUP = 0;
+
+
 #endif //CONFIG
