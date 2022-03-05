@@ -18,7 +18,7 @@ namespace Comm {
         else if(buffer[0] == 'v') { //Vitesse
             int x,omega;
             int nb = sscanf(buffer, "v %d %d", &x, &omega);
-            Serial2.print(nb);
+            Serial2.print("speed : ");
             if(nb == 2) {
                 Serial2.print(x);
                 Serial2.print(" ");
@@ -65,13 +65,15 @@ namespace Comm {
                 }
             }
         }
-
+        //#define or undef
+        #undef COMM_SPAM_ODOMETRY
         #ifdef COMM_SPAM_ODOMETRY
             Serial2.print("m "); //Odométrie moteur
             Serial2.print(Odometry::get_speed_motor());
             Serial2.print(" ");
             Serial2.println(Odometry::get_omega_motor());
         #endif
+            Serial2.println("basic : ");
     }
 
 }

@@ -39,6 +39,8 @@ void Odometry::_update() {
     _inc_wheel1 = -(current_pos_wheel1 - _pos_wheel1);
     _inc_wheel2 = -(current_pos_wheel2 - _pos_wheel2);
 
+    Serial2.println(_inc_motor1);
+    Serial2.println( _inc_motor2);
     _speed_motor1 = _inc_motor1*2*3.14159*1e6/(NB_INC_MOTOR*ENCODER_RATE);
     _speed_motor2 = _inc_motor2*2*3.14159*1e6/(NB_INC_MOTOR*ENCODER_RATE);
     _speed_wheel1 = _inc_wheel1*2*3.14159*1e6/(NB_INC_WHEEL*ENCODER_RATE);
