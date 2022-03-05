@@ -50,6 +50,9 @@ namespace MotorControl {
 		cons_omega = omega;
 	}
 
+	void stop() {
+		set_cons(0,0);
+	}
 	float get_cons_speed(){
 		return cons_speed;
 	}
@@ -86,7 +89,7 @@ namespace MotorControl {
 
 
 	void update() {
-
+		Serial2.println(get_cons_speed());
 		float error_speed = trapeze(cons_speed) - Odometry::get_speed_motor();
 		error_integrale_speed += error_speed;
 		delta_speed = error_speed - prev_speed_error;
@@ -102,11 +105,16 @@ namespace MotorControl {
 		float cmd_omega = Kp_omega * error_omega + Ki_omega * error_integrale_omega + Kd_omega * delta_omega;
 
 		int cmd_mot1 = clamp(-255.f, 255.f, cmd_speed + cmd_omega);
-		int cmd_mot2 = clamp(-255.f, 255.f, cmd_speed - cmd_omega);
+		int cmd_mot2 = clamp(-255.f, 255.f, - (cmd_speed - cmd_omega));
 
 		analogWrite(MOT1_PWM, abs(cmd_mot1));
 		digitalWrite(MOT1_DIR, sign(cmd_mot1));
 		analogWrite(MOT2_PWM, abs(cmd_mot2));
 		digitalWrite(MOT2_DIR, sign(cmd_mot2));
+
+		if (cons_speed == 0 && cons_omega == 0) {
+			analogWrite(MOT1_PWM, 0);
+			analogWrite(MOT2_PWM, 0);
+		}
 	}
 }
