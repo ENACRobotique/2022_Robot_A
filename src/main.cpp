@@ -16,9 +16,9 @@ Metro metro_motor = Metro(CONTROL_RATE);
 
 
 void setup() {
-    
     Serial2.begin(9600);
-    while(!Serial2) {}
+    Serial2.println("aaaaa");
+    //while(!Serial2) {}
 
     odom.init();//initialisation odométrie
     MotorControl::init();//initialisation du ctrl moteur
