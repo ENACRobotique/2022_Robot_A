@@ -6,7 +6,7 @@
 #include <poelon.h>
 
 //recap des messages en entrée:
-//v <int> <int>: commande de vitesse <linéaire> <omega>
+//v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
 //s : arrêt du robot
 //b <char> <int> <int>: commande d'actionneurs binaires <code type act> <numéro de l'act> <on/off/etat>
 //s d : déployer le pôelon
@@ -43,7 +43,7 @@ namespace Comm {
             Serial2.print(nb);
             if(nb == 2) {
                 Serial2.printf("m (v %d %d)\n", x, omega);
-                MotorControl::set_cons((float)x,(float)omega);
+                MotorControl::set_cons(static_cast<float>(x)/1000.f,static_cast<float>(omega)/1000.f);
             }
         }
         else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)
