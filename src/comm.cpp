@@ -29,7 +29,7 @@ namespace Comm {
         {
             char actuator;
             int index, isOn;
-            int params = sscanf(buffer, "a %c %d %d", &actuator, &index, &isOn);
+            int params = sscanf(buffer, "b %c %d %d", &actuator, &index, &isOn);
             if (params == 3)
             {
                 switch (actuator)
