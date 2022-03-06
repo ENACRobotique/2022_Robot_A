@@ -1,6 +1,10 @@
 #include <odom.h>
+#include "AbstractEncoder.h"
+#include "InterruptEncoder.h"
 
 REncoder Odometry::encoder = REncoder();
+
+AbstractEncoder motor_encoder_1 = InterruptEncoder(&Odometry::encoder.MOTOR_1_counter);
 
 int Odometry::_inc_motor1 = 0;
 int Odometry::_inc_motor2 = 0;

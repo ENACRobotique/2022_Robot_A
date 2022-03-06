@@ -12,6 +12,17 @@ const int ENCODER_WHEEL1_A = PB5;
 const int ENCODER_WHEEL1_B = PB4;
 const int ENCODER_WHEEL2_A = PA7;
 const int ENCODER_WHEEL2_B = PA12;
+
+//https://github.com/stm32duino/wiki/wiki/HardwareTimer-library
+/*const int ENCODER_MOTOR1_TIMER = 8;
+const int ENCODER_MOTOR1_CHANNEL = 
+const int ENCODER_MOTOR2_TIMER = 
+const int ENCODER_MOTOR2_CHANNEL = 
+const int ENCODER_WHEEL1_TIMER =
+const int ENCODER_WHEEL1_CHANNEL =
+const int ENCODER_WHEEL2_TIMER =
+const int ENCODER_WHEEL2_CHANNEL = */
+
 //const float PI = 3.14159;
 const float ACCEL_MAX = 20; //m/s²
 const float CONTROL_RATE = 25; //ms
@@ -27,6 +38,7 @@ const int MOT1_PWM = PA9;//36;35
 const int MOT1_DIR = PB2;//33;34
 const int MOT2_PWM = PA8;//35;
 const int MOT2_DIR = PB10;//34;
+
 
 const int POELON_SERVO_PIN = 0; //TODO: mettre le bon pin (PA0, PA1 ou PB0)
 const int POELON_RETRACTED_ANGLE = 0; //TODO: mettre le bon angle

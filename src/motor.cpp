@@ -80,15 +80,26 @@ namespace MotorControl {
 		}
 	}
 
-	void test_motor(int spdm1, int spdm2){
-		analogWrite(MOT1_PWM, abs(spdm1));
-		digitalWrite(MOT1_DIR, sign(spdm1));
-		analogWrite(MOT2_PWM, abs(spdm2));
-		digitalWrite(MOT2_DIR, sign(spdm2));
+	void cmd_mot(float cmd_speed, float cmd_omega) { //cmd_speed in m/s and cmd_omega in rad/s
+		if(cmd_speed == 0 && cmd_omega == 0) { //prevent "jerky" stop
+			send_mot_signal(0, 0);
+		}
+		else {
+			int cmd_mot1 = clamp(-255.f, 255.f, cmd_speed + cmd_omega);
+			int cmd_mot2 = clamp(-255.f, 255.f, - (cmd_speed - cmd_omega));
+			send_mot_signal(cmd_mot1, cmd_mot2);
+		}
+	}
+	void send_mot_signal(int spdm1, int spdm2){ //speed motor in pwm signal (0-255)
+			analogWrite(MOT1_PWM, abs(spdm1));
+			digitalWrite(MOT1_DIR, sign(spdm1));
+			analogWrite(MOT2_PWM, abs(spdm2));
+			digitalWrite(MOT2_DIR, sign(spdm2));
+
 	}
 
 
-	void update() {
+	void update() { //asservissement
 		Serial2.println(get_cons_speed());
 		float error_speed = trapeze(cons_speed) - Odometry::get_speed_motor();
 		error_integrale_speed += error_speed;
@@ -104,17 +115,7 @@ namespace MotorControl {
 		
 		float cmd_omega = Kp_omega * error_omega + Ki_omega * error_integrale_omega + Kd_omega * delta_omega;
 
-		int cmd_mot1 = clamp(-255.f, 255.f, cmd_speed + cmd_omega);
-		int cmd_mot2 = clamp(-255.f, 255.f, - (cmd_speed - cmd_omega));
+		cmd_mot(cmd_speed, cmd_omega);
 
-		analogWrite(MOT1_PWM, abs(cmd_mot1));
-		digitalWrite(MOT1_DIR, sign(cmd_mot1));
-		analogWrite(MOT2_PWM, abs(cmd_mot2));
-		digitalWrite(MOT2_DIR, sign(cmd_mot2));
-
-		if (cons_speed == 0 && cons_omega == 0) {
-			analogWrite(MOT1_PWM, 0);
-			analogWrite(MOT2_PWM, 0);
-		}
 	}
 }

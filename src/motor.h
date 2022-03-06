@@ -10,7 +10,7 @@ namespace MotorControl {
 	float get_cons_speed();
 	float get_cons_omega();
 
-	void test_motor(int cmde1, int cmde2);
+	void send_mot_signal(int cmde1, int cmde2);
 	void set_cons(float speed, float omega);
 	float trapeze(float cons);
 }

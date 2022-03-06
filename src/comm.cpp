@@ -107,6 +107,11 @@ namespace Comm {
                     break;
             }
         } 
+        else if (buffer[0] == 't') //test
+        {
+            int test_index;
+            int params = sscanf(buffer, "t %d", &test_index);
+        }
     }
 
     //Récupération des derniers messages sur le buffer Serial2 et traitement
