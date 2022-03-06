@@ -1,11 +1,12 @@
 #include <poelon.h>
 #include <config.h>
 
+
 void Poelon::init(){
-    poel = Servo();
-    poel.attach(POELON_SERVO_PIN, POELON_RETRACTED_ANGLE);
+    Servo poel = Servo();
+    poel.attach(POELON_SERVO_PIN, POELON_RETRACTED_ANGLE, POELON_DEPLOYED_ANGLE);
     pinMode(POELON_READ_PIN, INPUT);
-    active_color = 0;
+    int active_color = 0;
 }
 
 void Poelon::detach(){

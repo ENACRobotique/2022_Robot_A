@@ -140,7 +140,6 @@ namespace Comm {
             Serial2.print(" ");
             Serial2.println(Odometry::get_omega_motor());
         #endif
-            Serial2.println("basic : ");
     }
 
 }

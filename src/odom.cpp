@@ -4,7 +4,9 @@
 
 REncoder Odometry::encoder = REncoder();
 
-AbstractEncoder motor_encoder_1 = InterruptEncoder(&Odometry::encoder.MOTOR_1_counter);
+InterruptEncoder motor_encoder_1 = InterruptEncoder(&(InterruptEncoder::MOTOR_1_counter)); //TODO : To switch to abstractEncoder
+InterruptEncoder motor_encoder_2 = InterruptEncoder(&(InterruptEncoder::MOTOR_2_counter)); //TODO : To switch to abstractEncoder
+
 
 int Odometry::_inc_motor1 = 0;
 int Odometry::_inc_motor2 = 0;
@@ -27,12 +29,18 @@ float Odometry::_speed_wheel2 = 0;
 
 
 void Odometry::init() {
-    encoder.init();
+    //encoder.init();
+    motor_encoder_1.init();
+    motor_encoder_2.init();
     //_timer.begin(_update, ENCODER_RATE);
     //_timer.reset();
 }
 
 void Odometry::_update() {
+    motor_encoder_1.update();
+    motor_encoder_2.update();
+
+/*
     int current_pos_motor1 = encoder.get_pos_M1();
     int current_pos_motor2 = encoder.get_pos_M2();
     int current_pos_wheel1 = encoder.get_pos_W1();
@@ -54,6 +62,9 @@ void Odometry::_update() {
     _pos_motor2 = current_pos_motor2;
     _pos_wheel1 = current_pos_wheel1;
     _pos_wheel2 = current_pos_wheel2;
+
+*/
+
 }
 
 float Odometry::get_test1() {

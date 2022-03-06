@@ -5,6 +5,7 @@
 #include <motor.h>
 #include <odom.h>
 #include <../lib/metro.h>
+#include "poelon.h"
 
 Odometry odom = Odometry();
 Metro metro_odom = Metro(ENCODER_RATE_MILLIS);
@@ -18,15 +19,20 @@ Metro metro_motor = Metro(CONTROL_RATE);
 void setup() {
     Serial2.begin(9600);
     Serial2.println("aaaaa");
-    //while(!Serial2) {}
+    while(!Serial2) {}
+    delay(0.5f); //wait for serial to be ready
 
+    Poelon::init();
     odom.init();//initialisation odométrie
     MotorControl::init();//initialisation du ctrl moteur
 }
 
 void loop() {
+    delay(0.9f);
+    odom._update();
+    Comm::update();
     if (metro_odom.check()){//mise à jour périodique de l'odométrie (logiciel)
-        odom._update();
+        //odom._update();
     }
     if (metro_comm.check()){//récupération périodique des informations via Serial2
         Comm::update();

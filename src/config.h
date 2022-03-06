@@ -42,7 +42,7 @@ const int MOT2_DIR = PB10;//34;
 
 const int POELON_SERVO_PIN = 0; //TODO: mettre le bon pin (PA0, PA1 ou PB0)
 const int POELON_RETRACTED_ANGLE = 0; //TODO: mettre le bon angle
-const int POELON_DEPLOYED_ANGLE = 0; //TODO: mettre le bon angle
+const int POELON_DEPLOYED_ANGLE = 90; //TODO: mettre le bon angle
 const int POELON_PUSH_ANGLE = 0; //TODO: mettre le bon angle
 const int POELON_ANGLE_TOL_MINUS = 0; //TODO: mettre le bon angle
 const int POELON_ANGLE_TOL_PLUS = 0; //TODO: mettre le bon angle
