@@ -9,3 +9,11 @@ in the development cycle.
 
 More information about PlatformIO Unit Testing:
 - https://docs.platformio.org/page/plus/unit-testing.html
+
+Jonathan Opinion :
+Don't need unit test with mockable functions because 
+the firmware will only really be low level.
+(Unit test only complex things, like string handling & calculations)
+
+Test_embedded need to be tested with STM32L476RG plugged.
+

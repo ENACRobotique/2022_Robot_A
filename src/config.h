@@ -1,7 +1,12 @@
 #ifndef CONFIG
 #define CONFIG
 
-#include <Arduino.h>
+//#ifdef UNIT_TEST
+//    #include "ArduinoFake.h"
+//#else
+#include "Arduino.h"
+//#endif
+
 #include <PinNames.h>
 
 const int ENCODER_MOTOR1_A = PC6;
