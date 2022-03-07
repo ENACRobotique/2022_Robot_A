@@ -15,7 +15,7 @@ Metro metro_motor = Metro(CONTROL_RATE);
 //attention si utilisation du software Serial2 avec STM32DUINO
 //d'après la doc, impacte beaucoup le CPU à fort baud rate
 
-
+#ifndef UNIT_TEST
 void setup() {
     Serial2.begin(9600);
     Serial2.println("aaaaa");
@@ -41,3 +41,4 @@ void loop() {
         MotorControl::update();
     }
 }
+#endif

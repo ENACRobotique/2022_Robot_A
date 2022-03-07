@@ -1,3 +1,4 @@
+#include "test_encoder.h"
 #include "motor.h"
 #include "InterruptEncoder.h"
 #include <unity.h>

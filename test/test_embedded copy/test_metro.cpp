@@ -11,8 +11,6 @@ void test_check_metro() {
     TEST_ASSERT_FALSE(metro.check());
 }
 void test_metro() {
-    
-    UNITY_BEGIN();
+
     RUN_TEST(test_check_metro);
-    UNITY_END();
 }
