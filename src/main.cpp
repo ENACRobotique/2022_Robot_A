@@ -18,9 +18,9 @@ Metro metro_motor = Metro(CONTROL_RATE);
 #ifndef UNIT_TEST
 void setup() {
     Serial2.begin(9600);
-    Serial2.println("aaaaa");
     while(!Serial2) {}
-    delay(0.5f); //wait for serial to be ready
+    Serial2.println("aaaaa");
+    //delay(0.5f); //wait for serial to be ready
 
     Poelon::init();
     odom.init();//initialisation odométrie
@@ -28,11 +28,11 @@ void setup() {
 }
 
 void loop() {
-    delay(0.9f);
-    odom._update();
-    Comm::update();
+    //delay(0.9f);
+    //odom._update();
+    //Comm::update();
     if (metro_odom.check()){//mise à jour périodique de l'odométrie (logiciel)
-        //odom._update();
+        odom._update();
     }
     if (metro_comm.check()){//récupération périodique des informations via Serial2
         Comm::update();

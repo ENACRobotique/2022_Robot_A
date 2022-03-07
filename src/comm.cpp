@@ -9,22 +9,22 @@
 //v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
 //s : arrêt du robot
 //b <char> <int> <int>: commande d'actionneurs binaires <code type act> <numéro de l'act> <on/off/etat>
-//s d : déployer le pôelon
-//s r : rétracter le pôelon
-//s m : mesure une résistance
-//s e : retourne l'état du pôelon (en place pour mesurer ou pas)
-//s p : pousser un carré
-//s a : autopousser un carré (mesure et pousser si ok) (nécessite d'avoir fourni la couleur cible au pôelon avant)
-//s c <int> : paramétrer la couleur cible (0: vide, 1: ~470 Ohms (violet), 2: ~1,0 kOhm (jaune), 3: ~4,7 kOhms (rouge))
+//p d : déployer le pôelon
+//p r : rétracter le pôelon
+//p m : mesure une résistance
+//p e : retourne l'état du pôelon (en place pour mesurer ou pas)
+//p p : pousser un carré
+//p a : autopousser un carré (mesure et pousser si ok) (nécessite d'avoir fourni la couleur cible au pôelon avant)
+//p c <int> : paramétrer la couleur cible (0: vide, 1: ~470 Ohms (violet), 2: ~1,0 kOhm (jaune), 3: ~4,7 kOhms (rouge))
 
 //recap des messages en sortie:
 //m <string> : un message à display à l'utilisateur
 //o <int> <int> : odométrie moteur <v lin> <v omega>
-//s m <int> : résultat de mesure poelon
-//s e <int> : état du pôelon
-//s p : le carré a fini d'être poussé
-//s a <int> : opération d'autopush finie: si (<couleur> < 10): carré non poussé car de couleur <couleur>, sinon, carré poussé car de couleur <couleur - 10>.
-//s c <int> : confirmation de changement de couleur du mode auto-pôelon
+//p m <int> : résultat de mesure poelon
+//p e <int> : état du pôelon
+//p p : le carré a fini d'être poussé
+//p a <int> : opération d'autopush finie: si (<couleur> < 10): carré non poussé car de couleur <couleur>, sinon, carré poussé car de couleur <couleur - 10>.
+//p c <int> : confirmation de changement de couleur du mode auto-pôelon
 
 namespace Comm {
 
@@ -65,7 +65,7 @@ namespace Comm {
                 }
             }
         }
-        else if(buffer[0] == 's'){ //Poêlon (skillet en anglais)
+        else if(buffer[0] == 'p'){ //Poêlon
             int mesure;
             int etat;
             int coul;
@@ -79,25 +79,25 @@ namespace Comm {
                     break;
                 case 'm': //mesurer
                     mesure = Poelon::lireResistance();
-                    Serial2.printf("s m %d\n", mesure);
+                    Serial2.printf("p m %d\n", mesure);
                     break;
                 case 'e': //état du poelon (renvoie déployé ou rétracté par message)
                     etat = Poelon::recupEtat();
-                    Serial2.printf("s e %d\n", etat);
+                    Serial2.printf("p e %d\n", etat);
                     break;
                 case 'p': //pousser un carré
                     Poelon::pousserCarre();
-                    Serial2.printf("s p\n"); //le carré a été poussé
+                    Serial2.printf("p p\n"); //le carré a été poussé
                     break;
                 case 'a': //autopousser un carré
                     mesure = Poelon::autoPush();
-                    Serial2.printf("s a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
+                    Serial2.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
                     break;
                 case 'c': //changer la couleur du mode auto
-                    nb = sscanf(buffer, "s c %d", &coul);
+                    nb = sscanf(buffer, "p c %d", &coul);
                     if (nb) {
                         Poelon::setCouleur(coul);
-                        Serial2.printf("s c %d\n", coul);
+                        Serial2.printf("p c %d\n", coul);
                     } else {
                         Serial2.printf("m Err: couleur du poelon non changée.\n");
                     }

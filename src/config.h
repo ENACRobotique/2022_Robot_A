@@ -45,7 +45,7 @@ const int MOT2_PWM = PA8;//35;
 const int MOT2_DIR = PB10;//34;
 
 
-const int POELON_SERVO_PIN = 0; //TODO: mettre le bon pin (PA0, PA1 ou PB0)
+const int POELON_SERVO_PIN = PA0; //TODO: mettre le bon pin (PA0 servo1, PA1 servo2 ou PB0 servo3)
 const int POELON_RETRACTED_ANGLE = 0; //TODO: mettre le bon angle
 const int POELON_DEPLOYED_ANGLE = 90; //TODO: mettre le bon angle
 const int POELON_PUSH_ANGLE = 0; //TODO: mettre le bon angle
