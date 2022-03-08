@@ -4,24 +4,8 @@ class InterruptEncoder: public AbstractEncoder {
     public:
         InterruptEncoder(int pinA, int pinB): pinA(pinA), pinB(pinB){}
         
-        int get_value() {
-            //return counter;
-            auto tmp = counter;
-            counter = 0;
-            return tmp;
-        }
-
-        void init() {
-            pinMode(pinA, INPUT_PULLUP);
-            pinMode(pinB, INPUT_PULLUP);
-            attachInterrupt(digitalPinToInterrupt(pinA), [=]() {
-                if (digitalRead(pinB) == HIGH) {
-                    counter++;
-                } else {
-                    counter--;
-                }
-            }, RISING);
-        }
+        int get_value();
+        void init();
 
     private:
         int pinA;

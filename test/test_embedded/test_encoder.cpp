@@ -9,6 +9,7 @@
 //TODO : assert speed
 //TODO : test free encoder
 
+//test encoders & motors
 void test_encoder_direction(volatile int* counter) { 
     //one should be left of the robot
     MotorControl::init();
@@ -47,6 +48,12 @@ void test_encoder_direction_2() {
     test_encoder_direction(&InterruptEncoder::MOTOR_2_counter);
 }
 
+//test communication
+
+void comm_branches() {
+    //comm.buffer() fill
+    //Comm::parse_data();
+}
 
 
 int main( int argc, char **argv) {
