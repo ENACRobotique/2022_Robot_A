@@ -34,4 +34,6 @@ private:
 
 };
 
+extern Odometry odom;
+
 #endif

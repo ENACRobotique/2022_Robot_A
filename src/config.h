@@ -22,7 +22,8 @@ const double MOTOR_BASE = 180;
 const float INC_TO_MM_MOTOR =0.309671275853851;
 const float INC_TO_MM_WHEEL =8.14e-5;
 
-const float ACCEL_MAX = 20; //m/s²
+const float ACCEL_MAX = 400; //m/s²
+const float ACCEL_ANG_MAX = 20; //rad/s²
 const float CONTROL_PERIOD = 20; //ms
 const float ENCODER_PERIOD = 20.f;
 const float COMM_RATE = 50; //ms

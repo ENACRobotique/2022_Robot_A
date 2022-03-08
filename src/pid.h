@@ -1,9 +1,6 @@
 #pragma once
 #include <Arduino.h>
-
-float clamp(float inf, float sup, float x) {
-	return min(sup, max(inf, x));
-}
+#include "utils.h"
 
 class PID {
 public:
