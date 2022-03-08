@@ -31,14 +31,16 @@ void loop() {
     //delay(0.9f);
     //odom._update();
     //Comm::update();
-    if (metro_odom.check()){//mise à jour périodique de l'odométrie (logiciel)
-        odom._update();
-    }
+    //if (metro_odom.check()){//mise à jour périodique de l'odométrie (logiciel)
+    //    odom._update();
+    //}
+    Serial2.println(millis());
     if (metro_comm.check()){//récupération périodique des informations via Serial2
         Comm::update();
+        
     }
-    if (metro_motor.check()){//mise à jour du contrôle moteur
-        MotorControl::update();
-    }
+    //if (metro_motor.check()){//mise à jour du contrôle moteur
+    //    MotorControl::update();
+    //}
 }
 #endif
