@@ -54,6 +54,7 @@ namespace Comm {
         }
         else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)
         {
+            char actuator;
             int index, isOn;
             int params = sscanf(buffer, "b %c %d %d", &actuator, &index, &isOn);
             if (params == 3)
