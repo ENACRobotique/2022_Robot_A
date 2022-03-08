@@ -26,24 +26,28 @@
 //p a <int> : opération d'autopush finie: si (<couleur> < 10): carré non poussé car de couleur <couleur>, sinon, carré poussé car de couleur <couleur - 10>.
 //p c <int> : confirmation de changement de couleur du mode auto-pôelon
 
+
+
 namespace Comm {
+
+    HardwareSerial &SerialCom = Serial3;
 
     char buffer[70];
     int buf_index = 0;
 
-    //Analyse des informations contenues dans les messages Serial2
+    //Analyse des informations contenues dans les messages SerialCom
     static void parse_data() {
         if(buffer[0] == 's') { //Stop
             motor.set_cons(0, 0);
-            Serial2.println("m Stopping robot.");
+            SerialCom.println("m Stopping robot.");
         }
         else if(buffer[0] == 'v') { //Vitesse
             int x,omega;
             int nb = sscanf(buffer, "v %d %d", &x, &omega);
-            Serial2.print("speed : ");
+            SerialCom.print("speed : ");
             if(nb == 2) {
-                Serial2.printf("m (v %d %d)\n", x, omega);
-                motor.set_cons(static_cast<double>(x)/1000.,static_cast<double>(omega)/1000.);
+                SerialCom.printf("m (v %d %d)\n", x, omega);
+                motor.set_cons(static_cast<double>(x),static_cast<double>(omega)/10.);
             }
         }
         else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)
@@ -60,7 +64,7 @@ namespace Comm {
                     break;
                 
                 default:
-                    Serial2.printf("m Err: actionneur inconnu (%c) !\n", actuator);
+                    SerialCom.printf("m Err: actionneur inconnu (%c) !\n", actuator);
                     break;
                 }
             }
@@ -79,31 +83,31 @@ namespace Comm {
                     break;
                 case 'm': //mesurer
                     mesure = Poelon::lireResistance();
-                    Serial2.printf("p m %d\n", mesure);
+                    SerialCom.printf("p m %d\n", mesure);
                     break;
                 case 'e': //état du poelon (renvoie déployé ou rétracté par message)
                     etat = Poelon::recupEtat();
-                    Serial2.printf("p e %d\n", etat);
+                    SerialCom.printf("p e %d\n", etat);
                     break;
                 case 'p': //pousser un carré
                     Poelon::pousserCarre();
-                    Serial2.printf("p p\n"); //le carré a été poussé
+                    SerialCom.printf("p p\n"); //le carré a été poussé
                     break;
                 case 'a': //autopousser un carré
                     mesure = Poelon::autoPush();
-                    Serial2.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
+                    SerialCom.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
                     break;
                 case 'c': //changer la couleur du mode auto
                     nb = sscanf(buffer, "p c %d", &coul);
                     if (nb) {
                         Poelon::setCouleur(coul);
-                        Serial2.printf("p c %d\n", coul);
+                        SerialCom.printf("p c %d\n", coul);
                     } else {
-                        Serial2.printf("m Err: couleur du poelon non changée.\n");
+                        SerialCom.printf("m Err: couleur du poelon non changée.\n");
                     }
                     break;
                 default:
-                    Serial2.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
+                    SerialCom.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
                     break;
             }
             */
@@ -115,12 +119,12 @@ namespace Comm {
         }
     }
 
-    //Récupération des derniers messages sur le buffer Serial2 et traitement
+    //Récupération des derniers messages sur le buffer SerialCom et traitement
     void update(){
-        int a = Serial2.available(); //nombre de charactères à lire sur le buffer Serial2
+        int a = SerialCom.available(); //nombre de charactères à lire sur le buffer SerialCom
         if (a) {
             for (int i = 0; i < a; i ++){
-                char c = Serial2.read();
+                char c = SerialCom.read();
                 if (c=='\n') {
                     buffer[buf_index] = '\0';
                     parse_data();
@@ -136,10 +140,10 @@ namespace Comm {
         //#define or undef
         #undef COMM_SPAM_ODOMETRY
         #ifdef COMM_SPAM_ODOMETRY
-            Serial2.print("o "); //Odométrie moteur
-            Serial2.print(Odometry::get_speed_motor());
-            Serial2.print(" ");
-            Serial2.println(Odometry::get_omega_motor());
+            SerialCom.print("o "); //Odométrie moteur
+            SerialCom.print(Odometry::get_speed_motor());
+            SerialCom.print(" ");
+            SerialCom.println(Odometry::get_omega_motor());
         #endif
     }
 

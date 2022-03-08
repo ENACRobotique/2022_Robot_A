@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-//#include <comm.h>
+#include <comm.h>
 #include <config.h>
 #include <motor.h>
 #include <odom.h>
@@ -18,9 +18,8 @@ Metro metro_test = Metro(1000);
 
 #ifndef UNIT_TEST
 void setup() {
-    Serial2.begin(115200);
-    while(!Serial2) {}
-    Serial2.println("aaaaa");
+    Serial2.begin(115200);  // STLink serial port
+    Serial3.begin(57600);   // XBee serial port
 
     //Poelon::init();
     odom.init();//initialisation odométrie
@@ -32,13 +31,14 @@ void setup() {
 // int i = 0;
 
 void loop() {
-    //Comm::update();
+    Comm::update();
     if (metro_odom.check()){//mise à jour périodique de l'odométrie (logiciel)
         //Serial2.println("bbbbb");
         odom._update();
     }
     if (metro_motor.check()){//mise à jour du contrôle moteur
        motor.update();
+       //Serial3.println("test");
     }
 
     // if(metro_test.check()){
