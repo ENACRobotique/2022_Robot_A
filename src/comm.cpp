@@ -34,7 +34,7 @@ namespace Comm {
     //Analyse des informations contenues dans les messages Serial2
     static void parse_data() {
         if(buffer[0] == 's') { //Stop
-            MotorControl::set_cons(0,0);
+            motor.set_cons(0, 0);
             Serial2.println("m Stopping robot.");
         }
         else if(buffer[0] == 'v') { //Vitesse
@@ -43,7 +43,7 @@ namespace Comm {
             Serial2.print("speed : ");
             if(nb == 2) {
                 Serial2.printf("m (v %d %d)\n", x, omega);
-                MotorControl::set_cons(static_cast<float>(x)/1000.f,static_cast<float>(omega)/1000.f);
+                motor.set_cons(static_cast<double>(x)/1000.,static_cast<double>(omega)/1000.);
             }
         }
         else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)

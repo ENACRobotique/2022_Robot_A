@@ -8,9 +8,13 @@
 //#include "poelon.h"
 
 Odometry odom = Odometry();
+MotorControl motor = MotorControl();
+
 Metro metro_odom = Metro(ENCODER_PERIOD);
 //Metro metro_comm = Metro(COMM_RATE);
 Metro metro_motor = Metro(CONTROL_PERIOD);
+
+Metro metro_test = Metro(1000);
 
 #ifndef UNIT_TEST
 void setup() {
@@ -20,8 +24,12 @@ void setup() {
 
     //Poelon::init();
     odom.init();//initialisation odométrie
-    MotorControl motor = MotorControl();
+    motor.init();//initialisation moteur
 }
+
+// double sp[4] = {100, 0, -100, 0};
+// double omg[4] = {0, 0, 0, 0};
+// int i = 0;
 
 void loop() {
     //Comm::update();
@@ -32,5 +40,10 @@ void loop() {
     if (metro_motor.check()){//mise à jour du contrôle moteur
        motor.update();
     }
+
+    // if(metro_test.check()){
+    //     motor.set_cons(sp[i], omg[i]);
+    //     i = (i+1)%4;
+    // }
 }
 #endif
