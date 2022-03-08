@@ -9,12 +9,8 @@
 
 class Metro {
     public:
-        Metro() {
-            this->interval_millis = 1000;
-        }
-        Metro(unsigned long millis_) {
-            this->interval_millis = millis_;
-        }
+        Metro(unsigned long millis_): interval_millis(millis_) {}
+        
         void interval(unsigned long millis_){
             this->interval_millis = millis_;
         }

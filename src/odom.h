@@ -2,44 +2,36 @@
 #define ODOMETRY
 
 #include <config.h>
-#include <REncoder.h>
 //#include <metro.h>
 
 class Odometry{
-    private :
-        static REncoder encoder;
-        
-        //static IntervalTimer _timer; //only works on teensy
-        //static Metro _timer;
+public :
+    void init();
 
-        static int _inc_motor1;
-        static int _inc_motor2;
-        static int _inc_wheel1;
-        static int _inc_wheel2;
+    double get_speed_motor() {
+        return _speed;
+    }
+    double get_omega_motor() {
+        return _omega;
+    }
     
-        static int _pos_motor1;
-        static int _pos_motor2;
-        static int _pos_wheel1;
-        static int _pos_wheel2;
+    double get_x() {
+        return _x;
+    }
+    double get_y() {
+        return _y;
+    }
+    double get_theta() {
+        return _theta;
+    }
 
-        static float _speed_motor1;
-        static float _speed_motor2;
-        static float _speed_wheel1;
-        static float _speed_wheel2;
+    void _update();
+private:
+    double _x, _y, _theta;  // position
+    double _speed, _omega; // speed
 
-        
+    uint32_t last_time;
 
-    public :
-        static void init();
-
-        static float get_pos_motor();
-        static float get_pos_wheel();
-        static float get_speed_motor();
-        static float get_omega_motor();
-        static float get_speed_wheel();
-        static float get_test1();
-        static float get_test2();
-        static void _update(); //function was private, moved to public
 };
 
 #endif

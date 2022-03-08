@@ -1,12 +1,7 @@
 #pragma once
 class AbstractEncoder {
     public:
-        AbstractEncoder();
-        ~AbstractEncoder();
-        virtual void init() {};
+        virtual void init()=0;
         //function to call periodically to update the encoder
-        virtual void update() {};
-
-    protected:
-        volatile int counter;
+        virtual int get_value()=0;
 };

@@ -1,96 +1,44 @@
 #include <odom.h>
-#include "AbstractEncoder.h"
 #include "InterruptEncoder.h"
+#include "../lib/metro.h"
 
-REncoder Odometry::encoder = REncoder();
-
-InterruptEncoder motor_encoder_1 = InterruptEncoder(&(InterruptEncoder::MOTOR_1_counter)); //TODO : To switch to abstractEncoder
-InterruptEncoder motor_encoder_2 = InterruptEncoder(&(InterruptEncoder::MOTOR_2_counter)); //TODO : To switch to abstractEncoder
-
-
-int Odometry::_inc_motor1 = 0;
-int Odometry::_inc_motor2 = 0;
-int Odometry::_inc_wheel1 = 0;
-int Odometry::_inc_wheel2 = 0;
-    
-int Odometry::_pos_motor1 = 0;
-int Odometry::_pos_motor2 = 0;
-int Odometry::_pos_wheel1 = 0;
-int Odometry::_pos_wheel2 = 0;
-
-float Odometry::_speed_motor1 = 0;
-float Odometry::_speed_motor2 = 0;
-float Odometry::_speed_wheel1 = 0;
-float Odometry::_speed_wheel2 = 0;
-
-//IntervalTimer Odometry::_timer = IntervalTimer();
-
-//Metro Odometry::_timer = Metro(ENCODER_RATE);
-
+InterruptEncoder encoder_m1(ENCODER_MOTOR1_B, ENCODER_MOTOR1_A);
+InterruptEncoder encoder_m2(ENCODER_MOTOR2_A, ENCODER_MOTOR2_B);
 
 void Odometry::init() {
-    //encoder.init();
-    motor_encoder_1.init();
-    motor_encoder_2.init();
-    //_timer.begin(_update, ENCODER_RATE);
-    //_timer.reset();
+    encoder_m1.init();
+    encoder_m2.init();
+    _x = 0; _y = 0; _theta = 0;
+    _speed = 0; _omega = 0;
+    last_time = 0;
 }
 
 void Odometry::_update() {
-    motor_encoder_1.update();
-    motor_encoder_2.update();
+    uint32_t now = millis();
+    double dt = (now - last_time) / 1000.0;
+    last_time = now;
 
-/*
-    int current_pos_motor1 = encoder.get_pos_M1();
-    int current_pos_motor2 = encoder.get_pos_M2();
-    int current_pos_wheel1 = encoder.get_pos_W1();
-    int current_pos_wheel2 = encoder.get_pos_W2();
+    int inc_left = encoder_m1.get_value();
+    int inc_right = encoder_m2.get_value();
+    //Serial2.printf("%d %d\n", inc_left, inc_right);
 
-    _inc_motor1 = -(current_pos_motor1 - _pos_motor1);
-    _inc_motor2 = -(current_pos_motor2 - _pos_motor2);
-    _inc_wheel1 = -(current_pos_wheel1 - _pos_wheel1);
-    _inc_wheel2 = -(current_pos_wheel2 - _pos_wheel2);
+    double dtheta = (inc_right - inc_left) * INC_TO_MM_MOTOR / MOTOR_BASE;
+    _theta += dtheta;
+    double lenght = ((inc_left + inc_right) / 2.0) * INC_TO_MM_MOTOR;
+    _x += lenght * cos(_theta) ;
+    _y += lenght * sin(_theta);
 
-    Serial2.println(_inc_motor1);
-    Serial2.println( _inc_motor2);
-    _speed_motor1 = _inc_motor1*2*3.14159*1e6/(NB_INC_MOTOR*ENCODER_RATE);
-    _speed_motor2 = _inc_motor2*2*3.14159*1e6/(NB_INC_MOTOR*ENCODER_RATE);
-    _speed_wheel1 = _inc_wheel1*2*3.14159*1e6/(NB_INC_WHEEL*ENCODER_RATE);
-    _speed_wheel2 = _inc_wheel2*2*3.14159*1e6/(NB_INC_WHEEL*ENCODER_RATE);
+    _speed = lenght / dt;
+    _omega = dtheta / dt;
 
-    _pos_motor1 = current_pos_motor1;
-    _pos_motor2 = current_pos_motor2;
-    _pos_wheel1 = current_pos_wheel1;
-    _pos_wheel2 = current_pos_wheel2;
+    // Serial2.print(_speed);
+    // Serial2.print(" ");
+    // Serial2.println(_omega);
 
-*/
+    // Serial2.print(_x);
+    // Serial2.print(" ");
+    // Serial2.print(_y);
+    // Serial2.print(" ");
+    // Serial2.println(_theta);
 
-}
-
-float Odometry::get_test1() {
-    return _speed_motor1;
-}
-
-float Odometry::get_test2() {
-    return _speed_motor2;
-}
-
-float Odometry::get_pos_motor() {
-    return (-_pos_motor1+_pos_motor2)/2;
-}
-
-float Odometry::get_pos_wheel() {
-    return (_pos_wheel1+_pos_wheel2)/2;
-}
-
-float Odometry::get_speed_motor() {
-    return (_speed_motor1+_speed_motor2)/2;
-}
-
-float Odometry::get_omega_motor() {
-    return (_speed_motor1-_speed_motor2);
-}
-
-float Odometry::get_speed_wheel() {
-    return (_speed_wheel1+_speed_wheel2)/2;
 }

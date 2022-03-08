@@ -2,30 +2,35 @@
 
 class InterruptEncoder: public AbstractEncoder {
     public:
-        InterruptEncoder(volatile int* counter);
-        ~InterruptEncoder();
-        int counter;
-        void update();
-        void init();
+        InterruptEncoder(int pinA, int pinB): pinA(pinA), pinB(pinB){}
+        
+        int get_value() {
+            //return counter;
+            auto tmp = counter;
+            counter = 0;
+            return tmp;
+        }
 
-        //To use for initializing the encoder
-        static volatile int MOTOR_1_counter;
-        static volatile int MOTOR_2_counter;
-        static volatile int WHEEL_1_counter;
-        static volatile int WHEEL_2_counter;
-
-        static void interrupt_handler_MOTOR_1();
-        static void interrupt_handler_MOTOR_2();
-        static void interrupt_handler_WHEEL_1();
-        static void interrupt_handler_WHEEL_2();
-
-        //TODO : reversed_interrupt_handler
-        //Used for debug purposes, to check if A and B are correctly connected
+        void init() {
+            pinMode(pinA, INPUT_PULLUP);
+            pinMode(pinB, INPUT_PULLUP);
+            attachInterrupt(digitalPinToInterrupt(pinA), [=]() {
+                if (digitalRead(pinB) == HIGH) {
+                    counter++;
+                } else {
+                    counter--;
+                }
+            }, RISING);
+        }
 
     private:
-        volatile int* _inc;
-};
-//On file au constructeur l'index de l'interrupt handler correspondant à l'encoder
-//L'interrupt handler a ces pins A et B déjà mis
-//
+        int pinA;
+        int pinB;
 
+        int counter;
+};
+
+extern InterruptEncoder encoder_m1;
+extern InterruptEncoder encoder_m2;
+//extern InterruptEncoder encoder_w1;
+//extern InterruptEncoder encoder_w2;
