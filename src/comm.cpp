@@ -66,7 +66,7 @@ namespace Comm {
             }
         }
         else if(buffer[0] == 'p'){ //Poêlon
-            int mesure;
+            /*int mesure;
             int etat;
             int coul;
             int nb;
@@ -106,6 +106,7 @@ namespace Comm {
                     Serial2.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
                     break;
             }
+            */
         } 
         else if (buffer[0] == 't') //test
         {
