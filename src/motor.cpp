@@ -16,14 +16,26 @@ double sign(double nb) {
 }
 
 
-PID pidSpeed=PID(1.0, 0.0, 0.0, -255.0, 255.0);
-PID pidOmega=PID(20.0, 0.0, 0.0, -255.0, 255.0);
+PID pidSpeed=PID(0.5, 0.0, 0.0, -255.0, 255.0);
+PID pidOmega=PID(40.0, 100.0, 0.0, -255.0, 255.0);
 
 void MotorControl::set_cons(double speed, double omega) {
 	goal_speed = speed;
 	goal_omega = omega;
 }
-
+void MotorControl::set_PID (char c, int kp, int ki){
+	float kI = ki/10.0;
+	float kP = kp/10.0;
+	if (c=='s'){
+		
+		pidSpeed.set_kp(kP);
+		pidSpeed.set_ki(kI);
+	}
+	else if (c=='o'){
+		pidOmega.set_kp(kP);
+		pidOmega.set_ki(kI);
+	}
+};
 void MotorControl::stop() {
 	goal_speed = 0;
 	goal_omega = 0;
@@ -61,8 +73,8 @@ void MotorControl::cmd_mot(double cmd_speed, double cmd_omega) { //cmd_speed in 
 		send_mot_signal(0, 0);
 	}
 	else {
-		int cmd_mot1 = clamp(-255.0, 255.0, cmd_speed + cmd_omega);
-		int cmd_mot2 = clamp(-255.0, 255.0, - (cmd_speed - cmd_omega));
+		int cmd_mot1 = clamp(-255.0, 255.0, cmd_speed - cmd_omega);
+		int cmd_mot2 = clamp(-255.0, 255.0, - (cmd_speed + cmd_omega));
 		send_mot_signal(cmd_mot1, cmd_mot2);
 	}
 }
@@ -85,13 +97,17 @@ void MotorControl::update() { //asservissement
 
 	cmd_mot(cmd_speed, cmd_omega);
 
-	// Serial2.print(cons_omega);
-	// Serial2.print(" ");
-	// Serial2.println(odom.get_omega_motor());
-
-	Serial2.print(cons_speed);
+	Serial2.print(cons_omega);
 	Serial2.print(" ");
-	Serial2.println(odom.get_speed_motor());
+	Serial2.println(odom.get_omega_motor());
+	//Serial2.print(" ");
+	//Serial2.print(cmd_speed);
+	//Serial2.print(" ");
+	//Serial2.println(cmd_omega);
+	//Serial2.print(" ");
+	// Serial2.print(cons_speed);
+	// Serial2.print(" ");
+	// Serial2.println(odom.get_speed_motor());
 }
 
 

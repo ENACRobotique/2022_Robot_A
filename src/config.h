@@ -18,14 +18,15 @@ const int ENCODER_WHEEL1_B = PB4;
 const int ENCODER_WHEEL2_A = PA7;
 const int ENCODER_WHEEL2_B = PA12;
 
-const double MOTOR_BASE = 180;
+const double MOTOR_BASE = 182.35;
 const float INC_TO_MM_MOTOR =0.309671275853851;
 const float INC_TO_MM_WHEEL =8.14e-5;
 
 const float ACCEL_MAX = 400; //m/s²
 const float ACCEL_ANG_MAX = 20; //rad/s²
-const float CONTROL_PERIOD = 20; //ms
-const float ENCODER_PERIOD = 20.f;
+const float CONTROL_PERIOD = 50; //ms
+const float ENCODER_PERIOD = 50.f;
+const float SPAM_ODOM_PERIOD = 100.f;
 const float COMM_RATE = 50; //ms
 //const int NB_INC_MOTOR = 3190;
 //const int NB_INC_WHEEL = 2707;

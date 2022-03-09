@@ -36,14 +36,23 @@ void Comm::parse_data() {
             motor.set_cons(0, 0);
             SerialCom.println("m Stopping robot.");
         }
+        else if (buffer[0] == 'g'){
+            int kp, ki;
+            char c;
+            int nbRec = sscanf (buffer, "g %c %d %d", &c, &kp, &ki );
+            if (nbRec == 3){
+                motor.set_PID(c, kp, ki);
+                SerialCom.println("m Gains changed.");
+            }
+            else {
+                SerialCom.println("m Error: wrong number of arguments.");
+            }
+        }
         else if(buffer[0] == 'v') { //Vitesse
             int x,omega;
             int nb = sscanf(buffer, "v %d %d", &x, &omega);
-            SerialCom.print("speed : ");
             if(nb == 2) {
-                Serial2.printf("m (v %d %d)\n", x, omega);
-                motor.set_cons(static_cast<float>(x)/1000.f,static_cast<float>(omega)/1000.f);
-                SerialCom.printf("m (v %d %d)\n", x, omega);
+                motor.set_cons(static_cast<float>(x),static_cast<float>(omega)/10.f);
             }
         }
         else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)
@@ -108,6 +117,12 @@ void Comm::parse_data() {
             }
             */
         } 
+        else if (buffer[0] == 'd'){
+            SerialCom.println("b 6_BRAS_AVANT 360 700 1 RW u");
+            SerialCom.println("b 7_MAIN_AVANT 0 780 1 RW u");
+            SerialCom.println("b 4_BRAS_ARRIERE 540 920 1 RW u");
+            SerialCom.println("b 5_MAIN_ARRIERE 0 730 1 RW u");
+        }
         else if (buffer[0] == 't') //test
         {
             int test_index;
@@ -133,13 +148,21 @@ void Comm::update(){
             }
         }
     }
-    //#define or undef
-    #undef COMM_SPAM_ODOMETRY
-    #ifdef COMM_SPAM_ODOMETRY
-        SerialCom.print("o "); //Odométrie moteur
-        SerialCom.print(Odometry::get_speed_motor());
+}
+void Comm::spam_odom() {
+        SerialCom.print("r "); //Odométrie moteur
+        SerialCom.print(odom.get_x());
         SerialCom.print(" ");
-        SerialCom.println(Odometry::get_omega_motor());
-    #endif
+        SerialCom.print(odom.get_y());
+        SerialCom.print(" ");
+        SerialCom.println(odom.get_theta());
+        //#define or undef
+        #undef COMM_SPAM_SPEED
+        #ifdef COMM_SPAM_SPEED
+            SerialCom.print("o "); //Odométrie moteur
+            SerialCom.print(Odometry::get_speed_motor());
+            SerialCom.print(" ");
+            SerialCom.println(Odometry::get_omega_motor());
+        #endif
 }
 

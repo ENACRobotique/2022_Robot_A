@@ -13,6 +13,7 @@ MotorControl motor = MotorControl();
 Metro metro_odom = Metro(ENCODER_PERIOD);
 //Metro metro_comm = Metro(COMM_RATE);
 Metro metro_motor = Metro(CONTROL_PERIOD);
+Metro metro_spam_odom = Metro(SPAM_ODOM_PERIOD);
 
 Metro metro_test = Metro(1000);
 Comm radio = Comm();
@@ -40,6 +41,9 @@ void loop() {
     if (metro_motor.check()){//mise à jour du contrôle moteur
        motor.update();
        //Serial3.println("test");
+    }
+    if(metro_spam_odom.check()){//mise à jour périodique de l'odométrie (xbee)
+        radio.spam_odom();
     }
 
     // if(metro_test.check()){

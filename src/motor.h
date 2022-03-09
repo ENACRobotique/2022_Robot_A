@@ -7,6 +7,7 @@ class MotorControl {
 public:
 	void update();
 	void init();
+	void set_PID (char c, int kp, int ki);
 
 	double get_cons_speed(){
 		return cons_speed;
