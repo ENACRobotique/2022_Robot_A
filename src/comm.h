@@ -8,7 +8,7 @@ public :
     void update();
 private:
     //Attributs
-    HardwareSerial SerialCom = Serial3;
+    HardwareSerial& SerialCom = Serial3;
     char buffer[70];
     int buf_index = 0;
 
