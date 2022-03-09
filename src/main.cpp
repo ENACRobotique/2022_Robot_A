@@ -1,10 +1,10 @@
 #include <Arduino.h>
 
-#include <comm.h>
-#include <config.h>
-#include <motor.h>
-#include <odom.h>
-#include <../lib/metro.h>
+#include "comm.h"
+#include "config.h"
+#include "motor.h"
+#include "odom.h"
+#include "../lib/metro.h"
 //#include "poelon.h"
 
 Odometry odom = Odometry();
@@ -15,6 +15,7 @@ Metro metro_odom = Metro(ENCODER_PERIOD);
 Metro metro_motor = Metro(CONTROL_PERIOD);
 
 Metro metro_test = Metro(1000);
+Comm radio = Comm();
 
 #ifndef UNIT_TEST
 void setup() {
@@ -31,7 +32,7 @@ void setup() {
 // int i = 0;
 
 void loop() {
-    Comm::update();
+    radio.update();
     if (metro_odom.check()){//mise à jour périodique de l'odométrie (logiciel)
         //Serial2.println("bbbbb");
         odom._update();

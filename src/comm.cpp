@@ -1,9 +1,9 @@
-#include <comm.h>
+#include "comm.h"
 
 #include <Arduino.h>
-#include <odom.h>
-#include <motor.h>
-#include <poelon.h>
+#include "odom.h"
+#include "motor.h"
+#include "poelon.h"
 
 
 //recap des messages en entrée:
@@ -29,15 +29,9 @@
 
 
 
-namespace Comm {
-
-    HardwareSerial &SerialCom = Serial3;
-
-    char buffer[70];
-    int buf_index = 0;
-
+  
     //Analyse des informations contenues dans les messages SerialCom
-    static void parse_data() {
+void Comm::parse_data() {
         if(buffer[0] == 's') { //Stop
             motor.set_cons(0, 0);
             SerialCom.println("m Stopping robot.");
@@ -122,31 +116,30 @@ namespace Comm {
     }
 
     //Récupération des derniers messages sur le buffer SerialCom et traitement
-    void update(){
-        int a = SerialCom.available(); //nombre de charactères à lire sur le buffer SerialCom
-        if (a) {
-            for (int i = 0; i < a; i ++){
-                char c = SerialCom.read();
-                if (c=='\n') {
-                    buffer[buf_index] = '\0';
-                    parse_data();
-                    buf_index = 0;
-                }
-                else if (c == '\r') {}
-                else {
-                    buffer[buf_index] = c;
-                    buf_index ++;
-                }
+void Comm::update(){
+    int a = SerialCom.available(); //nombre de charactères à lire sur le buffer SerialCom
+    if (a) {
+        for (int i = 0; i < a; i ++){
+            char c = SerialCom.read();
+            if (c=='\n') {
+                buffer[buf_index] = '\0';
+                parse_data();
+                buf_index = 0;
+            }
+            else if (c == '\r') {}
+            else {
+                buffer[buf_index] = c;
+                buf_index ++;
             }
         }
-        //#define or undef
-        #undef COMM_SPAM_ODOMETRY
-        #ifdef COMM_SPAM_ODOMETRY
-            SerialCom.print("o "); //Odométrie moteur
-            SerialCom.print(Odometry::get_speed_motor());
-            SerialCom.print(" ");
-            SerialCom.println(Odometry::get_omega_motor());
-        #endif
     }
-
+    //#define or undef
+    #undef COMM_SPAM_ODOMETRY
+    #ifdef COMM_SPAM_ODOMETRY
+        SerialCom.print("o "); //Odométrie moteur
+        SerialCom.print(Odometry::get_speed_motor());
+        SerialCom.print(" ");
+        SerialCom.println(Odometry::get_omega_motor());
+    #endif
 }
+
