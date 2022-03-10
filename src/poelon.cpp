@@ -2,16 +2,13 @@
 #include <config.h>
 
 
-void Poelon::init(){
+Poelon::Poelon(){
     Servo poel = Servo();
     poel.attach(POELON_SERVO_PIN, POELON_RETRACTED_ANGLE, POELON_DEPLOYED_ANGLE);
     pinMode(POELON_READ_PIN, INPUT);
     int active_color = 0;
 }
 
-void Poelon::detach(){
-    poel.detach();
-}
 
 void Poelon::changerEtat(bool nv_etat){
     if (nv_etat){

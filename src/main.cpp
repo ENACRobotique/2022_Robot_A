@@ -6,10 +6,11 @@
 #include "odom.h"
 #include "../lib/metro.h"
 #include "AX12A.h"
-//#include "poelon.h"
+#include "poelon.h"
 
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
+Poelon poel = Poelon();
 
 Metro metro_odom = Metro(ENCODER_PERIOD);
 //Metro metro_comm = Metro(COMM_RATE);
@@ -26,7 +27,6 @@ void setup() {
     Serial2.begin(115200);  // STLink serial port
     Serial3.begin(57600);   // XBee serial port
 
-    //Poelon::init();
     odom.init();//initialisation odométrie
     motor.init();//initialisation moteur
 }
