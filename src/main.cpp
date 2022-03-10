@@ -24,7 +24,6 @@ void setup() {
     Serial2.begin(115200);  // STLink serial port
     Serial3.begin(57600);   // XBee serial port
 
-    //Poelon::init();
     odom.init();//initialisation odométrie
     motor.init();//initialisation moteur
 }
