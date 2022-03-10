@@ -4,6 +4,7 @@
 #include "odom.h"
 #include "motor.h"
 #include "poelon.h"
+#include "AX12A.h"
 
 
 //recap des messages en entrée:
@@ -118,10 +119,24 @@ void Comm::parse_data() {
             */
         } 
         else if (buffer[0] == 'd'){
-            SerialCom.println("b 6_BRAS_AVANT 360 700 1 RW u");
-            SerialCom.println("b 7_MAIN_AVANT 0 780 1 RW u");
-            SerialCom.println("b 4_BRAS_ARRIERE 540 920 1 RW u");
-            SerialCom.println("b 5_MAIN_ARRIERE 0 730 1 RW u");
+            SerialCom.println("b 6_BRAS_AVANT 360 690 30 RW u");
+            SerialCom.println("b 7_MAIN_AVANT 0 780 30 RW u");
+            SerialCom.println("b 4_BRAS_ARRIERE 540 930 30 RW u");
+            SerialCom.println("b 5_MAIN_ARRIERE 0 720 30 RW u");
+        }
+        else if (buffer[0] == 'a'){//commande Actionneur
+            int idAX12Sign, valeur;
+            int params = sscanf(buffer, "a %d %d", &idAX12Sign, &valeur);
+            unsigned int idAX12 = (unsigned int) idAX12Sign;
+            if (params == 2){
+                if (idAX12%2 == 0){//bras
+                    AX12As.moveSpeed(idAX12, valeur, 150);
+                }
+                else{
+                    AX12As.moveSpeed(idAX12, valeur, 400);
+                }
+                
+            }
         }
         else if (buffer[0] == 't') //test
         {
@@ -165,4 +180,6 @@ void Comm::spam_odom() {
             SerialCom.println(Odometry::get_omega_motor());
         #endif
 }
+
+
 
