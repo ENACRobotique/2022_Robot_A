@@ -75,37 +75,37 @@ void Comm::parse_data() {
             }
         }
         else if(buffer[0] == 'p'){ //Poêlon
-            /*int mesure;
+            int mesure;
             int etat;
             int coul;
             int nb;
             switch (buffer[2]){
                 case 'd': //deployer
-                    Poelon::changerEtat(true);
+                    poel.changerEtat(true);
                     break;
                 case 'r': //retracter
-                    Poelon::changerEtat(false);
+                    poel.changerEtat(false);
                     break;
                 case 'm': //mesurer
-                    mesure = Poelon::lireResistance();
+                    mesure = poel.lireResistance();
                     SerialCom.printf("p m %d\n", mesure);
                     break;
                 case 'e': //état du poelon (renvoie déployé ou rétracté par message)
-                    etat = Poelon::recupEtat();
+                    etat = poel.recupEtat();
                     SerialCom.printf("p e %d\n", etat);
                     break;
                 case 'p': //pousser un carré
-                    Poelon::pousserCarre();
+                    poel.pousserCarre();
                     SerialCom.printf("p p\n"); //le carré a été poussé
                     break;
                 case 'a': //autopousser un carré
-                    mesure = Poelon::autoPush();
+                    mesure = poel.autoPush();
                     SerialCom.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
                     break;
                 case 'c': //changer la couleur du mode auto
                     nb = sscanf(buffer, "p c %d", &coul);
                     if (nb) {
-                        Poelon::setCouleur(coul);
+                        poel.setCouleur(coul);
                         SerialCom.printf("p c %d\n", coul);
                     } else {
                         SerialCom.printf("m Err: couleur du poelon non changée.\n");
@@ -115,7 +115,6 @@ void Comm::parse_data() {
                     SerialCom.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
                     break;
             }
-            */
         } 
         else if (buffer[0] == 'd'){
             SerialCom.println("b 6_BRAS_AVANT 360 700 1 RW u");

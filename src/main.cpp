@@ -5,10 +5,11 @@
 #include "motor.h"
 #include "odom.h"
 #include "../lib/metro.h"
-//#include "poelon.h"
+#include "poelon.h"
 
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
+Poelon poel = Poelon();
 
 Metro metro_odom = Metro(ENCODER_PERIOD);
 //Metro metro_comm = Metro(COMM_RATE);
