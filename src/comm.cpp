@@ -127,7 +127,7 @@ void Comm::parse_data() {
         }
         else if (buffer[0] == 'a'){//commande Actionneur
             
-            if (buffer[2]=='a'){
+            if (buffer[2]=='a'){//C'est un AX12
                 int idAX12Sign, valeur;
                 int params = sscanf(buffer, "a a%d %d", &idAX12Sign, &valeur);
                 unsigned int idAX12 = (unsigned int) idAX12Sign;
@@ -141,7 +141,7 @@ void Comm::parse_data() {
                     
                 }
             }
-            else if (buffer[2]=='p'){
+            else if (buffer[2]=='p'){//C'est une pompe
                 int idPompe,valeur;
                 int params = sscanf(buffer, "a p%d %d", &idPompe, &valeur);
                 if (params == 2){
