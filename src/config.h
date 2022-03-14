@@ -39,6 +39,9 @@ const int MOT2_DIR = PB10;//34;
 
 const int AX12A_SERIAL = PB6;
 
+const int POMPE1 = PB14;
+const int POMPE2 = PB15;
+
 const int POELON_SERVO_PIN = PA0; //TODO: mettre le bon pin (PA0 servo1, PA1 servo2 ou PB0 servo3)
 const int POELON_RETRACTED_ANGLE = 0; //TODO: mettre le bon angle
 const int POELON_DEPLOYED_ANGLE = 90; //TODO: mettre le bon angle

@@ -75,67 +75,95 @@ void Comm::parse_data() {
                 }
             }
         }
-        else if(buffer[0] == 'p'){ //Poêlon
-            int mesure;
-            int etat;
-            int coul;
-            int nb;
-            switch (buffer[2]){
-                case 'd': //deployer
-                    poel.changerEtat(true);
-                    break;
-                case 'r': //retracter
-                    poel.changerEtat(false);
-                    break;
-                case 'm': //mesurer
-                    mesure = poel.lireResistance();
-                    SerialCom.printf("p m %d\n", mesure);
-                    break;
-                case 'e': //état du poelon (renvoie déployé ou rétracté par message)
-                    etat = poel.recupEtat();
-                    SerialCom.printf("p e %d\n", etat);
-                    break;
-                case 'p': //pousser un carré
-                    poel.pousserCarre();
-                    SerialCom.printf("p p\n"); //le carré a été poussé
-                    break;
-                case 'a': //autopousser un carré
-                    mesure = poel.autoPush();
-                    SerialCom.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
-                    break;
-                case 'c': //changer la couleur du mode auto
-                    nb = sscanf(buffer, "p c %d", &coul);
-                    if (nb) {
-                        poel.setCouleur(coul);
-                        SerialCom.printf("p c %d\n", coul);
-                    } else {
-                        SerialCom.printf("m Err: couleur du poelon non changée.\n");
-                    }
-                    break;
-                default:
-                    SerialCom.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
-                    break;
-            }
-        } 
+        // else if(buffer[0] == 'p'){ //Poêlon
+        //     int mesure;
+        //     int etat;
+        //     int coul;
+        //     int nb;
+        //     switch (buffer[2]){
+        //         case 'd': //deployer
+        //             poel.changerEtat(true);
+        //             break;
+        //         case 'r': //retracter
+        //             poel.changerEtat(false);
+        //             break;
+        //         case 'm': //mesurer
+        //             mesure = poel.lireResistance();
+        //             SerialCom.printf("p m %d\n", mesure);
+        //             break;
+        //         case 'e': //état du poelon (renvoie déployé ou rétracté par message)
+        //             etat = poel.recupEtat();
+        //             SerialCom.printf("p e %d\n", etat);
+        //             break;
+        //         case 'p': //pousser un carré
+        //             poel.pousserCarre();
+        //             SerialCom.printf("p p\n"); //le carré a été poussé
+        //             break;
+        //         case 'a': //autopousser un carré
+        //             mesure = poel.autoPush();
+        //             SerialCom.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
+        //             break;
+        //         case 'c': //changer la couleur du mode auto
+        //             nb = sscanf(buffer, "p c %d", &coul);
+        //             if (nb) {
+        //                 poel.setCouleur(coul);
+        //                 SerialCom.printf("p c %d\n", coul);
+        //             } else {
+        //                 SerialCom.printf("m Err: couleur du poelon non changée.\n");
+        //             }
+        //             break;
+        //         default:
+        //             SerialCom.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
+        //             break;
+        //     }
+        // } 
         else if (buffer[0] == 'd'){
-            SerialCom.println("b 6_BRAS_AVANT 360 690 30 RW u");
-            SerialCom.println("b 7_MAIN_AVANT 0 780 30 RW u");
-            SerialCom.println("b 4_BRAS_ARRIERE 540 930 30 RW u");
-            SerialCom.println("b 5_MAIN_ARRIERE 0 720 30 RW u");
+            SerialCom.println("b a6_BRAS_AVANT 360 690 1 RW u");
+            SerialCom.println("b a7_MAIN_AVANT 0 780 1 RW u");
+            SerialCom.println("b a4_BRAS_ARRIERE 540 930 1 RW u");
+            SerialCom.println("b a5_MAIN_ARRIERE 0 720 1 RW u");
+            SerialCom.println("b p1_Pompe_1 0 1 1 RW u");
+            SerialCom.println("b p2_Pompe_2 0 1 1 RW u");
         }
         else if (buffer[0] == 'a'){//commande Actionneur
-            int idAX12Sign, valeur;
-            int params = sscanf(buffer, "a %d %d", &idAX12Sign, &valeur);
-            unsigned int idAX12 = (unsigned int) idAX12Sign;
-            if (params == 2){
-                if (idAX12%2 == 0){//bras
-                    AX12As.moveSpeed(idAX12, valeur, 150);
+            
+            if (buffer[2]=='a'){
+                int idAX12Sign, valeur;
+                int params = sscanf(buffer, "a a%d %d", &idAX12Sign, &valeur);
+                unsigned int idAX12 = (unsigned int) idAX12Sign;
+                if (params == 2){
+                    if (idAX12%2 == 0){//bras
+                        AX12As.moveSpeed(idAX12, valeur, 150);
+                    }
+                    else{
+                        AX12As.moveSpeed(idAX12, valeur, 400);
+                    }
+                    
                 }
-                else{
-                    AX12As.moveSpeed(idAX12, valeur, 400);
-                }
-                
             }
+            else if (buffer[2]=='p'){
+                int idPompe,valeur;
+                int params = sscanf(buffer, "a p%d %d", &idPompe, &valeur);
+                if (params == 2){
+                    int pSelect=0;
+                    if (idPompe==1){
+                        pSelect=POMPE1;
+                    }
+                    else if(idPompe==2){
+                        pSelect=POMPE2;
+                    }
+                    if (pSelect!=0){
+                        if (valeur==0){
+                            digitalWrite(pSelect,LOW);
+                        }
+                        else{
+                            digitalWrite(pSelect,HIGH);
+                        }
+                    }
+                    
+                }
+            }
+            
         }
         else if (buffer[0] == 't') //test
         {

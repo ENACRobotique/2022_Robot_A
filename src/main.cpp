@@ -6,11 +6,11 @@
 #include "odom.h"
 #include "../lib/metro.h"
 #include "AX12A.h"
-#include "poelon.h"
+//#include "poelon.h"
 
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
-Poelon poel = Poelon();
+//Poelon poel = Poelon();
 
 Metro metro_odom = Metro(ENCODER_PERIOD);
 //Metro metro_comm = Metro(COMM_RATE);
@@ -29,6 +29,8 @@ void setup() {
 
     odom.init();//initialisation odométrie
     motor.init();//initialisation moteur
+    pinMode(POMPE1,OUTPUT);
+    pinMode(POMPE2,OUTPUT);
 }
 
 // double sp[4] = {100, 0, -100, 0};
