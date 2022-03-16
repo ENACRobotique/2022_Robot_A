@@ -22,7 +22,7 @@ const double MOTOR_BASE = 182.35;
 const float INC_TO_MM_MOTOR =0.309671275853851;
 const float INC_TO_MM_WHEEL =8.14e-5;
 
-const float ACCEL_MAX = 400; //m/s²
+const float ACCEL_MAX = 800; //m/s²  
 const float ACCEL_ANG_MAX = 20; //rad/s²
 const float CONTROL_PERIOD = 50; //ms
 const float ENCODER_PERIOD = 50.f;
@@ -41,6 +41,9 @@ const int AX12A_SERIAL = PB6;
 
 const int POMPE1 = PB14;
 const int POMPE2 = PB15;
+const int EV1 = PB13;
+const int EV2 = PA10;
+const long TEMPS_OUVERTURE_VANNE = 1500;//ms
 
 const int POELON_SERVO_PIN = PA0; //TODO: mettre le bon pin (PA0 servo1, PA1 servo2 ou PB0 servo3)
 const int POELON_RETRACTED_ANGLE = 0; //TODO: mettre le bon angle

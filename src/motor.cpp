@@ -75,7 +75,7 @@ void MotorControl::cmd_mot(double cmd_speed, double cmd_omega) { //cmd_speed in 
 	else {
 		int cmd_mot1 = clamp(-255.0, 255.0, cmd_speed - cmd_omega);
 		int cmd_mot2 = clamp(-255.0, 255.0, - (cmd_speed + cmd_omega));
-		send_mot_signal(cmd_mot1, cmd_mot2);
+		send_mot_signal(cmd_mot1, -cmd_mot2);
 	}
 }
 void MotorControl::send_mot_signal(int spdm1, int spdm2){ //speed motor in pwm signal (0-255)

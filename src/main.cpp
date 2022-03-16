@@ -6,6 +6,7 @@
 #include "odom.h"
 #include "../lib/metro.h"
 #include "AX12A.h"
+#include "elecvannes.h"
 //#include "poelon.h"
 
 Odometry odom = Odometry();
@@ -17,7 +18,6 @@ Metro metro_odom = Metro(ENCODER_PERIOD);
 Metro metro_motor = Metro(CONTROL_PERIOD);
 Metro metro_spam_odom = Metro(SPAM_ODOM_PERIOD);
 
-Metro metro_test = Metro(1000);
 Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
 
@@ -49,7 +49,10 @@ void loop() {
     }
     if(metro_spam_odom.check()){//mise à jour périodique de l'odométrie (xbee)
         radio.spam_odom();
+        ev1.update();
+        ev2.update();
     }
+    
     
 
     // if(metro_test.check()){

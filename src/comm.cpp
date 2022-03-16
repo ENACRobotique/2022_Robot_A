@@ -3,8 +3,9 @@
 #include <Arduino.h>
 #include "odom.h"
 #include "motor.h"
-#include "poelon.h"
+//#include "poelon.h"
 #include "AX12A.h"
+#include "elecvannes.h"
 
 
 //recap des messages en entrée:
@@ -124,6 +125,8 @@ void Comm::parse_data() {
             SerialCom.println("b a5_MAIN_ARRIERE 0 720 1 RW u");
             SerialCom.println("b p1_Pompe_1 0 1 1 RW u");
             SerialCom.println("b p2_Pompe_2 0 1 1 RW u");
+            SerialCom.println("b e1_E-Vanne_1 0 1 1 RW u");
+            SerialCom.println("b e2_E-Vanne_2 0 1 1 RW u");
         }
         else if (buffer[0] == 'a'){//commande Actionneur
             
@@ -158,6 +161,31 @@ void Comm::parse_data() {
                         }
                         else{
                             digitalWrite(pSelect,HIGH);
+                        }
+                    }
+                    
+                }
+            }
+            else if (buffer[2]=='e'){//C'est une electro-vanne
+                int idVanne,valeur;
+                int params = sscanf(buffer, "a e%d %d", &idVanne, &valeur);
+                if (params == 2){
+                    ElecVanne* eVSelect=&ev1;
+                    int recon = 0;
+                    if (idVanne==1){
+                        eVSelect=&ev1;
+                        recon++;
+                    }
+                    else if(idVanne==2){
+                        eVSelect=&ev2;
+                        recon++;
+                    }
+                    if (recon){
+                        if (valeur==0){
+                            eVSelect->putOff();
+                        }
+                        else{
+                            eVSelect->putOn();
                         }
                     }
                     
