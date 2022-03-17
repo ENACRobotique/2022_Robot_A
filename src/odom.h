@@ -2,6 +2,7 @@
 #define ODOMETRY
 
 #include <config.h>
+#include "InterruptEncoder.h"
 //#include <metro.h>
 
 class Odometry{
@@ -35,5 +36,7 @@ private:
 };
 
 extern Odometry odom;
+extern InterruptEncoder encoder_m1;
+extern InterruptEncoder encoder_m2;
 
 #endif
