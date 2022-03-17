@@ -1,8 +1,10 @@
-#include "test_encoder.h"
-#include "motor.h"
+
+#include "main.h"
+//#include "test_encoder.h"
+//#include "motor.h"
 #include "InterruptEncoder.h"
 #include <unity.h>
-#include <config.h>
+//#include <config.h>
 
 //#define UNIT_TEST //Mandatory to avoid trying to include arduino.h
 
@@ -10,46 +12,40 @@
 //TODO : assert speed
 //TODO : test free encoder
 
-void test_encoder_direction(volatile int* counter) { 
+void test_encoder_direction(InterruptEncoder const &encoder) { 
     //one should be left of the robot
-    MotorControl::init();
-    InterruptEncoder encoder = InterruptEncoder(counter);
-    encoder.init();
+    motor.init();
 
-    encoder.update();
-    TEST_ASSERT_EQUAL(0, encoder.counter);
+    TEST_ASSERT_EQUAL(0, encoder.get_value());
 
-    MotorControl::set_cons(0, 0);
-    encoder.update();
-    encoder.update();
-    TEST_ASSERT_EQUAL(0, encoder.counter);
+    motor.set_cons(0, 0);
+    TEST_ASSERT_EQUAL(0, encoder.get_value());
 
-    MotorControl::send_mot_signal(1, 0);
+    motor.send_mot_signal(1, 0);
     delay(100);
-    int current_counter = encoder.counter;
-    encoder.update();
-    TEST_ASSERT_TRUE(encoder.counter > 0);
+    int current_counter = encoder.get_value();
+    TEST_ASSERT_TRUE(encoder.get_value() > 0);
 
-    MotorControl::send_mot_signal(0, 0);
+    motor.send_mot_signal(0, 0);
     delay(100);
-    encoder.update();
-    TEST_ASSERT_EQUAL(current_counter, encoder.counter);
+    int current_counter = encoder.get_value();
+    TEST_ASSERT_EQUAL(current_counter, encoder.get_value());
     
-    MotorControl::send_mot_signal(-1, 0);
+    motor.send_mot_signal(-1, 0);
     delay(100);
-    encoder.update();
-    TEST_ASSERT_TRUE(encoder.counter < current_counter);
+    int current_counter = encoder.get_value();
+    TEST_ASSERT_TRUE(encoder.get_value() < current_counter);
 }
 
 void test_encoder_direction_1() {
-    test_encoder_direction(&InterruptEncoder::MOTOR_1_counter);
+    test_encoder_direction(encoder_m1);
 }
 void test_encoder_direction_2() {
-    test_encoder_direction(&InterruptEncoder::MOTOR_2_counter);
+    test_encoder_direction(encoder_m2);
 }
 
 
-
+/*
 int main( int argc, char **argv) {
     UNITY_BEGIN();
     RUN_TEST(test_encoder_direction_1);
@@ -57,6 +53,7 @@ int main( int argc, char **argv) {
     UNITY_END();
 
 }
+*/
 /*
 void test_encoder() {
     RUN_TEST(test_encoder_direction_1);

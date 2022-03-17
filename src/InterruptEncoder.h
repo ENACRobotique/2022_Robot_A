@@ -1,3 +1,5 @@
+#pragma once
+
 #include "AbstractEncoder.h"
 
 class InterruptEncoder: public AbstractEncoder {
