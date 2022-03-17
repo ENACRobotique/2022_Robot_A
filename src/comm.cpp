@@ -11,23 +11,19 @@
 //recap des messages en entrée:
 //v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
 //s : arrêt du robot
-//b <char> <int> <int>: commande d'actionneurs binaires <code type act> <numéro de l'act> <on/off/etat>
-//p d : déployer le pôelon
-//p r : rétracter le pôelon
-//p m : mesure une résistance
-//p e : retourne l'état du pôelon (en place pour mesurer ou pas)
-//p p : pousser un carré
-//p a : autopousser un carré (mesure et pousser si ok) (nécessite d'avoir fourni la couleur cible au pôelon avant)
-//p c <int> : paramétrer la couleur cible (0: vide, 1: ~470 Ohms (violet), 2: ~1,0 kOhm (jaune), 3: ~4,7 kOhms (rouge))
+//a <id> <int> : ordre à un actionneur. id est deux caractères, le premier donnant le type d'actionneur (a pour AX12A, p pour pompe, e pour electroVanne, s pour servo)
+//                                                              le deuxième est un chiffre d'identification.
+//d : demande de description des actionneurs
+//g [o/v] <int> <int> : changement des valeurs des PIDs (kp et ki)
+
+
+
 
 //recap des messages en sortie:
-//m <string> : un message à display à l'utilisateur
-//o <int> <int> : odométrie moteur <v lin> <v omega>
-//p m <int> : résultat de mesure poelon
-//p e <int> : état du pôelon
-//p p : le carré a fini d'être poussé
-//p a <int> : opération d'autopush finie: si (<couleur> < 10): carré non poussé car de couleur <couleur>, sinon, carré poussé car de couleur <couleur - 10>.
-//p c <int> : confirmation de changement de couleur du mode auto-pôelon
+//m <string>
+//p <int> <int> <int>: odométrie moteur <x> <v omega> <théta>
+//b <string> <int> <int> <int> [R/RW] <string>: déclaration d'un actionneur (RW) ou d'un capteur (R). 
+//c <string> <int> : retour de capteur
 
 
 
@@ -57,67 +53,6 @@ void Comm::parse_data() {
                 motor.set_cons(static_cast<float>(x),static_cast<float>(omega)/10.f);
             }
         }
-        else if(buffer[0] == 'b') //Actionneurs binaires (fonctionnant à deux états (on/off) seulement)
-        {
-            char actuator;
-            int index, isOn;
-            int params = sscanf(buffer, "b %c %d %d", &actuator, &index, &isOn);
-            if (params == 3)
-            {
-                switch (actuator)
-                {
-                case 'p': //Pompes
-                    //(desactivé pour le moment) ActuatorStorage::pompes[index].setState(isOn);
-                    break;
-                
-                default:
-                    SerialCom.printf("m Err: actionneur inconnu (%c) !\n", actuator);
-                    break;
-                }
-            }
-        }
-        // else if(buffer[0] == 'p'){ //Poêlon
-        //     int mesure;
-        //     int etat;
-        //     int coul;
-        //     int nb;
-        //     switch (buffer[2]){
-        //         case 'd': //deployer
-        //             poel.changerEtat(true);
-        //             break;
-        //         case 'r': //retracter
-        //             poel.changerEtat(false);
-        //             break;
-        //         case 'm': //mesurer
-        //             mesure = poel.lireResistance();
-        //             SerialCom.printf("p m %d\n", mesure);
-        //             break;
-        //         case 'e': //état du poelon (renvoie déployé ou rétracté par message)
-        //             etat = poel.recupEtat();
-        //             SerialCom.printf("p e %d\n", etat);
-        //             break;
-        //         case 'p': //pousser un carré
-        //             poel.pousserCarre();
-        //             SerialCom.printf("p p\n"); //le carré a été poussé
-        //             break;
-        //         case 'a': //autopousser un carré
-        //             mesure = poel.autoPush();
-        //             SerialCom.printf("p a %d\n", mesure); //si 0, 1, 2, 3 -> carré non poussé | si 10, 11, 12, 13 -> carré poussé
-        //             break;
-        //         case 'c': //changer la couleur du mode auto
-        //             nb = sscanf(buffer, "p c %d", &coul);
-        //             if (nb) {
-        //                 poel.setCouleur(coul);
-        //                 SerialCom.printf("p c %d\n", coul);
-        //             } else {
-        //                 SerialCom.printf("m Err: couleur du poelon non changée.\n");
-        //             }
-        //             break;
-        //         default:
-        //             SerialCom.printf("m Err: poelon n'a pas cette commande (%c).\n", buffer[2]);
-        //             break;
-        //     }
-        // } 
         else if (buffer[0] == 'd'){
             SerialCom.println("b a6_BRAS_AVANT 360 690 1 RW u");
             SerialCom.println("b a7_MAIN_AVANT 0 780 1 RW u");
@@ -127,6 +62,7 @@ void Comm::parse_data() {
             SerialCom.println("b p2_Pompe_2 0 1 1 RW u");
             SerialCom.println("b e1_E-Vanne_1 0 1 1 RW u");
             SerialCom.println("b e2_E-Vanne_2 0 1 1 RW u");
+            SerialCom.println("b s1_ServoPoelon 0 100 1 RW °")
         }
         else if (buffer[0] == 'a'){//commande Actionneur
             
