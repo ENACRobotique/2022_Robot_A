@@ -21,7 +21,7 @@
 
 //recap des messages en sortie:
 //m <string>
-//p <int> <int> <int>: odométrie moteur <x> <v omega> <théta>
+//p <int> <int> <int>: odométrie moteur <x> <y> <théta>
 //b <string> <int> <int> <int> [R/RW] <string>: déclaration d'un actionneur (RW) ou d'un capteur (R). 
 //c <string> <int> : retour de capteur
 
