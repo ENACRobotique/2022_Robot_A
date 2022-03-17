@@ -22,6 +22,7 @@ Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
 
 #ifndef UNIT_TEST
+
 void setup() {
     AX12As.init(&Serial1);    
     Serial2.begin(115200);  // STLink serial port

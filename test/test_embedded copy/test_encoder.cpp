@@ -11,7 +11,7 @@
 //TODO : test input/output of InterruptEncoder with mock encoder using ArduinoFake
 //TODO : assert speed
 //TODO : test free encoder
-
+/*
 void test_encoder_direction(InterruptEncoder const &encoder) { 
     //one should be left of the robot
     motor.init();
@@ -43,7 +43,7 @@ void test_encoder_direction_1() {
 void test_encoder_direction_2() {
     test_encoder_direction(encoder_m2);
 }
-
+*/
 
 /*
 int main( int argc, char **argv) {
