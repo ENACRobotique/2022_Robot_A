@@ -133,6 +133,8 @@ void Comm::parse_data() {
         {
             int test_index;
             int params = sscanf(buffer, "t %d", &test_index);
+            params++;
+            params--;//Ajouté pour faire dégager un warning
         }
     }
 
