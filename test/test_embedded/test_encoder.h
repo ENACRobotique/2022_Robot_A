@@ -6,13 +6,13 @@
 #include <unity.h>
 //#include <config.h>
 
-#define UNIT_TEST //Mandatory to avoid trying to include arduino.h
+
 
 //TODO : test input/output of InterruptEncoder with mock encoder using ArduinoFake
 //TODO : assert speed
 //TODO : test free encoder
 
-
+namespace test_encoder {
 
 void test_encoder_stop_1() { //Use only when counter is at zero
     encoder_m1.get_value();
@@ -58,8 +58,7 @@ void test_encoder_backward_2() {
     delay(300);
     TEST_ASSERT_TRUE(encoder_m2.get_value() < current_counter);
 }
-void setup() {
-    UNITY_BEGIN();
+void test_encoder() {
     motor.init();
     odom.init();
     RUN_TEST(test_encoder_stop_1);
@@ -73,12 +72,8 @@ void setup() {
     RUN_TEST(test_encoder_stop_2);
     RUN_TEST(test_encoder_backward_2);
     RUN_TEST(test_encoder_stop_2);
-    //RUN_TEST(test_encoder_direction_2);
-    UNITY_END();
 
 }
-
-void loop () {
 
 }
 /*
