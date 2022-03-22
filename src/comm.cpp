@@ -161,7 +161,11 @@ void Comm::spam_odom() {
         SerialCom.print(" ");
         SerialCom.print(odom.get_y());
         SerialCom.print(" ");
-        SerialCom.println(odom.get_theta());
+        SerialCom.print(odom.get_theta());
+        SerialCom.print(" ");
+        SerialCom.print(odom.get_speed_motor());
+        SerialCom.print(" ");
+        SerialCom.println(odom.get_omega_motor());
         //#define or undef
         #undef COMM_SPAM_SPEED
         #ifdef COMM_SPAM_SPEED

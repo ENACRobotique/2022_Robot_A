@@ -26,7 +26,6 @@ void ElecVanne::putOn(){
 void ElecVanne::update(){
     if (isOn && (millis()-tempsMiseOn > TEMPS_OUVERTURE_VANNE)){
         putOff();
-        Serial2.print("stopped");
+        //Serial2.print("stopped");
     }
-    Serial2.printf("%ld\n",millis()-tempsMiseOn);
 }
