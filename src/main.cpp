@@ -7,16 +7,18 @@
 #include "../lib/metro.h"
 #include "AX12A.h"
 #include "elecvannes.h"
-//#include "poelon.h"
+#include "poelon.h"
+
 
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
-//Poelon poel = Poelon();
+Poelon poel = Poelon();
 
 Metro metro_odom = Metro(ENCODER_PERIOD);
 //Metro metro_comm = Metro(COMM_RATE);
 Metro metro_motor = Metro(CONTROL_PERIOD);
 Metro metro_spam_odom = Metro(SPAM_ODOM_PERIOD);
+Metro metro_spam_valCapt = Metro(SPAM_CAPT);
 
 Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
@@ -52,6 +54,9 @@ void loop() {
         radio.spam_odom();
         ev1.update();
         ev2.update();
+    }
+    if(metro_spam_valCapt.check()){
+        radio.spamValeursCapt();
     }
     
     

@@ -8,10 +8,10 @@
 class Poelon {
     public:
         Poelon();
-        void changerEtat(bool nv_etat);
-        bool recupEtat();
+        void changerEtat(int valeur);
+        int recupEtat();
         void pousserCarre();
-        int lireResistance();
+        double lireResistance();
         int autoPush();
         void setCouleur(int coul);
     private:

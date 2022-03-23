@@ -2,11 +2,13 @@
 #define COMM_H
 
 #include <Arduino.h>
+#include "poelon.h"
 //Communication Série du robot
 class Comm {
 public :
     void update();
     void spam_odom();
+    void spamValeursCapt();
 private:
     //Attributs
     //Serial2 for usb, Serial3 for Xbee

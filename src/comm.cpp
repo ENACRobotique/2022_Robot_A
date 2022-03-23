@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include "odom.h"
 #include "motor.h"
-//#include "poelon.h"
+#include "poelon.h"
 #include "AX12A.h"
 #include "elecvannes.h"
 
@@ -63,6 +63,7 @@ void Comm::parse_data() {
             SerialCom.println("b e1_E-Vanne_1 0 1 1 RW u");
             SerialCom.println("b e2_E-Vanne_2 0 1 1 RW u");
             SerialCom.println("b s1_ServoPoelon 0 100 1 RW °");
+            SerialCom.println("b Lecture_Resistance 0.0 99.0 0.1 R kOhm");
         }
         else if (buffer[0] == 'a'){//commande Actionneur
             
@@ -72,12 +73,8 @@ void Comm::parse_data() {
                 unsigned int idAX12 = (unsigned int) idAX12Sign;
                 if (params == 2){
                     if (idAX12%2 == 0){//bras
-                        AX12As.moveSpeed(idAX12, valeur, 150);
-                    }
-                    else{
-                        AX12As.moveSpeed(idAX12, valeur, 400);
-                    }
-                    
+                        AX12As.moveSpeed(idAX12, valeur, 150);}
+                    else{AX12As.moveSpeed(idAX12, valeur, 400);}
                 }
             }
             else if (buffer[2]=='p'){//C'est une pompe
@@ -125,6 +122,14 @@ void Comm::parse_data() {
                         }
                     }
                     
+                }
+            }
+            else if (buffer[2]=='s'){
+                int idServ = 0;
+                int valeur = 0;
+                int params = sscanf(buffer, " a s%d %d", &idServ, &valeur);
+                if (params==2){
+                    if (idServ ==1){}
                 }
             }
             
@@ -178,5 +183,14 @@ void Comm::spam_odom() {
         #endif
 }
 
+void Comm::spamValeursCapt(){
+    #ifdef POELON
+    SerialCom.print ("c s1_ServoPoelon ");
+    SerialCom.println(poel.recupEtat());
+    SerialCom.print ("c Lecture_Resistance ");
+    SerialCom.println(poel.lireResistance());
+    #endif
+    
+}
 
 

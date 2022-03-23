@@ -27,6 +27,7 @@ const float ACCEL_ANG_MAX = 20; //rad/s²
 const float CONTROL_PERIOD = 50; //ms
 const float ENCODER_PERIOD = 50.f;
 const float SPAM_ODOM_PERIOD = 100.f;
+const float SPAM_CAPT = 500.f;
 const float COMM_RATE = 50; //ms
 //const int NB_INC_MOTOR = 3190;
 //const int NB_INC_WHEEL = 2707;

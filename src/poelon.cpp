@@ -1,50 +1,45 @@
 #include <poelon.h>
 #include <config.h>
+#include <utils.h>
+
+
+constexpr PinMap PinMap_ADC[] = {
+  {PB_1,  ADC1,  STM_PIN_DATA_EXT(STM_MODE_ANALOG_ADC_CONTROL, GPIO_NOPULL, 0, 16, 0)}, // ADC1_IN16
+  {NC,   NP,    0}
+};
 
 
 Poelon::Poelon(){
     Servo poel = Servo();
-    poel.attach(POELON_SERVO_PIN, POELON_RETRACTED_ANGLE, POELON_DEPLOYED_ANGLE);
-    pinMode(POELON_READ_PIN, INPUT);
+    //poel.attach(POELON_SERVO_PIN, POELON_RETRACTED_ANGLE, POELON_DEPLOYED_ANGLE);
     int active_color = 0;
+    static_assert(testADCpin(PB_1), "PB1 is not defined as ADC pin, redefine PinMap_ADC!");
+    active_color++;
+    active_color--;
 }
 
 
-void Poelon::changerEtat(bool nv_etat){
-    if (nv_etat){
-        poel.write(POELON_DEPLOYED_ANGLE);
-    } else {
-        poel.write(POELON_RETRACTED_ANGLE);
-    }
+void Poelon::changerEtat(int valeur){
+    poel.write(valeur);
 }
 
-bool Poelon::recupEtat(){
+int Poelon::recupEtat(){
     if (poel.attached()){
-        int angle = poel.read();
-        if (POELON_DEPLOYED_ANGLE - POELON_ANGLE_TOL_MINUS <= angle && angle <= POELON_DEPLOYED_ANGLE + POELON_ANGLE_TOL_PLUS){
-            return true; // le poelon est dans un endroit adéquat pour lire les résistances
-        } 
-    }
-    return false; // le servo n'est pas associé ou n'est pas dans un endroit adapté pour lire les résistances
+        return poel.read();
+    } 
+    return -1; // le servo n'est pas associé ou n'est pas dans un endroit adapté pour lire les résistances
 }
 
-int Poelon::lireResistance(){
+double Poelon::lireResistance(){
     int value = analogRead(POELON_READ_PIN);
-    //codes à retourner:
-    //1: ~470 Ohms (violet)
-    //2: ~1,0 kOhm (jaune)
-    //3: ~4,7 kOhms (rouge)
-    //0 | tout le reste: lecture a échoué (pas de contact par ex.)
-    //TODO: ajouter le code de lecture de la résistance electrique
-    return value; //temporaire
-    if (POELON_READ_VIOLET_INF <= value && value < POELON_READ_VIOLET_SUP) {
-        return 1;
-    } else if (POELON_READ_JAUNE_INF <= value && value < POELON_READ_JAUNE_SUP) {
-        return 2;
-    } else if (POELON_READ_ROUGE_INF <= value && value < POELON_READ_ROUGE_SUP) {
-        return 3;
+    // seuils décision
+    double voltage = ((float)value)*.00322;
+    if (voltage < 0.0001){
+        voltage=0.0001;
     }
-    return 0;
+    double r =((3.3-voltage)/voltage);
+    if (r>99){r=99.f;}
+    return r;
 }
 
 void Poelon::pousserCarre(){
