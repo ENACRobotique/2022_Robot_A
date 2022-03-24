@@ -1,6 +1,7 @@
 #include <poelon.h>
 #include <config.h>
 #include <utils.h>
+#include <Servo.h>
 
 
 constexpr PinMap PinMap_ADC[] = {
@@ -10,22 +11,26 @@ constexpr PinMap PinMap_ADC[] = {
 
 
 Poelon::Poelon(){
-    Servo poel = Servo();
-    //poel.attach(POELON_SERVO_PIN, POELON_RETRACTED_ANGLE, POELON_DEPLOYED_ANGLE);
-    int active_color = 0;
     static_assert(testADCpin(PB_1), "PB1 is not defined as ADC pin, redefine PinMap_ADC!");
+}
+
+void Poelon::initServo(){
+    poelS = Servo();
+    poelS.attach(PA0);
+    int active_color = 0;
+    poelS.write(140);
     active_color++;
     active_color--;
 }
 
 
 void Poelon::changerEtat(int valeur){
-    poel.write(valeur);
+    poelS.write(valeur);
 }
 
 int Poelon::recupEtat(){
-    if (poel.attached()){
-        return poel.read();
+    if (poelS.attached()){
+        return poelS.read();
     } 
     return -1; // le servo n'est pas associé ou n'est pas dans un endroit adapté pour lire les résistances
 }
@@ -38,13 +43,13 @@ double Poelon::lireResistance(){
         voltage=0.0001;
     }
     double r =((3.3-voltage)/voltage);
-    if (r>99){r=99.f;}
+    if (r>9){r=9.9f;}
     return r;
 }
 
 void Poelon::pousserCarre(){
     bool etat_avant = Poelon::recupEtat();
-    poel.write(POELON_PUSH_ANGLE);
+    poelS.write(POELON_PUSH_ANGLE);
     //wait a moment (blocking or non-blocking?)
     //TODO: tester les deux méthodes
     delay(250); //mode bloquant

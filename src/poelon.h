@@ -14,8 +14,9 @@ class Poelon {
         double lireResistance();
         int autoPush();
         void setCouleur(int coul);
+        void initServo();
     private:
-        Servo poel;
+        Servo poelS;
         int active_color;
 };
 

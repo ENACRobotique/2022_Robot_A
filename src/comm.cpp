@@ -129,7 +129,7 @@ void Comm::parse_data() {
                 int valeur = 0;
                 int params = sscanf(buffer, " a s%d %d", &idServ, &valeur);
                 if (params==2){
-                    if (idServ ==1){}
+                    if (idServ ==1){poel.changerEtat(valeur);}
                 }
             }
             
@@ -188,7 +188,7 @@ void Comm::spamValeursCapt(){
     SerialCom.print ("c s1_ServoPoelon ");
     SerialCom.println(poel.recupEtat());
     SerialCom.print ("c Lecture_Resistance ");
-    SerialCom.println(poel.lireResistance());
+    SerialCom.println(poel.lireResistance()*10.f);
     #endif
     
 }

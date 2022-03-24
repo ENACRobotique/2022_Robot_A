@@ -30,6 +30,8 @@ void setup() {
     Serial2.begin(115200);  // STLink serial port
     Serial3.begin(57600);   // XBee serial port
 
+    poel.initServo();
+
     odom.init();//initialisation odométrie
     motor.init();//initialisation moteur
     pinMode(POMPE1,OUTPUT);
