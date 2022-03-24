@@ -62,8 +62,8 @@ void Comm::parse_data() {
             SerialCom.println("b p2_Pompe_2 0 1 1 RW u");
             SerialCom.println("b e1_E-Vanne_1 0 1 1 RW u");
             SerialCom.println("b e2_E-Vanne_2 0 1 1 RW u");
-            SerialCom.println("b s1_ServoPoelon 0 100 1 RW °");
-            SerialCom.println("b Lecture_Resistance 0.0 99.0 0.1 R kOhm");
+            SerialCom.println("b s1_ServoPoelon 50 140 10 RW °");
+            SerialCom.println("b Lecture_Resistance 0.0 100.0 0.1 R hOhm");
         }
         else if (buffer[0] == 'a'){//commande Actionneur
             

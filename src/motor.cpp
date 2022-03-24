@@ -97,9 +97,9 @@ void MotorControl::update() { //asservissement
 
 	cmd_mot(cmd_speed, cmd_omega);
 
-	Serial2.print(cons_omega);
-	Serial2.print(" ");
-	Serial2.println(odom.get_omega_motor());
+	// Serial2.print(cons_omega);
+	// Serial2.print(" ");
+	// Serial2.println(odom.get_omega_motor());
 	//Serial2.print(" ");
 	//Serial2.print(cmd_speed);
 	//Serial2.print(" ");
