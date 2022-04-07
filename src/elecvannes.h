@@ -10,6 +10,7 @@ class ElecVanne{
         void update();
         void putOn();
         void putOff();
+        int getState(){return isOn;};
     private:
         int pin;
         int isOn=0;

@@ -6,14 +6,18 @@
 #include "poelon.h"
 #include "AX12A.h"
 #include "elecvannes.h"
+#include "DisplayController.h"
 
 
 //recap des messages en entrée:
 //v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
 //s : arrêt du robot
-//a <id> <int> : ordre à un actionneur. id est deux caractères, le premier donnant le type d'actionneur (a pour AX12A, p pour pompe, e pour electroVanne, s pour servo)
-//                                                              le deuxième est un chiffre d'identification.
-//d : demande de description des actionneurs
+//a <id> <int> : ordre à un actionneur. id est deux caractères, 
+//      le premier donnant le type d'actionneur 
+//                     (a pour AX12A, p pour pompe, e pour electroVanne, s pour servo, d pour le display)
+//      le deuxième est un chiffre d'identification.
+//d : demande de description des actionneurs. Le robot répond une seule fois
+//k: reset l'entier sentDescr
 //g [o/v] <int> <int> : changement des valeurs des PIDs (kp et ki)
 
 
@@ -21,7 +25,7 @@
 
 //recap des messages en sortie:
 //m <string>
-//p <int> <int> <int>: odométrie moteur <x> <y> <théta>
+//r <int> <int> <int> <int> <int>: odométrie moteur <x> <y> <théta> <v> <omega>
 //b <string> <int> <int> <int> [R/RW] <string>: déclaration d'un actionneur (RW) ou d'un capteur (R). 
 //c <string> <int> : retour de capteur
 
@@ -53,17 +57,23 @@ void Comm::parse_data() {
                 motor.set_cons(static_cast<float>(x),static_cast<float>(omega)/10.f);
             }
         }
+        else if (buffer[0]=='k'){
+            sentDescr=0;
+        }
         else if (buffer[0] == 'd'){
-            SerialCom.println("b a6_BRAS_AVANT 360 690 1 RW u");
-            SerialCom.println("b a7_MAIN_AVANT 0 780 1 RW u");
-            SerialCom.println("b a4_BRAS_ARRIERE 540 930 1 RW u");
-            SerialCom.println("b a5_MAIN_ARRIERE 0 720 1 RW u");
-            SerialCom.println("b p1_Pompe_1 0 1 1 RW u");
-            SerialCom.println("b p2_Pompe_2 0 1 1 RW u");
-            SerialCom.println("b e1_E-Vanne_1 0 1 1 RW u");
-            SerialCom.println("b e2_E-Vanne_2 0 1 1 RW u");
-            SerialCom.println("b s1_ServoPoelon 50 140 10 RW °");
-            SerialCom.println("b Lecture_Resistance 0.0 100.0 0.1 R hOhm");
+            if (sentDescr==0){
+                SerialCom.println("b a6 360 690 1 RW u");
+                SerialCom.println("b a7 0 780 1 RW u");
+                SerialCom.println("b a4 540 930 1 RW u");
+                SerialCom.println("b a5 0 720 1 RW u");
+                SerialCom.println("b p1 0 1 1 RW u");
+                SerialCom.println("b p2 0 1 1 RW u");
+                SerialCom.println("b e1 0 1 1 RW u");
+                SerialCom.println("b e2 0 1 1 RW u");
+                SerialCom.println("b s1 50 140 10 RW °");
+                SerialCom.println("b LR 0.0 99.0 0.1 R hOhm");
+                sentDescr=1;
+            }
         }
         else if (buffer[0] == 'a'){//commande Actionneur
             
@@ -124,12 +134,19 @@ void Comm::parse_data() {
                     
                 }
             }
-            else if (buffer[2]=='s'){
+            else if (buffer[2]=='s'){//c'est un servo
                 int idServ = 0;
                 int valeur = 0;
                 int params = sscanf(buffer, " a s%d %d", &idServ, &valeur);
                 if (params==2){
                     if (idServ ==1){poel.changerEtat(valeur);}
+                }
+            }
+            else if (buffer[2]=='d'){//c'est un display 7 segments
+                int val = -1;
+                int params=sscanf(buffer, "a d %d",&val);
+                if (params == 1){
+                    afficheur.setNbDisplayed (val);
                 }
             }
             
@@ -184,13 +201,23 @@ void Comm::spam_odom() {
 }
 
 void Comm::spamValeursCapt(){
-    #ifdef POELON
-    SerialCom.print ("c s1_ServoPoelon ");
+    SerialCom.print ("c s1 ");
     SerialCom.println(poel.recupEtat());
-    SerialCom.print ("c Lecture_Resistance ");
+    SerialCom.print ("c LR ");
     SerialCom.println(poel.lireResistance()*10.f);
-    #endif
-    
+    SerialCom.print("c a4 ");
+    SerialCom.println(AX12As.readPosition((uint8_t) 4));
+    SerialCom.print("c a5 ");
+    SerialCom.println(AX12As.readPosition((uint8_t) 5));
+    SerialCom.print("c a6 ");
+    SerialCom.println(AX12As.readPosition((uint8_t) 6));
+    SerialCom.print("c a7 ");
+    SerialCom.println(AX12As.readPosition((uint8_t) 7));
+    SerialCom.print("c e1 ");
+    SerialCom.println(ev1.getState());
+    SerialCom.print("c e2 ");
+    SerialCom.println(ev2.getState());
+    SerialCom.print ("m Color = "+)
 }
 
 

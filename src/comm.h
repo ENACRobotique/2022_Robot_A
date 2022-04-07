@@ -16,6 +16,7 @@ private:
 
     char buffer[70];
     int buf_index = 0;
+    int sentDescr=0;
 
     //méthodes privées
     void parse_data();

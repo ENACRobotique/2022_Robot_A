@@ -54,6 +54,11 @@ const int POELON_ANGLE_TOL_MINUS = 0; //TODO: mettre le bon angle
 const int POELON_ANGLE_TOL_PLUS = 0; //TODO: mettre le bon angle
 const int POELON_READ_PIN = PB1;
 
+const int DISPLAY_CLK = PC10;
+const int DISPLAY_DATA = PC12;
+
+const int COLOR = PC3;
+
 //TODO: valeurs
 const int POELON_READ_VIOLET_INF = 0;
 const int POELON_READ_VIOLET_SUP = 0;
