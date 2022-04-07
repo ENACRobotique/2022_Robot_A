@@ -7,6 +7,7 @@
 #include "AX12A.h"
 #include "elecvannes.h"
 #include "DisplayController.h"
+#include "main.h"
 
 
 //recap des messages en entrée:
@@ -217,7 +218,8 @@ void Comm::spamValeursCapt(){
     SerialCom.println(ev1.getState());
     SerialCom.print("c e2 ");
     SerialCom.println(ev2.getState());
-    SerialCom.print ("m Color = "+)
+    SerialCom.print ("m Color = ");
+    SerialCom.println (color);
 }
 
 

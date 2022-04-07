@@ -25,7 +25,7 @@ Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
 DisplayController afficheur = DisplayController();
 int valDisplayed = 0;
-char color = 'n';
+char color='n';
 
 #ifndef UNIT_TEST
 

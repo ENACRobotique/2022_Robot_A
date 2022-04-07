@@ -23,4 +23,5 @@ private:
 
 };
 extern Comm radio;
+extern char color;
 #endif
