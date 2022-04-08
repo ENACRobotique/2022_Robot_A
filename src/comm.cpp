@@ -154,28 +154,44 @@ void Comm::parse_data() {
             else if (buffer[2]=='m'){//c'est une macro
                 switch (buffer[3]) {
                     case 'a':
-                        saisirPaletAvant();
+                        saisirSol(true);
                         break;
                     
                     case 'b':
-                        saisirPaletArriere();
+                        saisirSol(false);
                         break;
                     
                     case 'c':
-                        mettrePaletAvant();
+                        mettre(true);
                         break;
                     
                     case 'd':
-                        mettrePaletArriere();
+                        mettre(false);
                         break;
 
                     case 'e':
-                        sortirPaletAvant();
+                        sortir(true);
                         break;
                     
                     case 'f':
-                        sortirPaletArriere();
+                        sortir(false);
                         break;
+
+                    case 'g':
+                        deposerSol(true);
+                        break;
+                    
+                    case 'h':
+                        deposerSol(false);
+                        break;
+
+                    /*case 'g':
+                        //deposerAngle(true);
+                        break;
+                    
+                    case 'h':
+                        //deposerAngle(false);
+                        break;*/
 
                     default:
                         SerialCom.println("m macro inconnue");

@@ -1,125 +1,129 @@
 #include "macros.h"
 
-void saisirPaletAvant(){
-    //orienter la main avant
-    AX12As.moveSpeed((unsigned) 7, POS_MAIN_AVANT_SAISIR, 400);
+void neutrePalet(bool avant){
+    unsigned main = avant? (unsigned) 7: (unsigned) 5;
+    unsigned bras = avant? (unsigned) 6: (unsigned) 4;
+    //relever le bras en position plus normale
+    AX12As.moveSpeed(bras, avant?BRAS_AV_N: BRAS_AR_N, 150);
 
-    //baisser le bras avant
-    AX12As.moveSpeed((unsigned) 6, POS_BRAS_AVANT_SAISIR, 150);
+    //orienter main en position de sortie
+    AX12As.moveSpeed(main, avant?MAIN_AV_P_N: MAIN_AR_P_N, 150);
+}
 
-    //fermer EV avant
-    ev1.putOn();
+void neutre(bool avant){
+    unsigned main = avant? (unsigned) 7: (unsigned) 5;
+    unsigned bras = avant? (unsigned) 6: (unsigned) 4;
+    //relever le bras en position plus normale
+    AX12As.moveSpeed(bras, avant?BRAS_AV_N: BRAS_AR_N, 150);
 
-    //attendre un peu
-    delay(AVANT_SAISIR_DELAY);
+    //orienter main en position de sortie
+    AX12As.moveSpeed(main, avant?MAIN_AV_N: MAIN_AR_N, 150);
+}
+
+void saisirSol(bool avant){
+    unsigned main = avant? (unsigned) 7: (unsigned) 5;
+    unsigned bras = avant? (unsigned) 6: (unsigned) 4;
+    ElecVanne ev = avant? ev1: ev2;
+    int POMPE = avant? POMPE1: POMPE2;
+
+    //orienter la main
+    AX12As.moveSpeed(main, avant?MAIN_AV_SSol: MAIN_AR_SSol, 400);
+
+    //baisser le bras
+    AX12As.moveSpeed(bras, avant?BRAS_AV_SSol: BRAS_AR_SSol, 150);
+
+    //fermer EV
+    ev.putOff();
 
     //allumer pompe avant
-    digitalWrite(POMPE1, HIGH);
-
-    //relever le bras en position plus normale
-    AX12As.moveSpeed((unsigned) 6, POS_BRAS_AVANT_NEUTRE, 150);
-}
-
-void saisirPaletArriere(){
-    //orienter la main ARRIERE
-    AX12As.moveSpeed((unsigned) 5, POS_MAIN_ARRIERE_SAISIR, 400);
-
-    //baisser le bras ARRIERE
-    AX12As.moveSpeed((unsigned) 4, POS_BRAS_ARRIERE_SAISIR, 150);
-
-    //fermer EV ARRIERE
-    ev2.putOn();
+    digitalWrite(POMPE, HIGH);
 
     //attendre un peu
-    delay(ARRIERE_SAISIR_DELAY);
+    delay(SSol_DELAY);
 
-    //allumer pompe ARRIERE
-    digitalWrite(POMPE2, HIGH);
-
-    //relever le bras en position plus normale
-    AX12As.moveSpeed((unsigned) 4, POS_BRAS_ARRIERE_NEUTRE, 150);
+    neutrePalet(avant);   
 }
 
-void mettrePaletAvant(){
-    //orienter la main avant
-    AX12As.moveSpeed((unsigned) 7, POS_MAIN_AVANT_METTRE, 400);
+void mettre(bool avant){
+    unsigned main = avant? (unsigned) 7: (unsigned) 5;
+    unsigned bras = avant? (unsigned) 6: (unsigned) 4;
+    ElecVanne ev = avant? ev1: ev2;
+    int POMPE = avant? POMPE1: POMPE2;
 
-    //baisser le bras avant
-    AX12As.moveSpeed((unsigned) 6, POS_BRAS_AVANT_METTRE, 150);
+    //orienter la main
+    AX12As.moveSpeed(main, avant?MAIN_AV_M: MAIN_AR_M, 400);
 
-    //couper pompe avant
-    digitalWrite(POMPE1, LOW);
-    //ouvrir EV avant
-    ev1.putOff();
+    delay(METTRE_DELAY_HAND);
+
+    //baisser le bras
+    AX12As.moveSpeed(bras, avant?BRAS_AV_M: BRAS_AR_M, 150);
 
     //attendre un peu
-    delay(AVANT_METTRE_DELAY);
+    delay(METTRE_DELAY);
 
-    //relever le bras en position plus normale
-    AX12As.moveSpeed((unsigned) 6, POS_BRAS_AVANT_NEUTRE, 150);
+    //couper pompe
+    digitalWrite(POMPE, LOW);
+
+    //ouvrir EV
+    ev.putOn();
+
+    delay(METTRE_DELAY_RELACHER);
+
+    neutre(avant);
 }
 
-void mettrePaletArriere(){
-    //orienter la main ARRIERE
-    AX12As.moveSpeed((unsigned) 5, POS_MAIN_ARRIERE_METTRE, 400);
+void sortir(bool avant){
+    unsigned main = avant? (unsigned) 7: (unsigned) 5;
+    unsigned bras = avant? (unsigned) 6: (unsigned) 4;
+    ElecVanne ev = avant? ev1: ev2;
+    int POMPE = avant? POMPE1: POMPE2;
 
-    //baisser le bras ARRIERE
-    AX12As.moveSpeed((unsigned) 4, POS_BRAS_ARRIERE_METTRE, 150);
-
-    //couper pompe ARRIERE
-    digitalWrite(POMPE2, LOW);
-    //ouvrir EV ARRIERE
-    ev2.putOff();
-
-    //attendre un peu
-    delay(ARRIERE_METTRE_DELAY);
-
-    //relever le bras en position plus normale
-    AX12As.moveSpeed((unsigned) 4, POS_BRAS_ARRIERE_NEUTRE, 150);
-}
-
-void sortirPaletAvant(){
     //fermer EV avant
-    ev1.putOn();
-
-    //orienter la main avant
-    AX12As.moveSpeed((unsigned) 7, POS_MAIN_AVANT_SORTIR, 400);
+    ev.putOn();
 
     //baisser le bras avant
-    AX12As.moveSpeed((unsigned) 6, POS_BRAS_AVANT_SORTIR, 150);
+    AX12As.moveSpeed(bras, avant?BRAS_AV_S_PRE:BRAS_AR_S_PRE, 150);
+
+    //orienter la main avant
+    AX12As.moveSpeed(main, avant?MAIN_AV_S: MAIN_AR_S, 400);
+
+    delay(SORTIR_DELAY_MAIN);
+
+    //baisser le bras avant
+    AX12As.moveSpeed(bras, avant?BRAS_AV_S: BRAS_AR_S, 150);
 
     //allumer pompe avant
-    digitalWrite(POMPE1, HIGH);
+    digitalWrite(POMPE, HIGH);
     
     //attendre un peu
-    delay(AVANT_SORTIR_DELAY);
+    delay(SORTIR_DELAY);
 
-    //relever le bras en position plus normale
-    AX12As.moveSpeed((unsigned) 6, POS_BRAS_AVANT_NEUTRE, 150);
-
-    //orienter main en position de sortie
-    AX12As.moveSpeed((unsigned) 7, POS_MAIN_AVANT_NEUTRE, 150);
+    neutrePalet(avant);
 }
 
-void sortirPaletArriere(){
-    //fermer EV ARRIERE
-    ev2.putOn();
+void deposerSol(bool avant){
+    unsigned main = avant? (unsigned) 7: (unsigned) 5;
+    unsigned bras = avant? (unsigned) 6: (unsigned) 4;
+    ElecVanne ev = avant? ev1: ev2;
+    int POMPE = avant? POMPE1: POMPE2;
 
-    //orienter la main ARRIERE
-    AX12As.moveSpeed((unsigned) 5, POS_MAIN_ARRIERE_SORTIR, 400);
+    //orienter la main
+    AX12As.moveSpeed(main, avant?MAIN_AV_SSol: MAIN_AR_SSol, 400);
 
-    //baisser le bras ARRIERE
-    AX12As.moveSpeed((unsigned) 4, POS_BRAS_ARRIERE_SORTIR, 150);
-
-    //allumer pompe ARRIERE
-    digitalWrite(POMPE2, HIGH);
+    //baisser le bras
+    AX12As.moveSpeed(bras, avant?BRAS_AV_SSol: BRAS_AR_SSol, 150);
 
     //attendre un peu
-    delay(ARRIERE_SORTIR_DELAY);
+    delay(DSol_DELAY);
 
-    //relever le bras en position plus normale
-    AX12As.moveSpeed((unsigned) 4, POS_BRAS_ARRIERE_NEUTRE, 150);
+    //couper pompe
+    digitalWrite(POMPE, LOW);
 
-    //orienter main en position de sortie
-    AX12As.moveSpeed((unsigned) 5, POS_MAIN_ARRIERE_NEUTRE, 150);
+    //ouvrir ev
+    ev.putOn();
+
+    //attendre palet relaché
+    delay(DSol_DELAY_RELACHER);
+
+    neutre(avant);
 }
