@@ -8,6 +8,7 @@
 #include "elecvannes.h"
 #include "DisplayController.h"
 #include "main.h"
+#include "macros.h"
 
 
 //recap des messages en entrée:
@@ -150,7 +151,36 @@ void Comm::parse_data() {
                     afficheur.setNbDisplayed (val);
                 }
             }
-            
+            else if (buffer[2]=='m'){//c'est une macro
+                switch (buffer[3]) {
+                    case 'a':
+                        saisirPaletAvant();
+                        break;
+                    
+                    case 'b':
+                        saisirPaletArriere();
+                        break;
+                    
+                    case 'c':
+                        mettrePaletAvant();
+                        break;
+                    
+                    case 'd':
+                        mettrePaletArriere();
+                        break;
+
+                    case 'e':
+                        sortirPaletAvant();
+                        break;
+                    
+                    case 'f':
+                        sortirPaletArriere();
+                        break;
+
+                    default:
+                        SerialCom.println("m macro inconnue");
+                }
+            }
         }
         else if (buffer[0] == 't') //test
         {
