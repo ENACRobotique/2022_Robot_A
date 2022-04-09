@@ -72,6 +72,7 @@ void Comm::parse_data() {
                 SerialCom.println("b md 0 1 1 RW u");
                 SerialCom.println("b mf 0 1 1 RW u");
                 SerialCom.println("b mh 0 1 1 RW u");
+                SerialCom.println("b d 0 9999 1 RW u");
                 SerialCom.println("b a6 360 690 1 RW u");
                 SerialCom.println("b a7 0 780 1 RW u");
                 SerialCom.println("b a4 540 930 1 RW u");
