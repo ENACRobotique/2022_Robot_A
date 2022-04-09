@@ -20,7 +20,7 @@ const int MAIN_AR_P_N = 100;
 
 //saisirSol
 const int MAIN_AV_SSol = 700;
-const int MAIN_AR_SSol = 50;
+const int MAIN_AR_SSol = 0;
 const int BRAS_AV_SSol = 360;
 const int BRAS_AR_SSol = 950;
 
@@ -48,6 +48,9 @@ const int SORTIR_DELAY = 1500;
 //deposerSol
 const int DSol_DELAY = 1500;
 const int DSol_DELAY_RELACHER = 500;
+
+void neutre(bool avant);
+void neutrePalet(bool avant);
 
 void saisirSol(bool avant);
 

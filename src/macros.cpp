@@ -4,20 +4,20 @@ void neutrePalet(bool avant){
     unsigned main = avant? (unsigned) 7: (unsigned) 5;
     unsigned bras = avant? (unsigned) 6: (unsigned) 4;
     //relever le bras en position plus normale
-    AX12As.moveSpeed(bras, avant?BRAS_AV_N: BRAS_AR_N, 150);
+    AX12As.moveSpeed(bras, avant?BRAS_AV_N: BRAS_AR_N, 200);
 
     //orienter main en position de sortie
-    AX12As.moveSpeed(main, avant?MAIN_AV_P_N: MAIN_AR_P_N, 150);
+    AX12As.moveSpeed(main, avant?MAIN_AV_P_N: MAIN_AR_P_N, 400);
 }
 
 void neutre(bool avant){
     unsigned main = avant? (unsigned) 7: (unsigned) 5;
     unsigned bras = avant? (unsigned) 6: (unsigned) 4;
     //relever le bras en position plus normale
-    AX12As.moveSpeed(bras, avant?BRAS_AV_N: BRAS_AR_N, 150);
+    AX12As.moveSpeed(bras, avant?BRAS_AV_N: BRAS_AR_N, 200);
 
     //orienter main en position de sortie
-    AX12As.moveSpeed(main, avant?MAIN_AV_N: MAIN_AR_N, 150);
+    AX12As.moveSpeed(main, avant?MAIN_AV_N: MAIN_AR_N, 400);
 }
 
 void saisirSol(bool avant){
@@ -41,7 +41,11 @@ void saisirSol(bool avant){
     //attendre un peu
     delay(SSol_DELAY);
 
-    neutrePalet(avant);   
+    neutrePalet(avant); 
+
+    //TODO : to remove
+
+      //AX12As.set (bras, )
 }
 
 void mettre(bool avant){

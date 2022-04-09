@@ -64,6 +64,14 @@ void Comm::parse_data() {
         }
         else if (buffer[0] == 'd'){
             if (sentDescr==0){
+                SerialCom.println("b ma 0 1 1 RW u");
+                SerialCom.println("b mc 0 1 1 RW u");
+                SerialCom.println("b me 0 1 1 RW u");
+                SerialCom.println("b mg 0 1 1 RW u");
+                SerialCom.println("b mb 0 1 1 RW u");
+                SerialCom.println("b md 0 1 1 RW u");
+                SerialCom.println("b mf 0 1 1 RW u");
+                SerialCom.println("b mh 0 1 1 RW u");
                 SerialCom.println("b a6 360 690 1 RW u");
                 SerialCom.println("b a7 0 780 1 RW u");
                 SerialCom.println("b a4 540 930 1 RW u");

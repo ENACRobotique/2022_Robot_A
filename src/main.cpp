@@ -9,6 +9,7 @@
 #include "elecvannes.h"
 #include "poelon.h"
 #include "DisplayController.h"
+#include "macros.h"
 
 
 Odometry odom = Odometry();
@@ -31,7 +32,11 @@ char color='n';
 
 void setup() {
     pinMode(COLOR,INPUT_PULLUP);
-    AX12As.init(&Serial1);    
+    AX12As.init(&Serial1);   
+    //AX12As.torqueStatus(6, true);
+    AX12As.setMaxTorque(6, 1023);
+    AX12As.setMaxTorque(4, 1023);
+
     Serial2.begin(115200);  // STLink serial port
     Serial3.begin(57600);   // XBee serial port
 
@@ -45,6 +50,10 @@ void setup() {
     pinMode(POMPE2,OUTPUT);
     if (digitalRead(COLOR)==LOW) {color='j';}
     else {color='v';}
+
+    //mise des AX-12 en neutre sans palets
+    neutre(true);
+    neutre(false);
 }
 
 // double sp[4] = {100, 0, -100, 0};
@@ -70,6 +79,8 @@ void loop() {
         if (digitalRead(COLOR)==LOW) {color='j';}
         else {color='v';}
         radio.spamValeursCapt();
+        Serial2.println("TO REMOVE BELOW in MAIN : ..");
+        Serial2.println(AX12As.readLoad(6));
 
     }
     
