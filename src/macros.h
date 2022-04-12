@@ -11,11 +11,11 @@ const int N_DELAY = 1000;
 
 // position neutre bras interieur sans palet
 const int BRAS_AV_N = 680; // 655
-const int BRAS_AR_N = 620; // 655
+const int BRAS_AR_N = 610; // 655
 
 // position neutre bras avec palet
-const int BRAS_AV_N_P = 700;
-const int BRAS_AR_N_P = 600;
+const int BRAS_AV_N_P = 710;
+const int BRAS_AR_N_P = 570;
 
 // position neutre main sans palet
 const int MAIN_AV_N = 350; // 350
