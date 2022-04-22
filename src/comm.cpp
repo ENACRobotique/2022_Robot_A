@@ -195,35 +195,43 @@ void Comm::parse_data()
             switch (buffer[3])
             {
             case 'a':
-                saisirSol(true);
+                //saisirSol(true);
+                bras_main_pompe_ev_av.handleEvent(TRIGGER_GET);
                 break;
 
             case 'b':
-                saisirSol(false);
+                //saisirSol(false);
+                bras_main_pompe_ev_ar.handleEvent(TRIGGER_GET);
                 break;
 
             case 'c':
-                mettre(true);
+                bras_main_pompe_ev_av.handleEvent(TRIGGER_INSTORE);
+                //mettre(true);
                 break;
 
             case 'd':
-                mettre(false);
+                bras_main_pompe_ev_ar.handleEvent(TRIGGER_INSTORE);
+                //mettre(false);
                 break;
 
             case 'e':
-                sortir(true);
+                bras_main_pompe_ev_av.handleEvent(TRIGGER_FROMSTORE);
+                //sortir(true);
                 break;
 
             case 'f':
-                sortir(false);
+                bras_main_pompe_ev_ar.handleEvent(TRIGGER_FROMSTORE);
+                //sortir(false);
                 break;
 
             case 'g':
-                deposerSol(true);
+                bras_main_pompe_ev_av.handleEvent(TRIGGER_PUT);
+                //deposerSol(true);
                 break;
 
             case 'h':
-                deposerSol(false);
+                bras_main_pompe_ev_ar.handleEvent(TRIGGER_PUT);
+                //deposerSol(false);
                 break;
 
                 /*case 'g':

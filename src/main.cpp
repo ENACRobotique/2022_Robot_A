@@ -20,6 +20,7 @@ Metro metro_odom = Metro(ENCODER_PERIOD);
 Metro metro_motor = Metro(CONTROL_PERIOD);
 Metro metro_spam_odom = Metro(SPAM_ODOM_PERIOD);
 Metro metro_spam_valCapt = Metro(SPAM_CAPT);
+Metro state_machine_check = Metro(100.0f);
 
 Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
@@ -58,8 +59,8 @@ void setup()
     }
 
     // mise des AX-12 en neutre sans palets
-    neutre(true);
-    neutre(false);
+    //neutre(true);
+    //neutre(false);
 }
 
 // double sp[4] = {100, 0, -100, 0};
@@ -98,6 +99,10 @@ void loop()
         radio.spamValeursCapt();
         // Serial2.println("TO REMOVE BELOW in MAIN : ..");
         // Serial2.println(AX12As.readLoad(6));
+    }
+    if (state_machine_check.check()){
+        bras_main_pompe_ev_av.checkAutoTransitions();
+        bras_main_pompe_ev_ar.checkAutoTransitions();
     }
 
     // if(metro_test.check()){
