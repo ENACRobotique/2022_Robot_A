@@ -12,7 +12,7 @@ public :
 private:
     //Attributs
     //Serial2 for usb, Serial3 for Xbee
-    HardwareSerial& SerialCom = Serial3; //Serial3;
+    HardwareSerial& SerialCom = Serial2; //Serial3;
 
     char buffer[70];
     int buf_index = 0;

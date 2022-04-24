@@ -16,7 +16,7 @@ double sign(double nb) {
 }
 
 
-PID pidSpeed=PID(0.5, 0.08, 0.0, -255.0, 255.0);
+PID pidSpeed=PID(0.5, 1, 0.0, -255.0, 255.0);
 PID pidOmega=PID(40.0, 100.0, 0.0, -255.0, 255.0);
 
 void MotorControl::set_cons(double speed, double omega) {
@@ -100,14 +100,14 @@ void MotorControl::update() { //asservissement
 	// Serial2.print(cons_omega);
 	// Serial2.print(" ");
 	// Serial2.println(odom.get_omega_motor());
-	//Serial2.print(" ");
-	//Serial2.print(cmd_speed);
-	//Serial2.print(" ");
+	// Serial2.print(" ");
+	// Serial2.print(cmd_speed);
+	// Serial2.print(" ");
 	//Serial2.println(cmd_omega);
 	//Serial2.print(" ");
-	// Serial2.print(cons_speed);
-	// Serial2.print(" ");
-	// Serial2.println(odom.get_speed_motor());
+// 	Serial2.print(cons_speed);
+// 	Serial2.print(" ");
+// 	Serial2.println(odom.get_speed_motor());
 }
 
 
