@@ -7,6 +7,9 @@
 #include "elecvannes.h"
 #include "state_machine.h"
 
+const int ARM_SPEED_FAST = 400;
+const int ARM_SPEED_SLOW = 200;
+const int HAND_SPEED = 400;
 
 // delay neutre
 const int N_DELAY = 1000;
@@ -55,8 +58,11 @@ const int SORTIR_DELAY_MAIN = 500;
 const int SORTIR_DELAY = 1500;
 
 // deposerSol
-const int DSol_DELAY = 1500;
+const int DSol_DELAY = 1000;
 const int DSol_DELAY_RELACHER = 500;
+const int DSol_SMALL_LIFT_AV = BRAS_AV_SSol + 150;
+const int DSol_SMALL_LIFT_AR = BRAS_AR_SSol - 150;
+const int DSol_DELAY_LIFT = 250;
 
 //--- macros new version, async ---
 
@@ -86,7 +92,9 @@ const int FROMSTORE_END = 9;
 extern State st_fromstore_end_av, st_fromstore_end_ar;
 const int PUT_START = 10;
 extern State st_put_start_av, st_put_start_ar;
-const int PUT_END = 11;
+const int PUT_MID = 11;
+extern State st_put_mid_av, st_put_mid_ar;
+const int PUT_END = 12;
 extern State st_put_end_av, st_put_end_ar;
 
 //code events

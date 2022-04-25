@@ -31,31 +31,6 @@ char color = 'n';
 
 #ifndef UNIT_TEST
 
-StateMachine bras_main_pompe_ev_av ({st_neutral_noload_start_av, 
-                                     st_neutral_noload_end_av,
-                                     st_neutral_load_start_av, 
-                                     st_neutral_load_end_av,
-                                     st_get_av,
-                                     st_instore_start_av,
-                                     st_instore_mid_av,
-                                     st_instore_end_av,
-                                     st_fromstore_start_av,
-                                     st_fromstore_end_av,
-                                     st_put_start_av,
-                                     st_put_end_av});
-StateMachine bras_main_pompe_ev_ar ({st_neutral_noload_start_ar, 
-                                     st_neutral_noload_end_ar,
-                                     st_neutral_load_start_ar, 
-                                     st_neutral_load_end_ar,
-                                     st_get_ar,
-                                     st_instore_start_ar,
-                                     st_instore_mid_ar,
-                                     st_instore_end_ar,
-                                     st_fromstore_start_ar,
-                                     st_fromstore_end_ar,
-                                     st_put_start_ar,
-                                     st_put_end_ar});
-
 void setup()
 {
     pinMode(COLOR, INPUT_PULLUP);
