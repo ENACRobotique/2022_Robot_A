@@ -58,42 +58,36 @@ const int SORTIR_DELAY = 1500;
 const int DSol_DELAY = 1500;
 const int DSol_DELAY_RELACHER = 500;
 
-
-//--- macros old version, synchrone ---
-void neutre(bool avant);
-void neutrePalet(bool avant);
-
-void saisirSol(bool avant);
-
-// void saisirDistrib(bool avant);
-
-// void saisirHaut(bool avant);
-
-void mettre(bool avant);
-
-void sortir(bool avant);
-
-void deposerSol(bool avant);
-
-// void deposerAngle(bool avant);
-
 //--- macros new version, async ---
 
 //code states
 const int QUEUE_EVENT = -2;
 const int INVALID = -1;
+
 const int NEUTRAL_NOLOAD_START = 0;
+extern State st_neutral_noload_start_av, st_neutral_noload_start_ar;
 const int NEUTRAL_NOLOAD_END = 1;
+extern State st_neutral_noload_end_av, st_neutral_noload_end_ar;
 const int NEUTRAL_LOAD_START = 2;
+extern State st_neutral_load_start_av, st_neutral_load_start_ar;
 const int NEUTRAL_LOAD_END = 3;
+extern State st_neutral_load_end_av, st_neutral_load_end_ar;
 const int GET = 4;
+extern State st_get_av, st_get_ar;
 const int INSTORE_START = 5;
+extern State st_instore_start_av, st_instore_start_ar;
 const int INSTORE_MID = 6;
+extern State st_instore_mid_av, st_instore_mid_ar;
 const int INSTORE_END = 7;
+extern State st_instore_end_av, st_instore_end_ar;
 const int FROMSTORE_START = 8;
+extern State st_fromstore_start_av, st_fromstore_start_ar;
 const int FROMSTORE_END = 9;
+extern State st_fromstore_end_av, st_fromstore_end_ar;
 const int PUT_START = 10;
+extern State st_put_start_av, st_put_start_ar;
 const int PUT_END = 11;
+extern State st_put_end_av, st_put_end_ar;
 
 //code events
 const int TRIGGER_GET = 0;

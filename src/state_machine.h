@@ -38,6 +38,7 @@ class State{
 
 class StateMachine {
     private:
+        bool started;
         u_int32_t lastTransition;
         int state;
         std::vector<State> stateList;
@@ -45,12 +46,21 @@ class StateMachine {
 
     public:
         StateMachine(std::vector<State> states) {
+            started = false;
             stateList = states;
             eventQueue = {};
             state = 0;
+        };
+
+        std::vector<int> getQueue(){
+            return eventQueue;
+        }
+
+        void start(){
+            started = true;
             lastTransition = millis();
             stateList[state].enterAction();
-        };
+        }
 
         void handleEvent(int event){
             int newState = stateList[state].manualTransition(event);
@@ -62,6 +72,10 @@ class StateMachine {
                 stateList[state].enterAction();
             }
         };
+
+        bool isStarted(){
+            return started;
+        }
 
         void checkAutoTransitions(){
             u_int32_t st_auto_d = stateList[state].autoDuration();

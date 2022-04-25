@@ -1,168 +1,5 @@
 #include "macros.h"
 
-void neutrePalet(bool avant)
-{
-    unsigned main = avant ? (unsigned)7 : (unsigned)5;
-    unsigned bras = avant ? (unsigned)6 : (unsigned)4;
-
-    // allumer les bras
-    AX12As.torqueStatus(bras, true);
-    // relever le bras en position plus normale
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_N_P : BRAS_AR_N_P, 200);
-
-    // orienter main en position de sortie
-    AX12As.moveSpeed(main, avant ? MAIN_AV_P_N : MAIN_AR_P_N, 400);
-
-    delay(N_DELAY);
-
-    //éteindre les bras
-    AX12As.torqueStatus(bras, false);
-}
-
-void neutre(bool avant)
-{
-    unsigned main = avant ? (unsigned)7 : (unsigned)5;
-    unsigned bras = avant ? (unsigned)6 : (unsigned)4;
-
-    // allumer les bras
-    AX12As.torqueStatus(bras, true);
-
-    // relever le bras en position plus normale
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_N : BRAS_AR_N, 200);
-
-    // orienter main en position de sortie
-    AX12As.moveSpeed(main, avant ? MAIN_AV_N : MAIN_AR_N, 400);
-
-    delay(N_DELAY);
-
-    //éteindre les bras
-    AX12As.torqueStatus(bras, false);
-}
-
-void saisirSol(bool avant)
-{
-    unsigned main = avant ? (unsigned)7 : (unsigned)5;
-    unsigned bras = avant ? (unsigned)6 : (unsigned)4;
-    ElecVanne ev = avant ? ev1 : ev2;
-    int POMPE = avant ? POMPE1 : POMPE2;
-
-    // allumer les bras
-    AX12As.torqueStatus(bras, true);
-
-    // orienter la main
-    AX12As.moveSpeed(main, avant ? MAIN_AV_SSol : MAIN_AR_SSol, 400);
-
-    // baisser le bras
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_SSol : BRAS_AR_SSol, 150);
-
-    // fermer EV
-    ev.putOff();
-
-    // allumer pompe avant
-    digitalWrite(POMPE, HIGH);
-
-    // attendre un peu
-    delay(SSol_DELAY);
-
-    neutrePalet(avant);
-}
-
-void mettre(bool avant)
-{
-    unsigned main = avant ? (unsigned)7 : (unsigned)5;
-    unsigned bras = avant ? (unsigned)6 : (unsigned)4;
-    ElecVanne ev = avant ? ev1 : ev2;
-    int POMPE = avant ? POMPE1 : POMPE2;
-
-    // allumer les bras
-    AX12As.torqueStatus(bras, true);
-
-    // orienter la main
-    AX12As.moveSpeed(main, avant ? MAIN_AV_M : MAIN_AR_M, 400);
-
-    delay(METTRE_DELAY_HAND);
-
-    // baisser le bras
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_M : BRAS_AR_M, 150);
-
-    // attendre un peu
-    delay(METTRE_DELAY);
-
-    // couper pompe
-    digitalWrite(POMPE, LOW);
-
-    // ouvrir EV
-    ev.putOn();
-
-    delay(METTRE_DELAY_RELACHER);
-
-    neutre(avant);
-}
-
-void sortir(bool avant)
-{
-    unsigned main = avant ? (unsigned)7 : (unsigned)5;
-    unsigned bras = avant ? (unsigned)6 : (unsigned)4;
-    ElecVanne ev = avant ? ev1 : ev2;
-    int POMPE = avant ? POMPE1 : POMPE2;
-
-    // allumer les bras
-    AX12As.torqueStatus(bras, true);
-
-    // fermer EV avant
-    ev.putOn();
-
-    // baisser le bras avant
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_S_PRE : BRAS_AR_S_PRE, 150);
-
-    // orienter la main avant
-    AX12As.moveSpeed(main, avant ? MAIN_AV_S : MAIN_AR_S, 400);
-
-    delay(SORTIR_DELAY_MAIN);
-
-    // baisser le bras avant
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_S : BRAS_AR_S, 150);
-
-    // allumer pompe avant
-    digitalWrite(POMPE, HIGH);
-
-    // attendre un peu
-    delay(SORTIR_DELAY);
-
-    neutrePalet(avant);
-}
-
-void deposerSol(bool avant)
-{
-    unsigned main = avant ? (unsigned)7 : (unsigned)5;
-    unsigned bras = avant ? (unsigned)6 : (unsigned)4;
-    ElecVanne ev = avant ? ev1 : ev2;
-    int POMPE = avant ? POMPE1 : POMPE2;
-
-    // allumer les bras
-    AX12As.torqueStatus(bras, true);
-
-    // orienter la main
-    AX12As.moveSpeed(main, avant ? MAIN_AV_SSol : MAIN_AR_SSol, 400);
-
-    // baisser le bras
-    AX12As.moveSpeed(bras, avant ? BRAS_AV_SSol : BRAS_AR_SSol, 150);
-
-    // attendre un peu
-    delay(DSol_DELAY);
-
-    // couper pompe
-    digitalWrite(POMPE, LOW);
-
-    // ouvrir ev
-    ev.putOn();
-
-    // attendre palet relaché
-    delay(DSol_DELAY_RELACHER);
-
-    neutre(avant);
-}
-
 //Etat neutre des bras sans charge transportée
     //début mouvement
     void neutral_noload_start_av(){
@@ -189,7 +26,7 @@ void deposerSol(bool avant)
     void shutarm_ar(){
         AX12As.torqueStatus(4, false);//eteindre bras arriere
     }
-    int neutral_noload_end_man_tr (int evt){
+    int neutral_end_man_tr (int evt){
         switch (evt){
             case TRIGGER_GET:
                 return GET;
@@ -204,8 +41,8 @@ void deposerSol(bool avant)
         }
     }
     //états 1 de chaque machine
-    State st_neutral_noload_end_av (-1, -1, &shutarm_av, &neutral_noload_end_man_tr);
-    State st_neutral_noload_end_ar (-1, -1, &shutarm_ar, &neutral_noload_end_man_tr);
+    State st_neutral_noload_end_av (-1, -1, &shutarm_av, &neutral_end_man_tr);
+    State st_neutral_noload_end_ar (-1, -1, &shutarm_ar, &neutral_end_man_tr);
 
 //Etat neutre des bras avec transport de palet
     //début du mouvement
@@ -231,8 +68,8 @@ void deposerSol(bool avant)
         }
     }
     //états 3 de chaque machine
-    State st_neutral_load_end_av (-1, -1, &shutarm_av, &neutral_load_end_man_tr);
-    State st_neutral_load_end_ar (-1, -1, &shutarm_ar, &neutral_load_end_man_tr);
+    State st_neutral_load_end_av (-1, -1, &shutarm_av, &neutral_end_man_tr);
+    State st_neutral_load_end_ar (-1, -1, &shutarm_ar, &neutral_end_man_tr);
 
 //Mouvement de récupération d'un palet au sol
     //début mouvement
@@ -266,7 +103,7 @@ void deposerSol(bool avant)
     }
     //états 5 de chaque machine
     State st_instore_start_av (INSTORE_MID, METTRE_DELAY_HAND, &instore_start_av, &queue_man_events);
-    State st_instore_start_ar (INSTORE_START, METTRE_DELAY_HAND, &instore_start_ar, &queue_man_events);
+    State st_instore_start_ar (INSTORE_MID, METTRE_DELAY_HAND, &instore_start_ar, &queue_man_events);
 
     //intermédiaire mouvement
     void instore_mid_av(){
@@ -344,27 +181,3 @@ void deposerSol(bool avant)
     State st_put_end_av (NEUTRAL_NOLOAD_START, DSol_DELAY_RELACHER, &release_av, &queue_man_events);
     State st_put_end_ar (NEUTRAL_NOLOAD_START, DSol_DELAY_RELACHER, &release_ar, &queue_man_events);
 
-StateMachine bras_main_pompe_ev_av ({st_neutral_noload_start_av, 
-                                     st_neutral_noload_end_av,
-                                     st_neutral_load_start_av, 
-                                     st_neutral_load_end_av,
-                                     st_get_av,
-                                     st_instore_start_av,
-                                     st_instore_mid_av,
-                                     st_instore_end_av,
-                                     st_fromstore_start_av,
-                                     st_fromstore_end_av,
-                                     st_put_start_av,
-                                     st_put_end_av});
-StateMachine bras_main_pompe_ev_ar ({st_neutral_noload_start_ar, 
-                                     st_neutral_noload_end_ar,
-                                     st_neutral_load_start_ar, 
-                                     st_neutral_load_end_ar,
-                                     st_get_ar,
-                                     st_instore_start_ar,
-                                     st_instore_mid_ar,
-                                     st_instore_end_ar,
-                                     st_fromstore_start_ar,
-                                     st_fromstore_end_ar,
-                                     st_put_start_ar,
-                                     st_put_end_ar});

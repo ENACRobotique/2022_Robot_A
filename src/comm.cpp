@@ -195,52 +195,44 @@ void Comm::parse_data()
             switch (buffer[3])
             {
             case 'a':
-                //saisirSol(true);
                 bras_main_pompe_ev_av.handleEvent(TRIGGER_GET);
                 break;
 
             case 'b':
-                //saisirSol(false);
                 bras_main_pompe_ev_ar.handleEvent(TRIGGER_GET);
                 break;
 
             case 'c':
                 bras_main_pompe_ev_av.handleEvent(TRIGGER_INSTORE);
-                //mettre(true);
                 break;
 
             case 'd':
                 bras_main_pompe_ev_ar.handleEvent(TRIGGER_INSTORE);
-                //mettre(false);
                 break;
 
             case 'e':
                 bras_main_pompe_ev_av.handleEvent(TRIGGER_FROMSTORE);
-                //sortir(true);
                 break;
 
             case 'f':
                 bras_main_pompe_ev_ar.handleEvent(TRIGGER_FROMSTORE);
-                //sortir(false);
                 break;
 
             case 'g':
                 bras_main_pompe_ev_av.handleEvent(TRIGGER_PUT);
-                //deposerSol(true);
                 break;
 
             case 'h':
                 bras_main_pompe_ev_ar.handleEvent(TRIGGER_PUT);
-                //deposerSol(false);
                 break;
 
-                /*case 'g':
-                    //deposerAngle(true);
-                    break;
+            /*case 'g':
+                //deposerAngle(true);
+                break;
 
-                case 'h':
-                    //deposerAngle(false);
-                    break;*/
+            case 'h':
+                //deposerAngle(false);
+                break;*/
 
             default:
                 SerialCom.println("m macro inconnue");

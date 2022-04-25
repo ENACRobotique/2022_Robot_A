@@ -10,6 +10,7 @@
 #include "poelon.h"
 #include "DisplayController.h"
 #include "macros.h"
+#include "state_machine.h"
 
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
@@ -29,6 +30,31 @@ int valDisplayed = 0;
 char color = 'n';
 
 #ifndef UNIT_TEST
+
+StateMachine bras_main_pompe_ev_av ({st_neutral_noload_start_av, 
+                                     st_neutral_noload_end_av,
+                                     st_neutral_load_start_av, 
+                                     st_neutral_load_end_av,
+                                     st_get_av,
+                                     st_instore_start_av,
+                                     st_instore_mid_av,
+                                     st_instore_end_av,
+                                     st_fromstore_start_av,
+                                     st_fromstore_end_av,
+                                     st_put_start_av,
+                                     st_put_end_av});
+StateMachine bras_main_pompe_ev_ar ({st_neutral_noload_start_ar, 
+                                     st_neutral_noload_end_ar,
+                                     st_neutral_load_start_ar, 
+                                     st_neutral_load_end_ar,
+                                     st_get_ar,
+                                     st_instore_start_ar,
+                                     st_instore_mid_ar,
+                                     st_instore_end_ar,
+                                     st_fromstore_start_ar,
+                                     st_fromstore_end_ar,
+                                     st_put_start_ar,
+                                     st_put_end_ar});
 
 void setup()
 {
@@ -61,6 +87,8 @@ void setup()
     // mise des AX-12 en neutre sans palets
     //neutre(true);
     //neutre(false);
+    bras_main_pompe_ev_ar.start();
+    bras_main_pompe_ev_av.start();
 }
 
 // double sp[4] = {100, 0, -100, 0};
@@ -101,8 +129,20 @@ void loop()
         // Serial2.println(AX12As.readLoad(6));
     }
     if (state_machine_check.check()){
-        bras_main_pompe_ev_av.checkAutoTransitions();
-        bras_main_pompe_ev_ar.checkAutoTransitions();
+        if (bras_main_pompe_ev_ar.isStarted()){
+            //Serial2.print("AR: ");
+            //Serial2.print(bras_main_pompe_ev_ar.current_state());
+            bras_main_pompe_ev_ar.checkAutoTransitions();
+            //Serial2.print(" ");
+            //Serial2.println(bras_main_pompe_ev_ar.current_state());
+        }
+        if (bras_main_pompe_ev_av.isStarted()){
+            //Serial2.print("AV: ");
+            //Serial2.print(bras_main_pompe_ev_av.current_state());
+            bras_main_pompe_ev_av.checkAutoTransitions();
+            //Serial2.print(" ");
+            //Serial2.println(bras_main_pompe_ev_av.current_state());
+        }
     }
 
     // if(metro_test.check()){
