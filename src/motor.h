@@ -23,6 +23,8 @@ public:
 	void trapeze();
 	void stop();
 private:
+	const int CMD_TIMEOUT = 700;
+	unsigned long last_cmd;
 	double goal_speed;
 	double goal_omega;
 	double cons_speed;

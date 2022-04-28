@@ -20,6 +20,7 @@ PID pidSpeed=PID(0.5, 1, 0.0, -255.0, 255.0);
 PID pidOmega=PID(40.0, 100.0, 0.0, -255.0, 255.0);
 
 void MotorControl::set_cons(double speed, double omega) {
+	last_cmd = millis();
 	goal_speed = speed;
 	goal_omega = omega;
 }
@@ -88,6 +89,9 @@ void MotorControl::send_mot_signal(int spdm1, int spdm2){ //speed motor in pwm s
 
 
 void MotorControl::update() { //asservissement
+	if (last_cmd + CMD_TIMEOUT > millis()){
+		stop();
+	}
 	trapeze();
 	double error_speed = cons_speed - odom.get_speed_motor();
 	double cmd_speed = pidSpeed.update(error_speed);
