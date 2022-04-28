@@ -21,7 +21,10 @@ public:
         float output = kp * error + ki * integral + kd * delta_error;
         return clamp(min, max, output);
     }
-    void reset();
+    void reset() {
+        integral = 0.0;
+        prev_error = 0.0;
+    }
     void set_kp(float kp) { this->kp = kp; }
     void set_ki(float ki){ this->ki = ki; }
     // void set_kd(float kd);

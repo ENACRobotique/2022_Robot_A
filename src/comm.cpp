@@ -32,7 +32,7 @@ void Comm::parse_data()
 {
     if (buffer[0] == 's')
     { // Stop
-        motor.set_cons(0, 0);
+        motor.stop();
         SerialCom.println("m Stopping robot.");
     }
     else if (buffer[0] == 'g')
