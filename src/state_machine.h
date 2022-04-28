@@ -65,6 +65,8 @@ class StateMachine {
         void handleEvent(int event){
             int newState = stateList[state].manualTransition(event);
             if (newState == -2){
+                Serial2.println("queued");
+                Serial2.println(event);
                 eventQueue.insert(eventQueue.begin(), event);
             } else if (newState != -1){
                 state = newState;
@@ -79,6 +81,7 @@ class StateMachine {
 
         void checkAutoTransitions(){
             u_int32_t st_auto_d = stateList[state].autoDuration();
+            bool smth_done = false;
             if (st_auto_d >= 0){ //check auto timed transition
                 if (millis() > st_auto_d +  lastTransition){
                     int newState = stateList[state].autoTransition();
@@ -86,20 +89,31 @@ class StateMachine {
                         state = newState;
                         lastTransition = millis();
                         stateList[state].enterAction();
+                        smth_done = true;
                     }
                 }
-            } else if (eventQueue.size() > 0){ //if nothing was done, try to execute a queued event
+            }
+            if ((!smth_done) && (eventQueue.size() > 0)){ //if nothing was done, try to execute a queued event
+                int queued_evt = eventQueue.back();
+                eventQueue.pop_back();
+                Serial2.println("dequeued");
+                Serial2.println(queued_evt);
+                handleEvent(queued_evt);
+                /*Serial2.println("queuetest");
                 int queued_evt = eventQueue[eventQueue.size()];
                 int newState = stateList[state].manualTransition(queued_evt);
                 if (newState != -2){
-                    if (newState == -1){
-                        eventQueue.pop_back();
-                    } else if (newState > -1){
+                    Serial2.println(state);
+                    Serial2.println("dequeued");
+                    Serial2.println(newState);
+                    eventQueue.pop_back();
+                    if (newState > -1){
+                        Serial2.println("exec");
                         state = newState;
                         lastTransition = millis();
                         stateList[state].enterAction();
                     }
-                }
+                }*/
             }
         };
 
