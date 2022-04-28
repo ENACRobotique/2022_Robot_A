@@ -89,7 +89,7 @@ void MotorControl::send_mot_signal(int spdm1, int spdm2){ //speed motor in pwm s
 
 
 void MotorControl::update() { //asservissement
-	if (last_cmd + CMD_TIMEOUT > millis()){
+	if (last_cmd + CMD_TIMEOUT < millis()){
 		this->stop();
 	}
 	trapeze();
