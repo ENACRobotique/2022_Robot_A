@@ -91,7 +91,7 @@ void loop()
     }
     if (metro_spam_valCapt.check())
     {
-        if (digitalRead(COLOR) == LOW)
+        if (digitalRead(COLOR) == HIGH)
         {
             color = 'j';
         }
@@ -118,6 +118,8 @@ void loop()
             //Serial2.print(" ");
             //Serial2.println(bras_main_pompe_ev_av.current_state());
         }
+        //printing state machine states to serial as actuator value
+        radio.reportStateMachineStates(bras_main_pompe_ev_av.current_state(), bras_main_pompe_ev_ar.current_state());
     }
 
     // if(metro_test.check()){

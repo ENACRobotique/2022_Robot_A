@@ -317,3 +317,16 @@ void Comm::spamValeursCapt()
     SerialCom.print("m Color = ");
     SerialCom.println(color);
 }
+
+void Comm::reportStateMachineStates(int av, int ar){
+    SerialCom.print("c mv ");//état state machine avant
+    SerialCom.println(av);
+    SerialCom.print("c mr ");//état state machine arrière
+    SerialCom.println(ar);
+    SerialCom.print("c hv ");//contenu main avant
+    SerialCom.println(av_hand_content);
+    SerialCom.print("c hr ");//contenu main arrière
+    SerialCom.println(ar_hand_content);
+    SerialCom.print("c sc ");//contenu réserve
+    SerialCom.println(store_content);
+}

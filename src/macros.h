@@ -106,5 +106,12 @@ const int TRIGGER_PUT = 3;
 extern StateMachine bras_main_pompe_ev_av;
 extern StateMachine bras_main_pompe_ev_ar;
 
+//variable de stockage du contenu des mains et du centre
+//0: rien
+//1: palet
+//2: statuette/réplique
+extern int av_hand_content;
+extern int ar_hand_content;
+extern int store_content;
 
 #endif //__MACROS__
