@@ -50,7 +50,7 @@ void setup()
     motor.init(); // initialisation moteur
     pinMode(POMPE1, OUTPUT);
     pinMode(POMPE2, OUTPUT);
-    if (digitalRead(COLOR) == LOW)
+    if (digitalRead(COLOR) == HIGH)
     {
         color = 'j';
     }
@@ -63,7 +63,7 @@ void setup()
     //neutre(true);
     //neutre(false);
     bras_main_pompe_ev_ar.start();
-    bras_main_pompe_ev_av.start();
+    //bras_main_pompe_ev_av.start();
 }
 
 // double sp[4] = {100, 0, -100, 0};
@@ -99,7 +99,7 @@ void loop()
         {
             color = 'v';
         }
-        radio.spamValeursCapt();
+        //radio.spamValeursCapt();
         // Serial2.println("TO REMOVE BELOW in MAIN : ..");
         // Serial2.println(AX12As.readLoad(6));
     }
