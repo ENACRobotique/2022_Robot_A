@@ -9,6 +9,7 @@
 #include "DisplayController.h"
 #include "main.h"
 #include "macros.h"
+#include "integration_test.h"
 
 // recap des messages en entrée:
 // v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
@@ -239,12 +240,13 @@ void Comm::parse_data()
             }
         }
     }
-    else if (buffer[0] == 't') // test
+    else if (buffer[0] == 'i') // Integration test
     {
         int test_index;
-        int params = sscanf(buffer, "t %d", &test_index);
-        params++;
-        params--; // Ajouté pour faire dégager un warning
+        //char* splitted_buffer = strtok(buffer," ");
+        char* test_name;
+        memcpy(test_name, buffer+2, strlen(buffer)-1); //TODO : a tester c'est une suggestion du copilote
+        integration_test::launch_test(test_name);
     }
 }
 
