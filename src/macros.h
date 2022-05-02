@@ -41,7 +41,7 @@ const int SSol_DELAY = 1500;
 // mettre
 const int MAIN_AV_M = 200;
 const int MAIN_AR_M = 500;
-const int BRAS_AV_M = 680;
+const int BRAS_AV_M = 685;
 const int BRAS_AR_M = 580;
 const int METTRE_DELAY_HAND = 250;
 const int METTRE_DELAY = 700;
@@ -52,8 +52,8 @@ const int BRAS_AV_S_PRE = 550;
 const int BRAS_AR_S_PRE = 700;
 const int MAIN_AV_S = 110;
 const int MAIN_AR_S = 600;
-const int BRAS_AV_S = 725;
-const int BRAS_AR_S = 570;
+const int BRAS_AV_S = 790;
+const int BRAS_AR_S = 515;
 const int SORTIR_DELAY_MAIN = 500;
 const int SORTIR_DELAY = 1500;
 
