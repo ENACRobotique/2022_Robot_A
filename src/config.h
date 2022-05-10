@@ -58,6 +58,7 @@ const int DISPLAY_CLK = PC10;
 const int DISPLAY_DATA = PC12;
 
 const int COLOR = PC3;
+const int TIRETTE = PC2;
 
 //TODO: valeurs
 const int POELON_READ_VIOLET_INF = 0;

@@ -9,6 +9,7 @@
 #include "DisplayController.h"
 #include "main.h"
 #include "macros.h"
+#include "config.h"
 #include "integration_test.h"
 
 // recap des messages en entrée:
@@ -29,6 +30,7 @@
 // c <string> <int> : retour de capteur
 
 // Analyse des informations contenues dans les messages SerialCom
+
 void Comm::parse_data()
 {
     if (buffer[0] == 's')
@@ -191,6 +193,23 @@ void Comm::parse_data()
                 afficheur.setNbDisplayed(val);
             }
         }
+        else if (buffer[2]== 'r'){
+            //On demende la valeur de la resistance depuis le haut niveau
+            float res = poel.lireResistance();
+            int retourn = 0;
+            if (digitalRead(COLOR)==LOW){//On est côté Violet
+                if (res>0.2 && res <0.7){//On veux une valeur à 0.47
+                    retourn =1;
+                }
+            }
+            else{//On est côté Jaune
+                if (res>0.7 && res <2.0){//On veux une valeur à 1
+                    retourn =1;
+                }
+            }
+            SerialCom.print ("c LR ");
+            SerialCom.println (retourn);
+        }
         else if (buffer[2] == 'm')
         { // c'est une macro
             switch (buffer[3])
@@ -250,6 +269,13 @@ void Comm::parse_data()
     }
 }
 
+//Report du démarage
+void Comm::reportStart(){
+    for (int i=0;i<3;i++){
+        SerialCom.println("c TI 42");
+    }
+}
+
 // Récupération des derniers messages sur le buffer SerialCom et traitement
 void Comm::update()
 {
@@ -302,8 +328,6 @@ void Comm::spamValeursCapt()
 {
     SerialCom.print("c s1 ");
     SerialCom.println(poel.recupEtat());
-    SerialCom.print("c LR ");
-    SerialCom.println(poel.lireResistance() * 10.f);
     SerialCom.print("c a4 ");
     SerialCom.println(AX12As.readPosition((uint8_t)4));
     SerialCom.print("c a5 ");

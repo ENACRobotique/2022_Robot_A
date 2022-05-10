@@ -8,7 +8,7 @@ InterruptEncoder encoder_m2(ENCODER_MOTOR2_A, ENCODER_MOTOR2_B);
 void Odometry::init() {
     encoder_m1.init();
     encoder_m2.init();
-    _x = 200.f; _y = 1200.f; _theta = 0;
+    _x = 140.f; _y = 1140.f; _theta = 0;
     _speed = 0; _omega = 0;
     last_time = 0;
 }

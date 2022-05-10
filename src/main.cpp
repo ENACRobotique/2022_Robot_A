@@ -15,6 +15,7 @@
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
 Poelon poel = Poelon();
+int hasStarted = 0;
 
 Metro metro_odom = Metro(ENCODER_PERIOD);
 // Metro metro_comm = Metro(COMM_RATE);
@@ -33,6 +34,7 @@ char color = 'n';
 
 void setup()
 {
+    pinMode(TIRETTE, INPUT_PULLUP);
     pinMode(COLOR, INPUT_PULLUP);
     AX12As.init(&Serial1);
     // AX12As.torqueStatus(6, true);
@@ -72,6 +74,10 @@ void setup()
 
 void loop()
 {
+    if ((! hasStarted)&(digitalRead(TIRETTE)==LOW)){
+        hasStarted=1;
+        radio.reportStart();
+    }
     radio.update();
     if (metro_odom.check())
     { // mise à jour périodique de l'odométrie (logiciel)
