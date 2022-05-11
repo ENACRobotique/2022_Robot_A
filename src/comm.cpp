@@ -11,6 +11,7 @@
 #include "macros.h"
 #include "config.h"
 #include "integration_test.h"
+#include "Pression.h"
 
 // recap des messages en entrée:
 // v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
@@ -110,6 +111,16 @@ void Comm::parse_data()
                 {
                     AX12As.moveSpeed(idAX12, valeur, 400);
                 }
+            }
+        }
+        else if (buffer[2] == 'b'){//Demmande de pression
+            if(buffer[3] == '1'){
+                SerialCom.print("c LP1 ");
+                SerialCom.println(barometre.readCapteur1());
+            }
+            else if (buffer[3] == '2'){
+                SerialCom.print("c LP2 ");
+                SerialCom.println(barometre.readCapteur2());
             }
         }
         else if (buffer[2] == 'p')

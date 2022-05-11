@@ -11,7 +11,9 @@
 #include "DisplayController.h"
 #include "macros.h"
 #include "state_machine.h"
+#include "Pression.h"
 
+CapteurPression barometre;
 Odometry odom = Odometry();
 MotorControl motor = MotorControl();
 Poelon poel = Poelon();
@@ -34,6 +36,7 @@ char color = 'n';
 
 void setup()
 {
+    barometre.init();
     pinMode(TIRETTE, INPUT_PULLUP);
     pinMode(COLOR, INPUT_PULLUP);
     AX12As.init(&Serial1);
@@ -91,6 +94,7 @@ void loop()
     }
     if (metro_spam_odom.check())
     { // mise à jour périodique de l'odométrie (xbee)
+        barometre.update();
         radio.spam_odom();
         ev1.update();
         ev2.update();

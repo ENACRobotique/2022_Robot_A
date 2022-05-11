@@ -44,6 +44,9 @@ const int POMPE1 = PB14;
 const int POMPE2 = PB15;
 const int EV1 = PB13;
 const int EV2 = PA10;
+const int CLK_PRESSION = PC11;
+const int DATA_PRESSION1 = PA5;
+const int DATA_PRESSION2 = PA6;
 const long TEMPS_OUVERTURE_VANNE = 1500;//ms
 
 const int POELON_SERVO_PIN = PA0; //TODO: mettre le bon pin (PA0 servo1, PA1 servo2 ou PB0 servo3)
