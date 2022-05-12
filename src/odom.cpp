@@ -1,4 +1,5 @@
 #include <odom.h>
+#include <comm.h>
 #include "InterruptEncoder.h"
 #include "../lib/metro.h"
 
@@ -8,7 +9,12 @@ InterruptEncoder encoder_m2(ENCODER_MOTOR2_A, ENCODER_MOTOR2_B);
 void Odometry::init() {
     encoder_m1.init();
     encoder_m2.init();
-    _x = 140.f; _y = 1140.f; _theta = 0;
+    if (digitalRead(COLOR) == HIGH){
+        _x = 140.f; _y = 1140.f; _theta = 0;
+    } else {
+        _x = 3000.0f-140.f; _y = 1140.f; _theta = 3.1415;
+    }
+    
     _speed = 0; _omega = 0;
     last_time = 0;
 }
