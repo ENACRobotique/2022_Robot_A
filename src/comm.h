@@ -26,5 +26,5 @@ private:
     void parse_data();
 };
 extern Comm radio;
-extern char color;
+extern int color;
 #endif
