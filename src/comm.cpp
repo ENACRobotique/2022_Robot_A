@@ -351,7 +351,7 @@ void Comm::spamValeursCapt()
     SerialCom.println(ev1.getState());
     SerialCom.print("c e2 ");
     SerialCom.println(ev2.getState());
-    SerialCom.print("m Color = ");
+    SerialCom.print("c co ");
     SerialCom.println(color);
 }
 
