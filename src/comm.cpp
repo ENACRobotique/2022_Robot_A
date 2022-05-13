@@ -39,6 +39,14 @@ void Comm::parse_data()
         motor.stop();
         SerialCom.println("m Stopping robot.");
     }
+    else if (buffer[0] == '@'){
+        int x,y,theta;
+        int nbRcv = sscanf(buffer, "@ %d %d %d", &x, &y, &theta);
+            if (nbRcv == 3){
+                odom.set_pos(x,y,theta/1000);
+            }
+
+    }
     else if (buffer[0] == 'g')
     {
         int kp, ki;

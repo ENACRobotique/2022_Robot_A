@@ -9,6 +9,12 @@ class Odometry{
 public :
     void init();
 
+    void set_pos (int x, int y, double theta){
+        _x = x;
+        _y = y;
+        _theta =theta;
+    }
+    
     double get_speed_motor() {
         return _speed;
     }
