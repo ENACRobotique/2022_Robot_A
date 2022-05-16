@@ -17,7 +17,7 @@ class CapteurPression{
     private:
         uint32_t valeur1;
         uint32_t valeur2;
-        int spamOn;
+        int spamOn = 0;
 
 };
 extern CapteurPression barometre;
