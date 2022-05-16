@@ -22,9 +22,10 @@ void CapteurPression::update(){
 
         if (digitalRead(DATA_PRESSION1)==HIGH){bitSet(valeur1,i);}
         if (digitalRead(DATA_PRESSION2)==HIGH){bitSet(valeur2,i);}
-        if (spamOn){
-            radio.spam_baro();
-        }
+        
+    }
+    if (spamOn){
+        radio.spam_baro();
     }
 
 }
