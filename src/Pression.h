@@ -10,11 +10,14 @@ class CapteurPression{
         uint32_t readCapteur2(){return valeur2;}
         void update();
         void init();
+        void setSpamOn(){spamOn=1;};
+        void shutDownSpam(){spamOn=0;};
 
 
     private:
         uint32_t valeur1;
         uint32_t valeur2;
+        int spamOn;
 
 };
 extern CapteurPression barometre;

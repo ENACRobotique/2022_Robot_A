@@ -8,6 +8,7 @@ class Comm
 {
 public:
     void update();
+    void spam_baro();
     void spam_odom();
     void spamValeursCapt();
     void reportStateMachineStates(int av, int ar);

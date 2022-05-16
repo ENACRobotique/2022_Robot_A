@@ -115,12 +115,10 @@ void Comm::parse_data()
         }
         else if (buffer[2] == 'b'){//Demmande de pression
             if(buffer[3] == '1'){
-                SerialCom.print("c LP1 ");
-                SerialCom.println(barometre.readCapteur1());
+                barometre.setSpamOn();
             }
-            else if (buffer[3] == '2'){
-                SerialCom.print("c LP2 ");
-                SerialCom.println(barometre.readCapteur2());
+            else if (buffer[3] == '0'){
+                barometre.shutDownSpam();
             }
         }
         else if (buffer[2] == 'p')
@@ -312,6 +310,12 @@ void Comm::update()
             }
         }
     }
+}
+void Comm::spam_baro(){//inversion volontaire pour optimiser les branchements
+    SerialCom.print("c b1 ");
+    SerialCom.println(barometre.readCapteur2());
+    SerialCom.print("c b2 ");
+    SerialCom.println(barometre.readCapteur1());
 }
 void Comm::spam_odom()
 {
