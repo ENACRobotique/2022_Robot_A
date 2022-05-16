@@ -30,7 +30,7 @@ Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
 DisplayController afficheur = DisplayController();
 int valDisplayed = 0;
-char color = 'n';
+int color = 0;
 
 #ifndef UNIT_TEST
 
@@ -57,11 +57,11 @@ void setup()
     pinMode(POMPE2, OUTPUT);
     if (digitalRead(COLOR) == HIGH)
     {
-        color = 'j';
+        color = 0; //j
     }
     else
     {
-        color = 'v';
+        color = 1; //v
     }
 
     // mise des AX-12 en neutre sans palets
