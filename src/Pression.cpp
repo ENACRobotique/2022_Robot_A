@@ -10,8 +10,8 @@ void CapteurPression::init(){
 void CapteurPression::update(){
     valeur1=0;
     valeur2=0;
-    uint32_t tableauVal1[10];
-    uint32_t tableauVal2[10];
+    uint32_t temp1;
+    uint32_t temp2;
 
     digitalWrite (CLK_PRESSION, LOW);
     delayMicroseconds(1);
@@ -22,14 +22,18 @@ void CapteurPression::update(){
             delayMicroseconds(1);
             digitalWrite (CLK_PRESSION, LOW);
 
-            if (digitalRead(DATA_PRESSION1)==HIGH){bitSet(tableauVal1[j],i);}
-            if (digitalRead(DATA_PRESSION2)==HIGH){bitSet(tableauVal2[j],i);}
+            if (digitalRead(DATA_PRESSION1)==HIGH){bitSet(temp1,i);}
+            if (digitalRead(DATA_PRESSION2)==HIGH){bitSet(temp2,i);}
             delayMicroseconds(1);
         }
-    }
-    for(int i =0;i<10;i++){
-        valeur1 += tableauVal1[i]/10;
-        valeur2 += tableauVal2[i]/10;
+        if (j==0){
+            valeur1=temp1;
+            valeur2=temp2;
+        }
+        else{
+            valeur1 = min (valeur1,temp1);
+            valeur2 = min (valeur2,temp2);
+        }
     }
     if (spamOn){
         radio.spam_baro();
