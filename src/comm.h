@@ -25,7 +25,7 @@ private:
 
     // méthodes privées
     void parse_data();
-    void cmdStop();}
+    void cmdStop();
     void cmdResetPosition();
     void cmdSetPID();
     void cmdVitesse();
@@ -36,7 +36,7 @@ private:
     void cmdActionneurServo();
     void cmdActionneurDisplay();
     void cmdActionneurOhmMetre();
-    void cmdMacro()
+    void cmdMacro();
 };
 extern Comm radio;
 extern int color;

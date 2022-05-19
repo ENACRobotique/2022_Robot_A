@@ -133,8 +133,7 @@ void Comm::cmdActionneurServo(){
     }
 }
 void Comm::cmdMacro(){
-    switch (buffer[3])
-        {
+    switch (buffer[3]){
         case 'a':
             bras_main_pompe_ev_av.handleEvent(TRIGGER_GET);
             break;
@@ -178,7 +177,6 @@ void Comm::cmdMacro(){
         default:
             SerialCom.println("m macro inconnue");
         }
-    }
 }
 void Comm::cmdActionneurDisplay(){
     int val = -1;
@@ -205,13 +203,13 @@ void Comm::cmdActionneurOhmMetre(){
 }
 void Comm::parse_data()
 {
-    if(false){break;}
+    if(false){}
     else if (buffer[0] == 's'){cmdStop();}
     else if (buffer[0] == '@'){cmdResetPosition();}
     else if (buffer[0] == 'g'){cmdSetPID();}
     else if (buffer[0] == 'v'){cmdVitesse();}
     else if (buffer[0] == 'a'){//Actionneurs
-        if(false){break;}
+        if(false){}
         else if (buffer[2] == 'a'){cmdActionneurAX12A();}//AX12
         else if (buffer[2] == 'b'){cmdActionneurBaro();}//Demmande de pression
         else if (buffer[2] == 'p'){cmdActionneurPompe();}// C'est une pompe
