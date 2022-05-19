@@ -25,6 +25,18 @@ private:
 
     // méthodes privées
     void parse_data();
+    void cmdStop();}
+    void cmdResetPosition();
+    void cmdSetPID();
+    void cmdVitesse();
+    void cmdActionneurAX12A();
+    void cmdActionneurBaro();
+    void cmdActionneurPompe();
+    void cmdActionneurVanne();
+    void cmdActionneurServo();
+    void cmdActionneurDisplay();
+    void cmdActionneurOhmMetre();
+    void cmdMacro()
 };
 extern Comm radio;
 extern int color;
