@@ -16,7 +16,7 @@ double sign(double nb) {
 }
 
 
-PID pidSpeed=PID(0.5, 1, 0.0, -255.0, 255.0);
+PID pidSpeed=PID(0.3, 1.5, 0.0, -255.0, 255.0); //PID(0.5, 1.0, 0.0, -255.0, 255.0);
 PID pidOmega=PID(40.0, 100.0, 0.0, -255.0, 255.0);
 
 void MotorControl::set_cons(double speed, double omega) {
