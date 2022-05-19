@@ -12,8 +12,9 @@
 #include "config.h"
 #include "integration_test.h"
 #include "Pression.h"
+#include "bandeauLED.h"
 
-// recap des messages en entrée:
+// recap des messages en entrée: !!!PAS A JOUR/INCOMPLET!!!
 // v <int> <int>: commande de vitesse <linéaire * 1000> <omega * 1000>
 // s : arrêt du robot
 // a <id> <int> : ordre à un actionneur. id est deux caractères,
@@ -32,261 +33,288 @@
 
 // Analyse des informations contenues dans les messages SerialCom
 
-void Comm::parse_data()
+void Comm::cmdStop()
 {
-    if (buffer[0] == 's')
-    { // Stop
-        motor.stop();
-        SerialCom.println("m Stopping robot.");
-    }
-    else if (buffer[0] == '@'){
-        int x,y,theta;
-        int nbRcv = sscanf(buffer, "@ %d %d %d", &x, &y, &theta);
-            if (nbRcv == 3){
-                odom.set_pos(x,y,theta/1000);
-            }
+    // Stop
+    motor.stop();
+    SerialCom.println("m Stopping robot.");
+}
 
-    }
-    else if (buffer[0] == 'g')
+void Comm::cmdForceCurrentPosition()
+{
+    int x, y, theta;
+    int nbRcv = sscanf(buffer, "@ %d %d %d", &x, &y, &theta);
+    if (nbRcv == 3)
     {
-        int kp, ki;
-        char c;
-        int nbRec = sscanf(buffer, "g %c %d %d", &c, &kp, &ki);
-        if (nbRec == 3)
-        {
-            motor.set_PID(c, kp, ki);
-            SerialCom.println("m Gains changed.");
-        }
-        else
-        {
-            SerialCom.println("m Error: wrong number of arguments.");
-        }
-    }
-    else if (buffer[0] == 'v')
-    { // Vitesse
-        int x, omega;
-        int nb = sscanf(buffer, "v %d %d", &x, &omega);
-        if (nb == 2)
-        {
-            motor.set_cons(static_cast<float>(x), static_cast<float>(omega) / 10.f);
-        }
-    }
-    else if (buffer[0] == 'k')
-    {
-        sentDescr = 0;
-    }
-    else if (buffer[0] == 'd')
-    {
-        if (sentDescr == 0)
-        {
-            SerialCom.println("b ma 0 1 1 RW u");
-            SerialCom.println("b mc 0 1 1 RW u");
-            SerialCom.println("b me 0 1 1 RW u");
-            SerialCom.println("b mg 0 1 1 RW u");
-            SerialCom.println("b mb 0 1 1 RW u");
-            SerialCom.println("b md 0 1 1 RW u");
-            SerialCom.println("b mf 0 1 1 RW u");
-            SerialCom.println("b mh 0 1 1 RW u");
-            SerialCom.println("b d 0 9999 1 RW u");
-            SerialCom.println("b a6 360 690 1 RW u");
-            SerialCom.println("b a7 0 900 1 RW u");
-            SerialCom.println("b a4 540 930 1 RW u");
-            SerialCom.println("b a5 0 900 1 RW u");
-            SerialCom.println("b p1 0 1 1 RW u");
-            SerialCom.println("b p2 0 1 1 RW u");
-            SerialCom.println("b e1 0 1 1 RW u");
-            SerialCom.println("b e2 0 1 1 RW u");
-            SerialCom.println("b s1 50 140 10 RW °");
-            SerialCom.println("b LR 0.0 99.0 0.1 R hOhm");
-            sentDescr = 1;
-        }
-    }
-    else if (buffer[0] == 'a')
-    { // commande Actionneur
-
-        if (buffer[2] == 'a')
-        { // C'est un AX12
-            int idAX12Sign, valeur;
-            int params = sscanf(buffer, "a a%d %d", &idAX12Sign, &valeur);
-            unsigned int idAX12 = (unsigned int)idAX12Sign;
-            if (params == 2)
-            {
-                if (idAX12 % 2 == 0)
-                { // bras
-                    AX12As.moveSpeed(idAX12, valeur, 150);
-                }
-                else
-                {
-                    AX12As.moveSpeed(idAX12, valeur, 400);
-                }
-            }
-        }
-        else if (buffer[2] == 'b'){//Demmande de pression
-            if(buffer[3] == '1'){
-                barometre.setSpamOn();
-            }
-            else if (buffer[3] == '0'){
-                barometre.shutDownSpam();
-            }
-        }
-        else if (buffer[2] == 'p')
-        { // C'est une pompe
-            int idPompe, valeur;
-            int params = sscanf(buffer, "a p%d %d", &idPompe, &valeur);
-            if (params == 2)
-            {
-                int pSelect = 0;
-                if (idPompe == 1)
-                {
-                    pSelect = POMPE1;
-                }
-                else if (idPompe == 2)
-                {
-                    pSelect = POMPE2;
-                }
-                if (pSelect != 0)
-                {
-                    if (valeur == 0)
-                    {
-                        digitalWrite(pSelect, LOW);
-                    }
-                    else
-                    {
-                        digitalWrite(pSelect, HIGH);
-                    }
-                }
-            }
-        }
-        else if (buffer[2] == 'e')
-        { // C'est une electro-vanne
-            int idVanne, valeur;
-            int params = sscanf(buffer, "a e%d %d", &idVanne, &valeur);
-            if (params == 2)
-            {
-                ElecVanne *eVSelect = &ev1;
-                int recon = 0;
-                if (idVanne == 1)
-                {
-                    eVSelect = &ev1;
-                    recon++;
-                }
-                else if (idVanne == 2)
-                {
-                    eVSelect = &ev2;
-                    recon++;
-                }
-                if (recon)
-                {
-                    if (valeur == 0)
-                    {
-                        eVSelect->putOff();
-                    }
-                    else
-                    {
-                        eVSelect->putOn();
-                    }
-                }
-            }
-        }
-        else if (buffer[2] == 's')
-        { // c'est un servo
-            int idServ = 0;
-            int valeur = 0;
-            int params = sscanf(buffer, " a s%d %d", &idServ, &valeur);
-            if (params == 2)
-            {
-                if (idServ == 1)
-                {
-                    poel.changerEtat(valeur);
-                }
-            }
-        }
-        else if (buffer[2] == 'd')
-        { // c'est un display 7 segments
-            int val = -1;
-            int params = sscanf(buffer, "a d %d", &val);
-            if (params == 1)
-            {
-                afficheur.setNbDisplayed(val);
-            }
-        }
-        else if (buffer[2]== 'r'){
-            //On demende la valeur de la resistance depuis le haut niveau
-            float res = poel.lireResistance();
-            int retourn = 0;
-            if (digitalRead(COLOR)==LOW){//On est côté Violet
-                if (res>0.2 && res <0.7){//On veux une valeur à 0.47
-                    retourn =1;
-                }
-            }
-            else{//On est côté Jaune
-                if (res>0.7 && res <2.0){//On veux une valeur à 1
-                    retourn =1;
-                }
-            }
-            SerialCom.print ("c LR ");
-            SerialCom.println (retourn);
-        }
-        else if (buffer[2] == 'm')
-        { // c'est une macro
-            switch (buffer[3])
-            {
-            case 'a':
-                bras_main_pompe_ev_av.handleEvent(TRIGGER_GET);
-                break;
-
-            case 'b':
-                bras_main_pompe_ev_ar.handleEvent(TRIGGER_GET);
-                break;
-
-            case 'c':
-                bras_main_pompe_ev_av.handleEvent(TRIGGER_INSTORE);
-                break;
-
-            case 'd':
-                bras_main_pompe_ev_ar.handleEvent(TRIGGER_INSTORE);
-                break;
-
-            case 'e':
-                bras_main_pompe_ev_av.handleEvent(TRIGGER_FROMSTORE);
-                break;
-
-            case 'f':
-                bras_main_pompe_ev_ar.handleEvent(TRIGGER_FROMSTORE);
-                break;
-
-            case 'g':
-                bras_main_pompe_ev_av.handleEvent(TRIGGER_PUT);
-                break;
-
-            case 'h':
-                bras_main_pompe_ev_ar.handleEvent(TRIGGER_PUT);
-                break;
-
-            /*case 'g':
-                //deposerAngle(true);
-                break;
-
-            case 'h':
-                //deposerAngle(false);
-                break;*/
-
-            default:
-                SerialCom.println("m macro inconnue");
-            }
-        }
-    }
-    else if (buffer[0] == 'i') // Integration test
-    {
-        int test_index;
-        //char* splitted_buffer = strtok(buffer," ");
-        char* test_name;
-        memcpy(test_name, buffer+2, strlen(buffer)-1); //TODO : a tester c'est une suggestion du copilote
-        integration_test::launch_test(test_name);
+        odom.set_pos(x, y, theta / 1000);
     }
 }
 
-//Report du démarage
+void Comm::cmdGainChange()
+{
+    int kp, ki;
+    char c;
+    int nbRec = sscanf(buffer, "g %c %d %d", &c, &kp, &ki);
+    if (nbRec == 3)
+    {
+        motor.set_PID(c, kp, ki);
+        SerialCom.println("m Gains changed.");
+    }
+    else
+    {
+        SerialCom.println("m Error: wrong number of arguments.");
+    }
+}
+
+void Comm::cmdSetVitesse()
+{ // Vitesse
+    int x, omega;
+    int nb = sscanf(buffer, "v %d %d", &x, &omega);
+    if (nb == 2)
+    {
+        motor.set_cons(static_cast<float>(x), static_cast<float>(omega) / 10.f);
+    }
+}
+
+void Comm::cmdK()
+{
+    sentDescr = 0;
+}
+
+void Comm::cmdIntegrationTest()
+{
+    int test_index;
+    // char* splitted_buffer = strtok(buffer," ");
+    char *test_name;
+    memcpy(test_name, buffer + 2, strlen(buffer) - 1); // TODO : a tester c'est une suggestion du copilote
+    integration_test::launch_test(test_name);
+}
+
+void cmdBandeauLED()
+{   
+    int idLED;
+    int nbRecv = sscanf(buffer,"l %d",&idLED);
+    if (nbRecv){
+        rubanLED.setLED_ON(idLED);
+    }
+}
+
+void Comm::cmdActionneurAX12()
+{ // C'est un AX12
+    int idAX12Sign, valeur;
+    int params = sscanf(buffer, "a a%d %d", &idAX12Sign, &valeur);
+    unsigned int idAX12 = (unsigned int)idAX12Sign;
+    if (params == 2)
+    {
+        if (idAX12 % 2 == 0)
+        { // bras
+            AX12As.moveSpeed(idAX12, valeur, 150);
+        }
+        else
+        {
+            AX12As.moveSpeed(idAX12, valeur, 400);
+        }
+    }
+}
+
+void Comm::cmdActionneurDemandeDePression()
+{
+    if (buffer[3] == '1')
+    {
+        barometre.setSpamOn();
+    }
+    else if (buffer[3] == '0')
+    {
+        barometre.shutDownSpam();
+    }
+}
+
+void Comm::cmdActionneurPompe()
+{ // C'est une pompe
+    int idPompe, valeur;
+    int params = sscanf(buffer, "a p%d %d", &idPompe, &valeur);
+    if (params == 2)
+    {
+        int pSelect = 0;
+        if (idPompe == 1)
+        {
+            pSelect = POMPE1;
+        }
+        else if (idPompe == 2)
+        {
+            pSelect = POMPE2;
+        }
+        if (pSelect != 0)
+        {
+            if (valeur == 0)
+            {
+                digitalWrite(pSelect, LOW);
+            }
+            else
+            {
+                digitalWrite(pSelect, HIGH);
+            }
+        }
+    }
+}
+
+void Comm::cmdActionneurElectroVanne()
+{ // C'est une electro-vanne
+    int idVanne, valeur;
+    int params = sscanf(buffer, "a e%d %d", &idVanne, &valeur);
+    if (params == 2)
+    {
+        ElecVanne *eVSelect = &ev1;
+        int recon = 0;
+        if (idVanne == 1)
+        {
+            eVSelect = &ev1;
+            recon++;
+        }
+        else if (idVanne == 2)
+        {
+            eVSelect = &ev2;
+            recon++;
+        }
+        if (recon)
+        {
+            if (valeur == 0)
+            {
+                eVSelect->putOff();
+            }
+            else
+            {
+                eVSelect->putOn();
+            }
+        }
+    }
+}
+
+void Comm::cmdActionneurServo()
+{ // c'est un servo
+    int idServ = 0;
+    int valeur = 0;
+    int params = sscanf(buffer, " a s%d %d", &idServ, &valeur);
+    if (params == 2)
+    {
+        if (idServ == 1)
+        {
+            poel.changerEtat(valeur);
+        }
+    }
+}
+
+void Comm::cmdActionneurDisplay7()
+{ // c'est un display 7 segments
+    int val = -1;
+    int params = sscanf(buffer, "a d %d", &val);
+    if (params == 1)
+    {
+        afficheur.setNbDisplayed(val);
+    }
+}
+
+void Comm::cmdActionneurGetResistor()
+{
+    // On demende la valeur de la resistance depuis le haut niveau
+    float res = poel.lireResistance();
+    int retourn = 0;
+    if (digitalRead(COLOR) == LOW)
+    { // On est côté Violet
+        if (res > 0.2 && res < 0.7)
+        { // On veux une valeur à 0.47
+            retourn = 1;
+        }
+    }
+    else
+    { // On est côté Jaune
+        if (res > 0.7 && res < 2.0)
+        { // On veux une valeur à 1
+            retourn = 1;
+        }
+    }
+    SerialCom.print("c LR ");
+    SerialCom.println(retourn);
+}
+
+void Comm::cmdActionneurMacro()
+{ // c'est une macro
+    switch (buffer[3])
+    {
+    case 'a':
+        bras_main_pompe_ev_av.handleEvent(TRIGGER_GET);
+        break;
+
+    case 'b':
+        bras_main_pompe_ev_ar.handleEvent(TRIGGER_GET);
+        break;
+
+    case 'c':
+        bras_main_pompe_ev_av.handleEvent(TRIGGER_INSTORE);
+        break;
+
+    case 'd':
+        bras_main_pompe_ev_ar.handleEvent(TRIGGER_INSTORE);
+        break;
+
+    case 'e':
+        bras_main_pompe_ev_av.handleEvent(TRIGGER_FROMSTORE);
+        break;
+
+    case 'f':
+        bras_main_pompe_ev_ar.handleEvent(TRIGGER_FROMSTORE);
+        break;
+
+    case 'g':
+        bras_main_pompe_ev_av.handleEvent(TRIGGER_PUT);
+        break;
+
+    case 'h':
+        bras_main_pompe_ev_ar.handleEvent(TRIGGER_PUT);
+        break;
+
+        /*case 'g':
+            //deposerAngle(true);
+            break;
+
+        case 'h':
+            //deposerAngle(false);
+            break;*/
+
+    default:
+        SerialCom.println("m macro inconnue");
+    }
+}
+
+void Comm::parse_data()
+{
+    switch(buffer[0]) {
+        case 's': cmdStop(); break; /// Stopper le robot
+        case '@': cmdForceCurrentPosition(); break; /// ForceCurrentPosition (3 params : (x,y,theta en millièmes))
+        case 'g': cmdGainChange(); break; /// Définir les val du PID (3 params : c, kp, ki) 
+        case 'v': cmdSetVitesse(); break; /// Définir la vitesse du robot (2 paramètres : vX en mm/s, oméga en dizièmes)
+        case 'k': cmdK(); break; /// DEPRECATED (Arrêter l'envoi de la description)
+        case 'l': cmdBandeauLED(); break; /// Bandeau de LEDs (id de la LED à allumer)
+        case 'i': cmdIntegrationTest(); break; /// Integration test
+        case 'a':  /// Commandes Actionneurs...
+        {
+            switch(buffer[2]) {
+                case 'a': cmdActionneurAX12(); break; /// AX12 2 params (id, valeur)
+                case 'b': cmdActionneurDemandeDePression(); break; /// Demande la pression, 1 param: 1 ou 0 
+                case 'p': cmdActionneurPompe(); break; /// Pompes, (id, valeur)
+                case 'e': cmdActionneurElectroVanne(); break; /// Électrovannes (id, valeur binaire 0 ou 1)
+                case 's': cmdActionneurServo(); break; /// Servomoteur (id = 1, valeur = angle en degrés?)
+                case 'd': cmdActionneurDisplay7(); break; /// Display (la valeur à afficher)
+                case 'r': cmdActionneurGetResistor(); break; /// Lire la résistance, renvoie 0 ou 1 sur le Serial
+                case 'm': cmdActionneurMacro(); break; /// Les Macros, 1 param (la lettre identifiant la macro)
+                default: break; /// COMMANDE INCONNUE => l'ignorer!
+            }
+        }
+        default: break; /// COMMANDE INCONNUE => l'ignorer!
+    }
+}
+
+//Report du démarrage
 void Comm::reportStart(){
     for (int i=0;i<3;i++){
         SerialCom.println("c TI 42");

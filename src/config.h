@@ -49,6 +49,8 @@ const int DATA_PRESSION1 = PA5;
 const int DATA_PRESSION2 = PA6;
 const long TEMPS_OUVERTURE_VANNE = 1500;//ms
 
+const int PIN_BANDEAU_LED = PA1;
+
 const int POELON_SERVO_PIN = PA0; //TODO: mettre le bon pin (PA0 servo1, PA1 servo2 ou PB0 servo3)
 const int POELON_RETRACTED_ANGLE = 0; //TODO: mettre le bon angle
 const int POELON_DEPLOYED_ANGLE = 90; //TODO: mettre le bon angle
