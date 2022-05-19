@@ -24,24 +24,6 @@ private:
     int sentDescr = 0;
 
     // méthodes privées
-    void cmdStop();
-    void cmdForceCurrentPosition();
-    void cmdGainChange();
-    void cmdSetVitesse();
-    void cmdK();
-//    void cmdActionneur();
-    void cmdIntegrationTest();
-    void cmdBandeauLED();
-
-    void cmdActionneurAX12();
-    void cmdActionneurDemandeDePression();
-    void cmdActionneurPompe();
-    void cmdActionneurElectroVanne();
-    void cmdActionneurServo();
-    void cmdActionneurDisplay7();
-    void cmdActionneurGetResistor();
-    void cmdActionneurMacro();
-
     void parse_data();
 };
 extern Comm radio;

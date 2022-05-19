@@ -12,7 +12,6 @@
 #include "macros.h"
 #include "state_machine.h"
 #include "Pression.h"
-#include "bandeauLED.h"
 
 CapteurPression barometre;
 Odometry odom = Odometry();
@@ -31,15 +30,13 @@ Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
 DisplayController afficheur = DisplayController();
 int valDisplayed = 0;
-int color = 0;
-bandeauLED rubanLED = bandeauLED();
+char color = 'n';
 
 #ifndef UNIT_TEST
 
 void setup()
 {
     barometre.init();
-    rubanLED.init();
     pinMode(TIRETTE, INPUT_PULLUP);
     pinMode(COLOR, INPUT_PULLUP);
     AX12As.init(&Serial1);
@@ -58,7 +55,14 @@ void setup()
     motor.init(); // initialisation moteur
     pinMode(POMPE1, OUTPUT);
     pinMode(POMPE2, OUTPUT);
-    color = (digitalRead(COLOR) != HIGH); //color à 0 pour Yellow / 1 pour Violet
+    if (digitalRead(COLOR) == HIGH)
+    {
+        color = 'j';
+    }
+    else
+    {
+        color = 'v';
+    }
 
     // mise des AX-12 en neutre sans palets
     //neutre(true);
@@ -99,11 +103,11 @@ void loop()
     {
         if (digitalRead(COLOR) == HIGH)
         {
-            color = 0;
+            color = 'j';
         }
         else
         {
-            color = 1;
+            color = 'v';
         }
         radio.spamValeursCapt();
         // Serial2.println("TO REMOVE BELOW in MAIN : ..");
