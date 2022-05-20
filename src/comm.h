@@ -22,6 +22,7 @@ private:
     char buffer[70];
     int buf_index = 0;
     int sentDescr = 0;
+    int spammingContact = 0;
 
     // méthodes privées
     void parse_data();
@@ -37,6 +38,7 @@ private:
     void cmdActionneurDisplay();
     void cmdActionneurOhmMetre();
     void cmdMacro();
+    void cmdCaptContact();
 };
 extern Comm radio;
 extern int color;

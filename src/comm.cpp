@@ -201,6 +201,13 @@ void Comm::cmdActionneurOhmMetre(){
     SerialCom.println (retourn);
         
 }
+void Comm::cmdCaptContact(){
+    int val,nbRecv;
+    nbRecv = sscanf(buffer,"c %d",&val);
+    if (nbRecv){
+        spammingContact = val;
+    }
+}
 void Comm::parse_data()
 {
     if(false){}
@@ -208,6 +215,7 @@ void Comm::parse_data()
     else if (buffer[0] == '@'){cmdResetPosition();}
     else if (buffer[0] == 'g'){cmdSetPID();}
     else if (buffer[0] == 'v'){cmdVitesse();}
+    else if (buffer[0] == 'c'){cmdCaptContact();}
     else if (buffer[0] == 'a'){//Actionneurs
         if(false){}
         else if (buffer[2] == 'a'){cmdActionneurAX12A();}//AX12
@@ -279,6 +287,13 @@ void Comm::spam_odom()
     SerialCom.print(odom.get_speed_motor());
     SerialCom.print(" ");
     SerialCom.println(odom.get_omega_motor());
+
+    if (spammingContact){
+        SerialCom.print("c c1 ");
+        SerialCom.println(digitalRead(PIN_CONTACT_1));
+        SerialCom.print("c c2 ");
+        SerialCom.println(digitalRead(PIN_CONTACT_2));
+    }
 //#define or undef
 #undef COMM_SPAM_SPEED
 #ifdef COMM_SPAM_SPEED

@@ -63,6 +63,9 @@ const int DISPLAY_DATA = PC12;
 const int COLOR = PC3;
 const int TIRETTE = PC2;
 
+const int PIN_CONTACT_1 = PA15;
+const int PIN_CONTACT_2 = PA4;
+
 //TODO: valeurs
 const int POELON_READ_VIOLET_INF = 0;
 const int POELON_READ_VIOLET_SUP = 0;

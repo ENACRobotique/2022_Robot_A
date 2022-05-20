@@ -39,6 +39,8 @@ void setup()
     barometre.init();
     pinMode(TIRETTE, INPUT_PULLUP);
     pinMode(COLOR, INPUT_PULLUP);
+    pinMode(PIN_CONTACT_1, INPUT_PULLUP);
+    pinMode(PIN_CONTACT_2, INPUT_PULLUP);
     AX12As.init(&Serial1);
     // AX12As.torqueStatus(6, true);
     AX12As.setMaxTorque(6, 1023);
