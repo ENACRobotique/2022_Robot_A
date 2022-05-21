@@ -134,45 +134,61 @@ void Comm::cmdActionneurServo(){
 }
 void Comm::cmdMacro(){
     switch (buffer[3]){
-        case 'a':
+        case 'a': /// get palet avant
             bras_main_pompe_ev_av.handleEvent(TRIGGER_GET);
             break;
 
-        case 'b':
+        case 'b': /// get palet arriere
             bras_main_pompe_ev_ar.handleEvent(TRIGGER_GET);
             break;
 
-        case 'c':
+        case 'c': /// stocker palet avant
             bras_main_pompe_ev_av.handleEvent(TRIGGER_INSTORE);
             break;
 
-        case 'd':
+        case 'd': /// stocker palet arriere
             bras_main_pompe_ev_ar.handleEvent(TRIGGER_INSTORE);
             break;
 
-        case 'e':
+        case 'e': /// destocker palet avant
             bras_main_pompe_ev_av.handleEvent(TRIGGER_FROMSTORE);
             break;
 
-        case 'f':
+        case 'f': /// destocker palet arriere
             bras_main_pompe_ev_ar.handleEvent(TRIGGER_FROMSTORE);
             break;
 
-        case 'g':
+        case 'g': /// poser palet avant
             bras_main_pompe_ev_av.handleEvent(TRIGGER_PUT);
             break;
 
-        case 'h':
+        case 'h': /// poser palet arriere
             bras_main_pompe_ev_ar.handleEvent(TRIGGER_PUT);
             break;
 
-        /*case 'g':
-            //deposerAngle(true);
+        case 'i': /// recup statuette avant
+            bras_main_pompe_ev_av.handleEvent(TRIGGER_GETSTAT);
+            break;
+        
+        case 'j': /// recup statuette arriere
+            bras_main_pompe_ev_ar.handleEvent(TRIGGER_GETSTAT);
+            break;
+        
+        case 'k': /// poser statuette avant
+            bras_main_pompe_ev_av.handleEvent(TRIGGER_PUTSTAT);
             break;
 
-        case 'h':
-            //deposerAngle(false);
-            break;*/
+        case 'l': /// poser statuette arriere
+            bras_main_pompe_ev_ar.handleEvent(TRIGGER_PUTSTAT);
+            break;
+
+        case 'm': /// aggripper replique avant debut match avant
+            bras_main_pompe_ev_av.handleEvent(TRIGGER_REPL_HAND_START);
+            break;
+        
+        case 'n': /// aggripper replique avant debut match arriere
+            bras_main_pompe_ev_ar.handleEvent(TRIGGER_REPL_HAND_START);
+            break;
 
         default:
             SerialCom.println("m macro inconnue");

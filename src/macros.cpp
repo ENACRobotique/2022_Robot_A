@@ -40,6 +40,12 @@ int store_content = 0;
                 return FROMSTORE_START;
             case TRIGGER_PUT:
                 return PUT_START;
+            case TRIGGER_GETSTAT:
+                return GETSTAT_START;
+            case TRIGGER_PUTSTAT:
+                return PUTSTAT_START;
+            case TRIGGER_REPL_HAND_START:
+                return START_REPL_HAND;
             default:
                 return -1;
         }
@@ -149,9 +155,9 @@ int store_content = 0;
     }
     void fromstore_start_ar(){
         AX12As.torqueStatus(4, true); // allumer les bras
-        ev2.putOn(); // fermer EV avant
-        AX12As.moveSpeed(4, BRAS_AR_S_PRE, ARM_SPEED_SLOW); // baisser le bras avant
-        AX12As.moveSpeed(5, MAIN_AR_S, HAND_SPEED); // orienter la main avant
+        ev2.putOn(); // fermer EV arriere
+        AX12As.moveSpeed(4, BRAS_AR_S_PRE, ARM_SPEED_SLOW); // baisser le bras arriere
+        AX12As.moveSpeed(5, MAIN_AR_S, HAND_SPEED); // orienter la main arriere
     }
     //états 8 de chaque machine
     State st_fromstore_start_av (FROMSTORE_END, SORTIR_DELAY_MAIN, &fromstore_start_av, &queue_man_events);
@@ -165,8 +171,8 @@ int store_content = 0;
         store_content = 0;
     }
     void fromstore_end_ar(){
-        AX12As.moveSpeed(4, BRAS_AR_S, ARM_SPEED_SLOW); // baisser le bras avant
-        digitalWrite(POMPE2, HIGH); // allumer pompe avant
+        AX12As.moveSpeed(4, BRAS_AR_S, ARM_SPEED_SLOW); // baisser le bras arriere
+        digitalWrite(POMPE2, HIGH); // allumer pompe arriere
         ar_hand_content = store_content;
         store_content = 0;
     }
@@ -209,7 +215,90 @@ int store_content = 0;
     //états 12 de chaque machine (retour auto à neutre sans charge)
     State st_put_end_av (NEUTRAL_NOLOAD_START, DSol_DELAY_LIFT, &small_lift_arm_av, &queue_man_events);
     State st_put_end_ar (NEUTRAL_NOLOAD_START, DSol_DELAY_LIFT, &small_lift_arm_ar, &queue_man_events);
-    
+
+
+
+// récupérer la statuette
+    //début mouvement
+    void getstat_start_av(){ //implémentation av pas prioritaire
+
+    }
+    void getstat_start_ar(){
+
+    }
+    //états 13 de chaque machine
+    State st_getstat_start_av(GETSTAT_END, GETSTAT_END_DELAY, &getstat_start_av, &queue_man_events);
+    State st_getstat_start_ar(GETSTAT_END, GETSTAT_END_DELAY, &getstat_start_ar, &queue_man_events);
+
+    //fin mouvement
+    void getstat_end_av(){ //implémentation av pas prioritaire
+
+    }
+    void getstat_end_ar(){
+
+    }
+    //états 14 de chaque machine
+    State st_getstat_end_av(NEUTRAL_STAT_START, NEUTRAL_STAT_START_DELAY, &getstat_end_av, &queue_man_events);
+    State st_getstat_end_ar(NEUTRAL_STAT_START, NEUTRAL_STAT_START_DELAY, &getstat_end_ar, &queue_man_events);
+
+// position neutre avec statuette
+    //début mouvement
+    void neutral_stat_start_av(){ //implémentation av pas prioritaire
+
+    }
+    void neutral_stat_start_ar(){
+
+    }
+    //états 15 de chaque machine
+    State st_neutral_stat_start_av(PUTSTAT_END, GETSTAT_END_DELAY, &neutral_stat_start_av, &queue_man_events);
+    State st_neutral_stat_start_ar(PUTSTAT_END, GETSTAT_END_DELAY, &neutral_stat_start_ar, &queue_man_events);
+
+    //fin mouvement
+    void neutral_stat_end_av(){ //implémentation av pas prioritaire
+
+    }
+    void neutral_stat_end_ar(){
+
+    }
+    //états 16 de chaque machine
+    State st_getstat_end_av(-1, -1, &neutral_stat_end_av, &neutral_end_man_tr);
+    State st_getstat_end_ar(-1, -1, &neutral_stat_end_ar, &neutral_end_man_tr);
+
+// poser la statuette
+    //début mouvement
+    void putstat_start_av(){
+
+    }
+    void putstat_start_ar(){
+
+    }
+    //états 17 de chaque machine
+    State st_putstat_start_av(PUTSTAT_END, PUTSTAT_END_DELAY, &putstat_start_av, &queue_man_events);
+    State st_putstat_start_ar(PUTSTAT_END, PUTSTAT_END_DELAY, &putstat_start_ar, &queue_man_events);
+
+    //fin mouvement
+    void putstat_end_av(){
+
+    }
+    void putstat_end_ar(){
+
+    }
+    //états 18 de chaque machine
+    State st_putstat_end_av(NEUTRAL_NOLOAD_START, NEUTRAL_NOLOAD_START_DELAY, &putstat_end_av, &queue_man_events);
+    State st_putstat_end_ar(NEUTRAL_NOLOAD_START, NEUTRAL_NOLOAD_START_DELAY, &putstat_end_ar, &queue_man_events);
+
+// démarrer le match avec la réplique dans la main de devant
+    //début mouvement
+    void start_repl_hand_av(){
+        digitalWrite(POMPE1, HIGH); // allumer pompe avant
+    }
+    void start_repl_hand_ar(){ // implémentation pas prioritaire
+        digitalWrite(POMPE2, HIGH); // allumer pompe arriere
+    }
+    //états 19 de chaque machine
+    State st_start_repl_hand_av(NEUTRAL_STAT_START, START_HAND_DELAY, &start_repl_hand_av, &queue_man_events);
+    State st_start_repl_hand_ar(NEUTRAL_STAT_START, START_HAND_DELAY, &start_repl_hand_ar, &queue_man_events);
+
 
 //machines à états
 StateMachine bras_main_pompe_ev_av ({st_neutral_noload_start_av, 
@@ -224,7 +313,14 @@ StateMachine bras_main_pompe_ev_av ({st_neutral_noload_start_av,
                                      st_fromstore_end_av,
                                      st_put_start_av,
                                      st_put_mid_av,
-                                     st_put_end_av});
+                                     st_put_end_av,
+                                     st_getstat_start_av,
+                                     st_getstat_end_av,
+                                     st_neutral_stat_start_av,
+                                     st_neutral_stat_end_av,
+                                     st_putstat_start_av,
+                                     st_putstat_end_av,
+                                     st_start_repl_hand_av});
 StateMachine bras_main_pompe_ev_ar ({st_neutral_noload_start_ar, 
                                      st_neutral_noload_end_ar,
                                      st_neutral_load_start_ar, 
@@ -237,4 +333,11 @@ StateMachine bras_main_pompe_ev_ar ({st_neutral_noload_start_ar,
                                      st_fromstore_end_ar,
                                      st_put_start_ar,
                                      st_put_mid_ar,
-                                     st_put_end_ar});
+                                     st_put_end_ar,
+                                     st_getstat_start_ar,
+                                     st_getstat_end_ar,
+                                     st_neutral_stat_start_ar,
+                                     st_neutral_stat_end_ar,
+                                     st_putstat_start_ar,
+                                     st_putstat_end_ar,
+                                     st_start_repl_hand_ar});

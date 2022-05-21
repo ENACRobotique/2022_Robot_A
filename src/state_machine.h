@@ -45,11 +45,11 @@ class StateMachine {
         std::vector<int> eventQueue;
 
     public:
-        StateMachine(std::vector<State> states) {
+        StateMachine(std::vector<State> states, int start_state_id = 0) {
             started = false;
             stateList = states;
             eventQueue = {};
-            state = 0;
+            state = start_state_id;
         };
 
         std::vector<int> getQueue(){
@@ -60,6 +60,17 @@ class StateMachine {
             started = true;
             lastTransition = millis();
             stateList[state].enterAction();
+        }
+
+        //do this at your own risk, should only be used if you know what you're doing
+        void forceState(int state_id){
+            if (started){
+                state = state_id;
+                lastTransition = millis();
+                stateList[state].enterAction();
+            } else {
+                state = state_id;
+            }
         }
 
         void handleEvent(int event){

@@ -64,6 +64,24 @@ const int DSol_SMALL_LIFT_AV = BRAS_AV_SSol + 150;
 const int DSol_SMALL_LIFT_AR = BRAS_AR_SSol - 150;
 const int DSol_DELAY_LIFT = 250;
 
+// getstat
+
+const int GETSTAT_END_DELAY = 500;
+
+const int NEUTRAL_STAT_START_DELAY = 500;
+
+// neutral stat
+
+// putstat
+
+const int PUTSTAT_END_DELAY = 500;
+
+const int NEUTRAL_NOLOAD_START_DELAY = 500;
+
+// start hand
+
+const int START_HAND_DELAY = 100;
+
 //--- macros new version, async ---
 
 //code states
@@ -97,11 +115,31 @@ extern State st_put_mid_av, st_put_mid_ar;
 const int PUT_END = 12;
 extern State st_put_end_av, st_put_end_ar;
 
+const int GETSTAT_START = 13;
+extern State st_getstat_start_av, st_getstat_start_ar;
+const int GETSTAT_END = 14;
+extern State st_getstat_end_av, st_getstat_end_ar;
+const int NEUTRAL_STAT_START = 15;
+extern State st_neutral_stat_start_av, st_neutral_stat_start_ar;
+const int NEUTRAL_STAT_END = 16;
+extern State st_neutral_stat_end_av, st_neutral_stat_end_ar;
+const int PUTSTAT_START = 17;
+extern State st_putstat_start_av, st_putstat_start_ar;
+const int PUTSTAT_END = 18;
+extern State st_putstat_end_av, st_putstat_end_ar;
+const int START_REPL_HAND = 19;
+extern State st_start_repl_hand_av, st_start_repl_hand_ar;
+
+
 //code events
 const int TRIGGER_GET = 0;
 const int TRIGGER_INSTORE = 1;
 const int TRIGGER_FROMSTORE = 2;
 const int TRIGGER_PUT = 3;
+
+const int TRIGGER_GETSTAT = 4;
+const int TRIGGER_PUTSTAT = 5;
+const int TRIGGER_REPL_HAND_START = 6;
 
 extern StateMachine bras_main_pompe_ev_av;
 extern StateMachine bras_main_pompe_ev_ar;
