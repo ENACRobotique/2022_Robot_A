@@ -16,4 +16,5 @@ class timerEncoders{
 
         //HardwareTimer timEnc1;
         //HardwareTimer timEnc2;
+
 };

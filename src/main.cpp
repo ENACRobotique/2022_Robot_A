@@ -12,6 +12,7 @@
 #include "macros.h"
 #include "state_machine.h"
 #include "Pression.h"
+#include "encodersWithTimers.h"
 
 CapteurPression barometre;
 Odometry odom = Odometry();
@@ -25,6 +26,8 @@ Metro metro_motor = Metro(CONTROL_PERIOD);
 Metro metro_spam_odom = Metro(SPAM_ODOM_PERIOD);
 Metro metro_spam_valCapt = Metro(SPAM_CAPT);
 Metro state_machine_check = Metro(100.0f);
+
+timerEncoders encoder_hw = timerEncoders();
 
 Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
@@ -64,6 +67,8 @@ void setup()
     //neutre(false);
     bras_main_pompe_ev_ar.start();
     bras_main_pompe_ev_av.start();
+
+    //encoder_hw.init();
 }
 
 // double sp[4] = {100, 0, -100, 0};
