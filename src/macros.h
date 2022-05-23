@@ -70,7 +70,7 @@ const int GETSTAT_ARM_AV = 480;
 const int GETSTAT_HAND_AV = 500;
 
 const int GETSTAT_ARM_AR = 800;
-const int GETSTAT_HAND_AR = 200;
+const int GETSTAT_HAND_AR = 0;
 
 const int GETSTAT_END_DELAY = 500;
 
@@ -80,10 +80,10 @@ const int NEUTRAL_STAT_START_DELAY = 500;
 
 //todo: à changer
 const int NEUTRAL_ARM_AV = 710;
-const int NEUTRAL_ARM_AR = 580;
+const int NEUTRAL_ARM_AR = 520;
 
 const int NEUTRAL_HAND_AV = 350;
-const int NEUTRAL_HAND_AR = 350;
+const int NEUTRAL_HAND_AR = 0;
 
 const int NEUTRAL_STAT_END_DELAY = 250;
 
