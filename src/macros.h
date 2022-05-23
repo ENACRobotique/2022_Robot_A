@@ -66,6 +66,12 @@ const int DSol_DELAY_LIFT = 250;
 
 // getstat
 
+const int GETSTAT_ARM_AV = 480;
+const int GETSTAT_HAND_AV = 500;
+
+const int GETSTAT_ARM_AR = 800;
+const int GETSTAT_HAND_AR = 200;
+
 const int GETSTAT_END_DELAY = 500;
 
 const int NEUTRAL_STAT_START_DELAY = 500;
@@ -75,6 +81,9 @@ const int NEUTRAL_STAT_START_DELAY = 500;
 const int NEUTRAL_STAT_END_DELAY = 750;
 
 // putstat
+
+const int PUTSTAT_ARM_AV = 580;
+const int PUTSTAT_HAND_AV = 580;
 
 const int PUTSTAT_END_DELAY = 500;
 
