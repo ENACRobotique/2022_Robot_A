@@ -104,11 +104,11 @@ void loop()
     {
         if (digitalRead(COLOR) == HIGH)
         {
-            color = 'j';
+            color = 0;
         }
         else
         {
-            color = 'v';
+            color = 1;
         }
         radio.spamValeursCapt();
         // Serial2.println("TO REMOVE BELOW in MAIN : ..");
