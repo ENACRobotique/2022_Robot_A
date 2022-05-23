@@ -221,10 +221,16 @@ int store_content = 0;
 // récupérer la statuette
     //début mouvement
     void getstat_start_av(){ //implémentation av pas prioritaire
-
+        AX12As.torqueStatus(6, true);
+        AX12As.moveSpeed(6, GETSTAT_ARM_AV, ARM_SPEED_SLOW);
+        AX12As.moveSpeed(7, GETSTAT_HAND_AV, HAND_SPEED);
+        digitalWrite(POMPE1, HIGH);
     }
     void getstat_start_ar(){
-
+        AX12As.torqueStatus(4, true);
+        AX12As.moveSpeed(4, GETSTAT_ARM_AR, ARM_SPEED_SLOW);
+        AX12As.moveSpeed(5, GETSTAT_HAND_AR, HAND_SPEED);
+        digitalWrite(POMPE2, HIGH);
     }
     //états 13 de chaque machine
     State st_getstat_start_av(GETSTAT_END, GETSTAT_END_DELAY, &getstat_start_av, &queue_man_events);
@@ -232,10 +238,10 @@ int store_content = 0;
 
     //fin mouvement
     void getstat_end_av(){ //implémentation av pas prioritaire
-
+        av_hand_content = 2;
     }
     void getstat_end_ar(){
-
+        ar_hand_content = 2;
     }
     //états 14 de chaque machine
     State st_getstat_end_av(NEUTRAL_STAT_START, NEUTRAL_STAT_START_DELAY, &getstat_end_av, &queue_man_events);
@@ -244,10 +250,16 @@ int store_content = 0;
 // position neutre avec statuette
     //début mouvement
     void neutral_stat_start_av(){ //implémentation av pas prioritaire
-
+        AX12As.torqueStatus(6, true);
+        AX12As.moveSpeed(6, NEUTRAL_ARM_AV, ARM_SPEED_FAST);
+        
+        digitalWrite(POMPE1, HIGH);
     }
     void neutral_stat_start_ar(){
-
+        AX12As.torqueStatus(4, true);
+        AX12As.moveSpeed(4, NEUTRAL_ARM_AR, ARM_SPEED_FAST);
+        
+        digitalWrite(POMPE2, HIGH);
     }
     //états 15 de chaque machine
     State st_neutral_stat_start_av(NEUTRAL_STAT_END, NEUTRAL_STAT_END_DELAY, &neutral_stat_start_av, &queue_man_events);
@@ -255,10 +267,10 @@ int store_content = 0;
 
     //fin mouvement
     void neutral_stat_end_av(){ //implémentation av pas prioritaire
-
+        AX12As.moveSpeed(7, NEUTRAL_HAND_AV, HAND_SPEED);
     }
     void neutral_stat_end_ar(){
-
+        AX12As.moveSpeed(5, NEUTRAL_HAND_AR, HAND_SPEED);
     }
     //états 16 de chaque machine
     State st_neutral_stat_end_ar(-1, -1, &neutral_stat_end_av, &neutral_end_man_tr);
@@ -267,10 +279,16 @@ int store_content = 0;
 // poser la statuette
     //début mouvement
     void putstat_start_av(){
-
+        AX12As.torqueStatus(6, true);
+        AX12As.moveSpeed(6, PUTSTAT_ARM_AV, ARM_SPEED_FAST);
+        AX12As.moveSpeed(7, PUTSTAT_HAND_AV, HAND_SPEED);
+        digitalWrite(POMPE1, HIGH);
     }
     void putstat_start_ar(){
-
+        AX12As.torqueStatus(4, true);
+        AX12As.moveSpeed(4, PUTSTAT_ARM_AR, ARM_SPEED_FAST);
+        AX12As.moveSpeed(5, PUTSTAT_HAND_AR, HAND_SPEED);
+        digitalWrite(POMPE2, HIGH);
     }
     //états 17 de chaque machine
     State st_putstat_start_av(PUTSTAT_END, PUTSTAT_END_DELAY, &putstat_start_av, &queue_man_events);
@@ -278,10 +296,13 @@ int store_content = 0;
 
     //fin mouvement
     void putstat_end_av(){
+        digitalWrite(POMPE1, LOW);
+        ev1.putOn();
 
     }
     void putstat_end_ar(){
-
+        digitalWrite(POMPE2, LOW);
+        ev2.putOn();
     }
     //états 18 de chaque machine
     State st_putstat_end_av(NEUTRAL_NOLOAD_START, NEUTRAL_NOLOAD_START_DELAY, &putstat_end_av, &queue_man_events);
@@ -290,9 +311,11 @@ int store_content = 0;
 // démarrer le match avec la réplique dans la main de devant
     //début mouvement
     void start_repl_hand_av(){
+        AX12As.torqueStatus(6, true);
         digitalWrite(POMPE1, HIGH); // allumer pompe avant
     }
     void start_repl_hand_ar(){ // implémentation pas prioritaire
+        AX12As.torqueStatus(4, true);
         digitalWrite(POMPE2, HIGH); // allumer pompe arriere
     }
     //états 19 de chaque machine

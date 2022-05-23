@@ -78,14 +78,25 @@ const int NEUTRAL_STAT_START_DELAY = 500;
 
 // neutral stat
 
-const int NEUTRAL_STAT_END_DELAY = 750;
+//todo: à changer
+const int NEUTRAL_ARM_AV = 710;
+const int NEUTRAL_ARM_AR = 580;
+
+const int NEUTRAL_HAND_AV = 350;
+const int NEUTRAL_HAND_AR = 350;
+
+const int NEUTRAL_STAT_END_DELAY = 250;
 
 // putstat
 
 const int PUTSTAT_ARM_AV = 580;
 const int PUTSTAT_HAND_AV = 580;
 
-const int PUTSTAT_END_DELAY = 500;
+const int PUTSTAT_ARM_AR = 800;
+const int PUTSTAT_HAND_AR = 350;
+
+
+const int PUTSTAT_END_DELAY = 1000;
 
 const int NEUTRAL_NOLOAD_START_DELAY = 500;
 
