@@ -79,6 +79,7 @@ void loop()
 {
     if ((! hasStarted)&(digitalRead(TIRETTE)==LOW)){
         hasStarted=1;
+        bras_main_pompe_ev_av.forceState(START_REPL_HAND);
         radio.reportStart();
     }
     radio.update();
