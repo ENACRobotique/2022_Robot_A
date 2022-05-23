@@ -251,13 +251,13 @@ int store_content = 0;
     //début mouvement
     void neutral_stat_start_av(){ //implémentation av pas prioritaire
         AX12As.torqueStatus(6, true);
-        AX12As.moveSpeed(6, NEUTRAL_ARM_AV+100, ARM_SPEED_SLOW);
+        AX12As.moveSpeed(6, NEUTRAL_ARM_AV+ARM_OFFSET, ARM_SPEED_SLOW);
         AX12As.moveSpeed(7, NEUTRAL_HAND_AV, HAND_SPEED);
         digitalWrite(POMPE1, HIGH);
     }
     void neutral_stat_start_ar(){
         AX12As.torqueStatus(4, true);
-        AX12As.moveSpeed(4, NEUTRAL_ARM_AR-100, ARM_SPEED_SLOW);
+        AX12As.moveSpeed(4, NEUTRAL_ARM_AR-ARM_OFFSET, ARM_SPEED_SLOW);
         AX12As.moveSpeed(5, NEUTRAL_HAND_AR, HAND_SPEED);
         digitalWrite(POMPE2, HIGH);
     }
