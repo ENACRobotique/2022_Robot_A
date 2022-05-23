@@ -72,6 +72,8 @@ const int NEUTRAL_STAT_START_DELAY = 500;
 
 // neutral stat
 
+const int NEUTRAL_STAT_END_DELAY = 750;
+
 // putstat
 
 const int PUTSTAT_END_DELAY = 500;

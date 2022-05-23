@@ -250,8 +250,8 @@ int store_content = 0;
 
     }
     //états 15 de chaque machine
-    State st_neutral_stat_start_av(PUTSTAT_END, GETSTAT_END_DELAY, &neutral_stat_start_av, &queue_man_events);
-    State st_neutral_stat_start_ar(PUTSTAT_END, GETSTAT_END_DELAY, &neutral_stat_start_ar, &queue_man_events);
+    State st_neutral_stat_start_av(NEUTRAL_STAT_END, NEUTRAL_STAT_END_DELAY, &neutral_stat_start_av, &queue_man_events);
+    State st_neutral_stat_start_ar(NEUTRAL_STAT_END, NEUTRAL_STAT_END_DELAY, &neutral_stat_start_ar, &queue_man_events);
 
     //fin mouvement
     void neutral_stat_end_av(){ //implémentation av pas prioritaire
@@ -261,11 +261,8 @@ int store_content = 0;
 
     }
     //états 16 de chaque machine
-    //State st_getstat_end_av(-1, -1, &neutral_stat_end_av, &neutral_end_man_tr);
-    //State st_getstat_end_ar(-1, -1, &neutral_stat_end_ar, &neutral_end_man_tr);
-    //TODO : uncomment & remove below
-    State st_neutral_stat_end_ar(PUTSTAT_END, GETSTAT_END_DELAY, &neutral_stat_start_av, &queue_man_events);
-    State st_neutral_stat_end_av(PUTSTAT_END, GETSTAT_END_DELAY, &neutral_stat_start_av, &queue_man_events);
+    State st_neutral_stat_end_ar(-1, -1, &neutral_stat_end_av, &neutral_end_man_tr);
+    State st_neutral_stat_end_av(-1, -1, &neutral_stat_end_av, &neutral_end_man_tr);
 
 // poser la statuette
     //début mouvement
