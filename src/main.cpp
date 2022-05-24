@@ -35,6 +35,9 @@ DisplayController afficheur = DisplayController();
 int valDisplayed = 0;
 int color = 0;
 
+int on_pompe_av = 0;
+Metro metro_pompe_interm(500.0);
+
 #ifndef UNIT_TEST
 
 void setup()
@@ -87,6 +90,14 @@ void loop()
     { // mise à jour périodique de l'odométrie (logiciel)
         // Serial2.println("bbbbb");
         odom._update();
+    }
+    if ((!hasStarted)&metro_pompe_interm.check()){
+        if (on_pompe_av%6){
+            digitalWrite(POMPE1, LOW);
+        } else {
+            digitalWrite(POMPE1, HIGH);
+        }
+        on_pompe_av ++;
     }
     if (metro_motor.check())
     { // mise à jour du contrôle moteur
