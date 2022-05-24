@@ -24,5 +24,5 @@ void InterruptEncoder::init() {
 
 extern InterruptEncoder encoder_m1;
 extern InterruptEncoder encoder_m2;
-//extern InterruptEncoder encoder_w1;
-//extern InterruptEncoder encoder_w2;
+extern InterruptEncoder encoder_w1;
+extern InterruptEncoder encoder_w2;
