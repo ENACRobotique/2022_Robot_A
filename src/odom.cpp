@@ -14,9 +14,9 @@ void Odometry::init() {
     encoder_w1.init();
     encoder_w2.init();
     if (digitalRead(COLOR) == HIGH){
-        _x = 140.f; _y = 1140.f; _theta = 0;
+        _x = 260.f; _y = 1140.f; _theta = 0;
     } else {
-        _x = 3000.0f-140.f; _y = 1140.f; _theta = 3.1415;
+        _x = 3000.0f-260.f; _y = 1140.f; _theta = 3.1415;
     }
     
     _speed = 0; _omega = 0;

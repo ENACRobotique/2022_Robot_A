@@ -66,15 +66,39 @@ const int DSol_DELAY_LIFT = 250;
 
 // getstat
 
-const int GETSTAT_END_DELAY = 500;
+const int ARM_OFFSET = 100;
 
-const int NEUTRAL_STAT_START_DELAY = 500;
+const int GETSTAT_ARM_AV = 600;
+const int GETSTAT_HAND_AV = 700;
+
+const int GETSTAT_ARM_AR = 650;
+const int GETSTAT_HAND_AR = 0;
+
+const int GETSTAT_END_DELAY = 750;
+
+const int NEUTRAL_STAT_START_DELAY = 750;
 
 // neutral stat
 
+//todo: à changer
+const int NEUTRAL_ARM_AV = 750;
+const int NEUTRAL_ARM_AR = 520;
+
+const int NEUTRAL_HAND_AV = 700;
+const int NEUTRAL_HAND_AR = 0;
+
+const int NEUTRAL_STAT_END_DELAY = 250;
+
 // putstat
 
-const int PUTSTAT_END_DELAY = 500;
+const int PUTSTAT_ARM_AV = 590;
+const int PUTSTAT_HAND_AV = 700;
+
+const int PUTSTAT_ARM_AR = 660;
+const int PUTSTAT_HAND_AR = 0;
+
+
+const int PUTSTAT_END_DELAY = 1000;
 
 const int NEUTRAL_NOLOAD_START_DELAY = 500;
 

@@ -35,6 +35,9 @@ DisplayController afficheur = DisplayController();
 int valDisplayed = 0;
 int color = 0;
 
+int on_pompe_av = 0;
+Metro metro_pompe_interm(500.0);
+
 #ifndef UNIT_TEST
 
 void setup()
@@ -79,6 +82,7 @@ void loop()
 {
     if ((! hasStarted)&(digitalRead(TIRETTE)==LOW)){
         hasStarted=1;
+        bras_main_pompe_ev_av.forceState(START_REPL_HAND);
         radio.reportStart();
     }
     radio.update();
@@ -86,6 +90,14 @@ void loop()
     { // mise à jour périodique de l'odométrie (logiciel)
         // Serial2.println("bbbbb");
         odom._update();
+    }
+    if ((!hasStarted)&metro_pompe_interm.check()){
+        if (on_pompe_av%6){
+            digitalWrite(POMPE1, LOW);
+        } else {
+            digitalWrite(POMPE1, HIGH);
+        }
+        on_pompe_av ++;
     }
     if (metro_motor.check())
     { // mise à jour du contrôle moteur
@@ -103,11 +115,11 @@ void loop()
     {
         if (digitalRead(COLOR) == HIGH)
         {
-            color = 'j';
+            color = 0;
         }
         else
         {
-            color = 'v';
+            color = 1;
         }
         radio.spamValeursCapt();
         // Serial2.println("TO REMOVE BELOW in MAIN : ..");
