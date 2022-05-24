@@ -7,6 +7,7 @@
 
 class Odometry{
 public :
+    Odometry(const InterruptEncoder& enc_1, const InterruptEncoder& enc_2, double inc_right_to_mm, double inc_left_to_mm, double diametre);
     void init();
 
     void set_pos (int x, int y, double theta){
@@ -34,6 +35,11 @@ public :
 
     void _update();
 private:
+    InterruptEncoder enc_1;
+    InterruptEncoder enc_2;
+    double inc_right_to_mm;
+    double inc_left_to_mm;
+    double diametre;
     double _x, _y, _theta;  // position
     double _speed, _omega; // speed
 
@@ -42,6 +48,7 @@ private:
 };
 
 extern Odometry odom;
+extern Odometry odom_wheel;
 extern InterruptEncoder encoder_m1;
 extern InterruptEncoder encoder_m2;
 

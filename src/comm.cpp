@@ -27,6 +27,7 @@
 // recap des messages en sortie:
 // m <string>
 // r <int> <int> <int> <int> <int>: odométrie moteur <x> <y> <théta> <v> <omega>
+// f <int> <int> <int> <int> <int>: odométrie libre (roue Folle) <x> <y> <théta> <v> <omega>
 // b <string> <int> <int> <int> [R/RW] <string>: déclaration d'un actionneur (RW) ou d'un capteur (R).
 // c <string> <int> : retour de capteur
 
@@ -40,6 +41,7 @@ void Comm::cmdResetPosition(){
     int nbRcv = sscanf(buffer, "@ %d %d %d", &x, &y, &theta);
     if (nbRcv == 3){
         odom.set_pos(x,y,theta/1000);
+        odom_wheel.set_pos(x,y,theta/1000);
     }
 }
 void Comm::cmdSetPID(){
@@ -303,6 +305,19 @@ void Comm::spam_odom()
     SerialCom.print(odom.get_speed_motor());
     SerialCom.print(" ");
     SerialCom.println(odom.get_omega_motor());
+
+    SerialCom.print("f "); // Odométrie moteur
+    SerialCom.print(odom_wheel.get_x());
+    SerialCom.print(" ");
+    SerialCom.print(odom_wheel.get_y());
+    SerialCom.print(" ");
+    SerialCom.print(odom_wheel.get_theta());
+    SerialCom.print(" ");
+    SerialCom.print(odom_wheel.get_speed_motor());
+    SerialCom.print(" ");
+    SerialCom.println(odom_wheel.get_omega_motor());
+
+    
 
     if (spammingContact){
         SerialCom.print("c c1 ");

@@ -19,8 +19,12 @@ const int ENCODER_WHEEL2_A = PA7;//TIM8_CH1N
 const int ENCODER_WHEEL2_B = PC7;//TIM8_CH2
 
 const double MOTOR_BASE = 182.35;
-const float INC_TO_MM_MOTOR =0.309671275853851;
-const float INC_TO_MM_WHEEL =8.14e-5;
+const double ENCODER_BASE = 243.00;
+const double INC_TO_MM_MOTOR_RIGHT =0.309671275853851; //0.309671275853851 * 0.97; due to wheel coeff of 1.06 diff
+const double INC_TO_MM_MOTOR_LEFT =INC_TO_MM_MOTOR_RIGHT * 1.01;
+const double INC_TO_MM_WHEEL_RIGHT =0.07859549951;
+const double INC_TO_MM_WHEEL_LEFT = 0.07859549951;
+
 
 const float ACCEL_MAX = 800; //mm/s²  
 const float ACCEL_ANG_MAX = 20; //rad/s²

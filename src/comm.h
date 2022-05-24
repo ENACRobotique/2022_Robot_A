@@ -22,7 +22,7 @@ private:
     char buffer[70];
     int buf_index = 0;
     int sentDescr = 0;
-    int spammingContact = 0;
+    int spammingContact = 1; //By default, spamming contact at the same rate of odometry
 
     // méthodes privées
     void parse_data();

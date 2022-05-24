@@ -14,8 +14,15 @@
 #include "Pression.h"
 #include "encodersWithTimers.h"
 
+InterruptEncoder encoder_m1(ENCODER_MOTOR1_B, ENCODER_MOTOR1_A);
+InterruptEncoder encoder_m2(ENCODER_MOTOR2_A, ENCODER_MOTOR2_B);
+InterruptEncoder encoder_w1(ENCODER_WHEEL1_B, ENCODER_WHEEL1_A);
+InterruptEncoder encoder_w2(ENCODER_WHEEL2_B, ENCODER_WHEEL2_A);
+
 CapteurPression barometre;
-Odometry odom = Odometry();
+
+Odometry odom = Odometry(encoder_m1, encoder_m2,INC_TO_MM_MOTOR_RIGHT, INC_TO_MM_MOTOR_LEFT, MOTOR_BASE);
+Odometry odom_wheel = Odometry(encoder_w1, encoder_w2, INC_TO_MM_WHEEL_RIGHT, INC_TO_MM_WHEEL_LEFT, ENCODER_BASE);
 MotorControl motor = MotorControl();
 Poelon poel = Poelon();
 int hasStarted = 0;
