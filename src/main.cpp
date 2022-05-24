@@ -67,6 +67,7 @@ void setup()
     afficheur.setNbDisplayed(valDisplayed++);
 
     odom.init();  // initialisation odométrie
+    odom_wheel.init();
     motor.init(); // initialisation moteur
     pinMode(POMPE1, OUTPUT);
     pinMode(POMPE2, OUTPUT);
@@ -97,6 +98,7 @@ void loop()
     { // mise à jour périodique de l'odométrie (logiciel)
         // Serial2.println("bbbbb");
         odom._update();
+        odom_wheel._update();
     }
     if ((!hasStarted)&metro_pompe_interm.check()){
         if (on_pompe_av%6){
