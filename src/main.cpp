@@ -58,6 +58,8 @@ void setup()
     // AX12As.torqueStatus(6, true);
     AX12As.setMaxTorque(6, 1023);
     AX12As.setMaxTorque(4, 1023);
+    AX12As.setCMargin(6,5,5);
+    AX12As.setCMargin(4,5,5);
 
     Serial2.begin(115200); // STLink serial port
     Serial3.begin(57600);  // XBee serial port
