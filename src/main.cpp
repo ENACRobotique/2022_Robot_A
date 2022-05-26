@@ -15,6 +15,7 @@
 #include "encodersWithTimers.h"
 
 //#define BASIC_STRAT
+
 InterruptEncoder encoder_m1(ENCODER_MOTOR1_B, ENCODER_MOTOR1_A);
 InterruptEncoder encoder_m2(ENCODER_MOTOR2_A, ENCODER_MOTOR2_B);
 InterruptEncoder encoder_w1(ENCODER_WHEEL1_B, ENCODER_WHEEL1_A);
@@ -101,7 +102,6 @@ void loop()
         #ifdef BASIC_STRAT
         match_started = true;
         time_end = millis() + 95000.f; 
-        motor.set_cons(800.0, 0.0);
         #endif
     }
     radio.update();
@@ -144,18 +144,18 @@ void loop()
         radio.spamValeursCapt();
     #ifdef BASIC_STRAT
         if(match_started && time_end - millis() >= 92000.f) { //si le temps restant est > 90
-        motor.set_cons(200.f, 0.0f);
+        motor.set_cons(200.0, 0.0);
     }
     else if(match_started && time_end - millis() >= 30000.f) {
-        motor.set_cons(0.0f, 0.0f);
+        motor.set_cons(0.0, 0.0);
     }
     else if(match_started && time_end - millis() >= 27000.f) //bouger entre le 30e et 25e s restante
     {
-        motor.set_cons(-200.f, 0.0f);
+        motor.set_cons(-200.0, 0.0);
     }
     else if (match_started)
     {
-        motor.set_cons(0.0f, 0.0f);
+        motor.set_cons(0.0, 0.0);
         afficheur.setNbDisplayed(24);
     }
     else { //par sécurité si pb
