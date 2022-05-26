@@ -78,7 +78,7 @@ void drop_repl(){
 State pushed_stat(PUSHED_STAT_TIMEOUT_AUTOTR, PUSHED_STAT_TIMEOUT, &drop_repl, &no_man_tr);
 
 //état 4: a droppé la réplique
-const int DROPPED_REPL_TIMEOUT = 4750;
+const int DROPPED_REPL_TIMEOUT = 4750 + 1000 + 1000;
 const state_id DROPPED_REPL_TIMEOUT_AUTOTR = GONE_BACK;
 void go_back(){
     //ev2.putOn();
@@ -86,7 +86,7 @@ void go_back(){
     AX12As.moveSpeed(4, NEUTRAL_ARM_AR, ARM_SPEED_SLOW);
     AX12As.moveSpeed(5, NEUTRAL_HAND_AR, HAND_SPEED);
     delay(1000);
-    AX12As.moveSpeed(4, 700, ARM_SPEED_SLOW);
+    AX12As.moveSpeed(4, 700, ARM_SPEED_SLOW); //FIXME: mettre la bonne valeur
     //AX12As.moveSpeed(5, NEUTRAL_HAND_AR, HAND_SPEED);
     delay(1000);
     AX12As.moveSpeed(4, NEUTRAL_ARM_AR, ARM_SPEED_SLOW);
