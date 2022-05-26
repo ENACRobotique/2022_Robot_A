@@ -14,6 +14,8 @@
 #include "Pression.h"
 #include "encodersWithTimers.h"
 
+#include "strat.h"
+
 //#define BASIC_STRAT
 
 InterruptEncoder encoder_m1(ENCODER_MOTOR1_B, ENCODER_MOTOR1_A);
@@ -42,15 +44,10 @@ Comm radio = Comm();
 DynamixelSerial AX12As = DynamixelSerial();
 DisplayController afficheur = DisplayController();
 int valDisplayed = 0;
-int color = 0;
+int color = (digitalRead(COLOR) == HIGH)?0:1;
 
-int on_pompe_av = 0;
-Metro metro_pompe_interm(500.0);
 
-bool match_started = false;
-float time_started_forward = 0.0f;
-float time_started_backward = 0.0f;
-float time_end = 95.f;
+float time_start = 0.0;
 
 void setup()
 {
@@ -83,41 +80,27 @@ void setup()
     // mise des AX-12 en neutre sans palets
     //neutre(true);
     //neutre(false);
-    bras_main_pompe_ev_ar.start();
-    bras_main_pompe_ev_av.start();
-
+    //bras_main_pompe_ev_ar.start();
+    //bras_main_pompe_ev_av.start();
+    strat_machine.start();
     //encoder_hw.init();
 }
-
-// double sp[4] = {100, 0, -100, 0};
-// double omg[4] = {0, 0, 0, 0};
-// int i = 0;
-
 void loop()
 {
     if ((! hasStarted)&(digitalRead(TIRETTE)==LOW)){
         hasStarted=1;
-        bras_main_pompe_ev_av.forceState(START_REPL_HAND);
-        radio.reportStart();
-        #ifdef BASIC_STRAT
-        match_started = true;
-        time_end = millis() + 95000.f; 
-        #endif
+        //bras_main_pompe_ev_ar.forceState(START_REPL_HAND);
+        time_start = millis();
+        digitalWrite(POMPE2, HIGH); //aggripper la statuette
+        delay(1000);
+        strat_machine.handleEvent(TRIGGER_TIRETTE);
     }
     radio.update();
     if (metro_odom.check())
     { // mise à jour périodique de l'odométrie (logiciel)
         // Serial2.println("bbbbb");
         odom._update();
-        odom_wheel._update();
-    }
-    if ((!hasStarted)&metro_pompe_interm.check()){
-        if (on_pompe_av%6){
-            digitalWrite(POMPE1, LOW);
-        } else {
-            digitalWrite(POMPE1, HIGH);
-        }
-        on_pompe_av ++;
+        //odom_wheel._update();
     }
     if (metro_motor.check())
     { // mise à jour du contrôle moteur
@@ -127,7 +110,7 @@ void loop()
     if (metro_spam_odom.check())
     { // mise à jour périodique de l'odométrie (xbee)
         barometre.update();
-        radio.spam_odom();
+        //radio.spam_odom();
         ev1.update();
         ev2.update();
     }
@@ -141,33 +124,10 @@ void loop()
         {
             color = 1;
         }
-        radio.spamValeursCapt();
-    #ifdef BASIC_STRAT
-        if(match_started && time_end - millis() >= 92000.f) { //si le temps restant est > 90
-        motor.set_cons(200.0, 0.0);
-    }
-    else if(match_started && time_end - millis() >= 30000.f) {
-        motor.set_cons(0.0, 0.0);
-    }
-    else if(match_started && time_end - millis() >= 27000.f) //bouger entre le 30e et 25e s restante
-    {
-        motor.set_cons(-200.0, 0.0);
-    }
-    else if (match_started)
-    {
-        motor.set_cons(0.0, 0.0);
-        afficheur.setNbDisplayed(24);
-    }
-    else { //par sécurité si pb
-        motor.set_cons(0.0f, 0.0f);
-    }
 
-        #endif
-        // Serial2.println("TO REMOVE BELOW in MAIN : ..");
-        // Serial2.println(AX12As.readLoad(6));
     }
     if (state_machine_check.check()){
-        if (bras_main_pompe_ev_ar.isStarted()){
+        /*if (bras_main_pompe_ev_ar.isStarted()){
             //Serial2.print("AR: ");
             //Serial2.print(bras_main_pompe_ev_ar.current_state());
             bras_main_pompe_ev_ar.checkAutoTransitions();
@@ -178,15 +138,19 @@ void loop()
             //Serial2.print("AV: ");
             //Serial2.print(bras_main_pompe_ev_av.current_state());
             bras_main_pompe_ev_av.checkAutoTransitions();
-            //Serial2.print(" ");
-            //Serial2.println(bras_main_pompe_ev_av.current_state());
         }
         //printing state machine states to serial as actuator value
         radio.reportStateMachineStates(bras_main_pompe_ev_av.current_state(), bras_main_pompe_ev_ar.current_state());
+        */
+        strat_machine.checkAutoTransitions();
+        if (false){} 
+        else if (is_going_stat){
+            motor.set_cons(-200.0, 0.0); //on est vers l'arrière donc on recule
+        } else if (is_going_back){
+            motor.set_cons(200.0, 0.0);
+        } else {
+            motor.set_cons(0.0, 0.0);
+        }
     }
 
-    // if(metro_test.check()){
-    //     motor.set_cons(sp[i], omg[i]);
-    //     i = (i+1)%4;
-    // }
 }

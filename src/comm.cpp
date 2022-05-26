@@ -228,6 +228,7 @@ void Comm::cmdCaptContact(){
 }
 void Comm::parse_data()
 {
+    return; //ignore tout depuis le bas-niveau
     if(false){}
     else if (buffer[0] == 's'){cmdStop();}
     else if (buffer[0] == '@'){cmdResetPosition();}
