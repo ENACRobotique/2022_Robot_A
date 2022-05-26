@@ -14,6 +14,7 @@
 #include "Pression.h"
 #include "encodersWithTimers.h"
 
+//#define BASIC_STRAT
 InterruptEncoder encoder_m1(ENCODER_MOTOR1_B, ENCODER_MOTOR1_A);
 InterruptEncoder encoder_m2(ENCODER_MOTOR2_A, ENCODER_MOTOR2_B);
 InterruptEncoder encoder_w1(ENCODER_WHEEL1_B, ENCODER_WHEEL1_A);
@@ -45,7 +46,10 @@ int color = 0;
 int on_pompe_av = 0;
 Metro metro_pompe_interm(500.0);
 
-#ifndef UNIT_TEST
+bool match_started = false;
+float time_started_forward = 0.0f;
+float time_started_backward = 0.0f;
+float time_end = 95.f;
 
 void setup()
 {
@@ -94,6 +98,11 @@ void loop()
         hasStarted=1;
         bras_main_pompe_ev_av.forceState(START_REPL_HAND);
         radio.reportStart();
+        #ifdef BASIC_STRAT
+        match_started = true;
+        time_end = millis() + 95000.f; 
+        motor.set_cons(800.0, 0.0);
+        #endif
     }
     radio.update();
     if (metro_odom.check())
@@ -133,6 +142,27 @@ void loop()
             color = 1;
         }
         radio.spamValeursCapt();
+    #ifdef BASIC_STRAT
+        if(match_started && time_end - millis() >= 92000.f) { //si le temps restant est > 90
+        motor.set_cons(200.f, 0.0f);
+    }
+    else if(match_started && time_end - millis() >= 30000.f) {
+        motor.set_cons(0.0f, 0.0f);
+    }
+    else if(match_started && time_end - millis() >= 27000.f) //bouger entre le 30e et 25e s restante
+    {
+        motor.set_cons(-200.f, 0.0f);
+    }
+    else if (match_started)
+    {
+        motor.set_cons(0.0f, 0.0f);
+        afficheur.setNbDisplayed(24);
+    }
+    else { //par sécurité si pb
+        motor.set_cons(0.0f, 0.0f);
+    }
+
+        #endif
         // Serial2.println("TO REMOVE BELOW in MAIN : ..");
         // Serial2.println(AX12As.readLoad(6));
     }
@@ -160,4 +190,3 @@ void loop()
     //     i = (i+1)%4;
     // }
 }
-#endif

@@ -1,3 +1,5 @@
+#include "Arduino.h"
+
 #ifndef MOTORCONTROL_H_
 #define MOTORCONTROL_H_
 

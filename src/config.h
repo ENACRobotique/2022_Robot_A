@@ -22,8 +22,8 @@ const double MOTOR_BASE = 182.35;
 const double ENCODER_BASE = 243.00;
 const double INC_TO_MM_MOTOR_RIGHT =0.309671275853851; //0.309671275853851 * 0.97; due to wheel coeff of 1.06 diff
 const double INC_TO_MM_MOTOR_LEFT =INC_TO_MM_MOTOR_RIGHT * 1.01;
-const double INC_TO_MM_WHEEL_RIGHT =0.07859549951;
-const double INC_TO_MM_WHEEL_LEFT = 0.07859549951;
+const double INC_TO_MM_WHEEL_RIGHT =0.0741;
+const double INC_TO_MM_WHEEL_LEFT = 0.0741;
 
 
 const float ACCEL_MAX = 800; //mm/s²  
