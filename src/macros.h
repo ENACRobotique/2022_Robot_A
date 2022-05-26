@@ -84,8 +84,8 @@ const int NEUTRAL_STAT_START_DELAY = 750;
 const int NEUTRAL_ARM_AV = 750;
 const int NEUTRAL_ARM_AR = 520;
 
-const int NEUTRAL_HAND_AV = 700;
-const int NEUTRAL_HAND_AR = 0;
+const int NEUTRAL_HAND_AV = 670;
+const int NEUTRAL_HAND_AR = 30;
 
 const int NEUTRAL_STAT_END_DELAY = 250;
 
