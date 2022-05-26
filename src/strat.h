@@ -42,13 +42,13 @@ state_id waiting_tirette_tr(event evt){
 State waiting_tirette(-1, -1, &nothing, &waiting_tirette_tr);
 
 //état 1: aller à la statuette
-const int GOING_STAT_TIMEOUT = 6000;
+const int GOING_STAT_TIMEOUT = 5500;
 const state_id GOING_STAT_TIMEOUT_AUTOTR = AT_STAT;
 void go_stat(){
     afficheur.setNbDisplayed(1);
     is_going_stat = true;
     //bouger les bras
-    AX12As.moveSpeed(4, 800, ARM_SPEED_SLOW);
+    AX12As.moveSpeed(4, 775, ARM_SPEED_SLOW);
     AX12As.moveSpeed(5, 250, HAND_SPEED);
 }
 state_id no_man_tr(event evt){
@@ -62,6 +62,8 @@ const state_id AT_STAT_TIMEOUT_AUTOTR = PUSHED_STAT;
 void push_stat(){
     afficheur.setNbDisplayed(2);
     is_going_stat = false;
+    AX12As.moveSpeed(4, 620, ARM_SPEED_SLOW);
+    AX12As.moveSpeed(5, 0, HAND_SPEED);
 }
 State at_stat(AT_STAT_TIMEOUT_AUTOTR, AT_STAT_TIMEOUT, &push_stat, &no_man_tr);
 
@@ -71,14 +73,15 @@ const state_id PUSHED_STAT_TIMEOUT_AUTOTR = DROPPED_REPL;
 void drop_repl(){
     afficheur.setNbDisplayed(3);
     digitalWrite(POMPE2, LOW);
+    ev2.putOn();
 }
 State pushed_stat(PUSHED_STAT_TIMEOUT_AUTOTR, PUSHED_STAT_TIMEOUT, &drop_repl, &no_man_tr);
 
 //état 4: a droppé la réplique
-const int DROPPED_REPL_TIMEOUT = 6000;
+const int DROPPED_REPL_TIMEOUT = 4750;
 const state_id DROPPED_REPL_TIMEOUT_AUTOTR = GONE_BACK;
 void go_back(){
-    ev2.putOn();
+    //ev2.putOn();
     afficheur.setNbDisplayed(4);
     AX12As.moveSpeed(4, NEUTRAL_ARM_AR, ARM_SPEED_SLOW);
     AX12As.moveSpeed(5, NEUTRAL_HAND_AR, HAND_SPEED);

@@ -77,6 +77,8 @@ void setup()
     pinMode(POMPE2, OUTPUT);
     color = (digitalRead(COLOR) == HIGH) ? 0:1;
 
+    motor.stop();
+
     // mise des AX-12 en neutre sans palets
     //neutre(true);
     //neutre(false);
@@ -145,11 +147,11 @@ void loop()
         strat_machine.checkAutoTransitions();
         if (false){} 
         else if (is_going_stat){
-            motor.set_cons(-200.0, 0.0); //on est vers l'arrière donc on recule
+            motor.set_cons(-175.0, 0.0); //on est vers l'arrière donc on recule
         } else if (is_going_back){
-            motor.set_cons(200.0, 0.0);
+            motor.set_cons(200.0, (color==1)?-0.1:0.1);
         } else {
-            motor.set_cons(0.0, 0.0);
+            motor.stop();
         }
     }
 

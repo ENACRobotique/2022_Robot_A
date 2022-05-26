@@ -16,7 +16,7 @@ double sign(double nb) {
 }
 
 
-PID pidSpeed=PID(0.5, 1, 0.0, -255.0, 255.0);
+PID pidSpeed=PID(0.5, 0.25, 0.0, -255.0, 255.0); //previous value : (0.5, 1, 0.0,...)
 PID pidOmega=PID(40.0, 100.0, 0.0, -255.0, 255.0);
 
 void MotorControl::set_cons(double speed, double omega) {
@@ -57,12 +57,12 @@ void MotorControl::init() {
 }
 
 void MotorControl::trapeze(){
-	double max_cons_speed = cons_speed + ACCEL_MAX*CONTROL_PERIOD/1000.0;
+	double max_cons_speed = cons_speed + ACCEL_MAX*CONTROL_PERIOD/1000.0; //test pour clamp la vitesse à 0.2
 	double min_cons_speed = cons_speed - ACCEL_MAX*CONTROL_PERIOD/1000.0;
 
 	cons_speed = clamp (min_cons_speed, max_cons_speed, goal_speed);
 
-	double max_cons_omega = cons_omega + ACCEL_ANG_MAX*CONTROL_PERIOD/1000.0;
+	double max_cons_omega = cons_omega + ACCEL_ANG_MAX*CONTROL_PERIOD/1000.0; //test pour limiter la vitesse angulaire à 0.5
 	double min_cons_omega = cons_omega - ACCEL_ANG_MAX*CONTROL_PERIOD/1000.0;
 
 	cons_omega = clamp (min_cons_omega, max_cons_omega, goal_omega);
