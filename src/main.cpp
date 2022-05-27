@@ -149,7 +149,7 @@ void loop()
         else if (is_going_stat){
             motor.set_cons(-175.0, 0.0); //on est vers l'arrière donc on recule
         } else if (is_going_back){
-            motor.set_cons(200.0, (color==1)?-0.1:0.1);
+            motor.set_cons(200.0, (color==1)?-0.02:0.02);
         } else {
             motor.stop();
         }

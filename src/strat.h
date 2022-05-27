@@ -68,7 +68,7 @@ void push_stat(){
 State at_stat(AT_STAT_TIMEOUT_AUTOTR, AT_STAT_TIMEOUT, &push_stat, &no_man_tr);
 
 //état 3: a poussé la statuette
-const int PUSHED_STAT_TIMEOUT = 20000;
+const int PUSHED_STAT_TIMEOUT = 10000;
 const state_id PUSHED_STAT_TIMEOUT_AUTOTR = DROPPED_REPL;
 void drop_repl(){
     afficheur.setNbDisplayed(9);
