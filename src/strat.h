@@ -82,7 +82,7 @@ const int DROPPED_REPL_TIMEOUT = 4750 + 1000 + 1000 + 500; //FIXME: check si c'e
 const state_id DROPPED_REPL_TIMEOUT_AUTOTR = GONE_BACK;
 void go_back(){
     //ev2.putOn();
-    afficheur.setNbDisplayed(14);
+    afficheur.setNbDisplayed(19);
     AX12As.moveSpeed(4, NEUTRAL_ARM_AR, ARM_SPEED_SLOW);
     AX12As.moveSpeed(5, NEUTRAL_HAND_AR, HAND_SPEED);
     delay(1000);
@@ -98,7 +98,7 @@ State dropped_repl(DROPPED_REPL_TIMEOUT_AUTOTR, DROPPED_REPL_TIMEOUT, &go_back, 
 
 //état 5: on est de retour
 void things_at_home(){
-    afficheur.setNbDisplayed(34);
+    afficheur.setNbDisplayed(39);
     is_going_back = false;
 }
 State gone_back(-1, -1, &things_at_home, &no_man_tr);
